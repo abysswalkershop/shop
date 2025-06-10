@@ -1,12 +1,13 @@
 import { ArrowUpRightMini } from "@medusajs/icons"
 import { Text } from "@medusajs/ui"
 import LocalizedClientLink from "../localized-client-link"
+import { ComponentProps } from "react"
 
 type InteractiveLinkProps = {
   href: string
   children?: React.ReactNode
   onClick?: () => void
-}
+} & Omit<ComponentProps<typeof LocalizedClientLink>, 'href' | 'children' | 'onClick'>
 
 const InteractiveLink = ({
   href,
