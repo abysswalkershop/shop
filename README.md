@@ -1,2 +1,3 @@
-# shop
-Abysswalker shop
+# Abysswalker shop
+
+The Abysswalker webshop based on medusajs
