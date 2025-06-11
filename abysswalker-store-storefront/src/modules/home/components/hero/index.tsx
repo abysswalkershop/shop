@@ -3,16 +3,30 @@ import { Github } from "@medusajs/icons"
 import { Button, Heading } from "@medusajs/ui"
 import InteractiveLink from "@modules/common/components/interactive-link"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const Hero = () => {
   const [hoveredNode, setHoveredNode] = useState<number | null>(null)
+  const [nodePositions, setNodePositions] = useState([
+    { id: 1, category: "The App", href: "app", baseX: 20, baseY: 30, currentX: 20, currentY: 30, image: "/ZincHome.png" },
+    { id: 2, category: "The Implants", href: "implants", baseX: 70, baseY: 25, currentX: 70, currentY: 25, image: "/LodestoneHome.png" },
+    { id: 3, category: "The Merch", href: "merch", baseX: 45, baseY: 70, currentX: 45, currentY: 70, image: "/Silouhette.png" }
+  ])
 
-  const nodes = [
-    { id: 1, category: "The App", href: "app", x: "20%", y: "30%", image: "/ZincHome.png" },
-    { id: 2, category: "The Implants", href: "implants", x: "70%", y: "25%", image: "/LodestoneHome.png" },
-    { id: 3, category: "The Merch", href: "merch", x: "45%", y: "70%", image: "/Silouhette.png" }
-  ]
+  useEffect(() => {
+    const floatAnimation = () => {
+      setNodePositions(prevPositions =>
+        prevPositions.map(node => ({
+          ...node,
+          currentX: node.baseX + Math.sin(Date.now() * 0.0003 + node.id) * 3,
+          currentY: node.baseY + Math.cos(Date.now() * 0.0006 + node.id) * 2
+        }))
+      )
+    }
+
+    const interval = setInterval(floatAnimation, 30)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <div className="h-[75vh] w-full border-b border-ui-border-base relative bg-ui-bg-subtle overflow-hidden">
@@ -22,30 +36,30 @@ const Hero = () => {
         <svg className="absolute inset-0 w-full h-full">
           {/* Line from node 1 to node 2 */}
           <line
-            x1="20%"
-            y1="30%"
-            x2="70%"
-            y2="25%"
+            x1={`${nodePositions[0].currentX}%`}
+            y1={`${nodePositions[0].currentY}%`}
+            x2={`${nodePositions[1].currentX}%`}
+            y2={`${nodePositions[1].currentY}%`}
             stroke="#d1d5db"
             strokeWidth="1"
             opacity="0.4"
           />
           {/* Line from node 2 to node 3 */}
           <line
-            x1="70%"
-            y1="25%"
-            x2="45%"
-            y2="70%"
+            x1={`${nodePositions[1].currentX}%`}
+            y1={`${nodePositions[1].currentY}%`}
+            x2={`${nodePositions[2].currentX}%`}
+            y2={`${nodePositions[2].currentY}%`}
             stroke="#d1d5db"
             strokeWidth="1"
             opacity="0.4"
           />
           {/* Line from node 3 to node 1 */}
           <line
-            x1="45%"
-            y1="70%"
-            x2="20%"
-            y2="30%"
+            x1={`${nodePositions[2].currentX}%`}
+            y1={`${nodePositions[2].currentY}%`}
+            x2={`${nodePositions[0].currentX}%`}
+            y2={`${nodePositions[0].currentY}%`}
             stroke="#d1d5db"
             strokeWidth="1"
             opacity="0.4"
@@ -53,14 +67,14 @@ const Hero = () => {
         </svg>
 
         {/* Nodes */}
-        {nodes.map((node) => (
+        {nodePositions.map((node) => (
           <LocalizedClientLink
             href={`/categories/${node.href}`}
             key={node.id}
-            className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer"
+            className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-75 ease-out"
             style={{
-              left: node.x,
-              top: node.y,
+              left: `${node.currentX}%`,
+              top: `${node.currentY}%`,
               zIndex: 2,
               perspective: "1000px"
             }}
