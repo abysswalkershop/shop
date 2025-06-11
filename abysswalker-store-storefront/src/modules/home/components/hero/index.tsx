@@ -55,7 +55,7 @@ const Hero = () => {
         {/* Nodes */}
         {nodes.map((node) => (
           <LocalizedClientLink
-            href={`/category/${node.href}`}
+            href={`/categories/${node.href}`}
             key={node.id}
             className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer"
             style={{
