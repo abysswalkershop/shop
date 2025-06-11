@@ -1,8 +1,9 @@
 export default function PrivacyPolicyPage() {
     return (
-        <div className="text-ui-fg-base max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6 md:p-8 mt-8 mb-8">
+        <div className="text-ui-fg-base max-w-4xl mx-auto bg-white p-6 md:p-8 mt-8 mb-8">
 
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">Privacy Policy</h1>
+            <hr className="border-gray-300 mb-6" />
             <p className="text-sm text-gray-500 mb-6 text-center"><strong>Last Updated:</strong> June 10, 2025</p>
 
             <p className="mb-4">

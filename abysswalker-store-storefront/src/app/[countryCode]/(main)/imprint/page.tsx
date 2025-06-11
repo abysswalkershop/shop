@@ -1,8 +1,9 @@
 export default function ImprintPage() {
     return (
-        <div className="text-ui-fg-base max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6 md:p-8 mt-8 mb-8">
+        <div className="text-ui-fg-base max-w-3xl mx-auto bg-white p-6 md:p-8 mt-8 mb-8">
 
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">Imprint</h1>
+            <hr className="border-gray-300 mb-6" />
             <p className="mb-4 text-center text-sm text-gray-600">(Legal Notice)</p>
 
             <p className="mb-6">
@@ -47,15 +48,15 @@ export default function ImprintPage() {
                         <strong>Responsible for content according to Section 55 (2) RStV (German Interstate Broadcasting Treaty):</strong>
                         [Full Name of the person responsible for content]
                         [Address of the person responsible for content (if different from above)]
-                        <li>
+                        <div>
                             <span className="text-sm text-gray-500">(Primarily relevant for German law)</span>
-                        </li>
-                        <li className="mb-2">
+                        </div>
+                        <div className="mb-2">
                             <strong>Dispute Resolution:</strong>
                             <p className="mb-1">The European Commission provides a platform for online dispute resolution (ODR): <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://ec.europa.eu/consumers/odr</a></p>
                             <p className="mb-1">We are not obliged or willing to participate in dispute settlement proceedings before a consumer arbitration board.</p>
                             <span className="text-sm text-gray-500">(Primarily relevant for EU businesses)</span>
-                        </li>
+                        </div>
                     </li>
 
                     <div className="mb-8">

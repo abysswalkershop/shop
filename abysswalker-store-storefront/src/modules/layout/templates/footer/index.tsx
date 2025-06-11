@@ -147,6 +147,51 @@ export default async function Footer() {
                     Privacy Policy
                   </LocalizedClientLink>
                 </li>
+                <li>
+                  <LocalizedClientLink
+                    href="/returns"
+                    target="_blank"
+                    className="hover:text-ui-fg-base"
+                  >
+                    Shipping Policy
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink
+                    href="/tos"
+                    target="_blank"
+                    className="hover:text-ui-fg-base"
+                  >
+                    TOS
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink
+                    href="/tou"
+                    target="_blank"
+                    className="hover:text-ui-fg-base"
+                  >
+                    TOU
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink
+                    href="/termsofsale"
+                    target="_blank"
+                    className="hover:text-ui-fg-base"
+                  >
+                    Terms of Sale
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink
+                    href="/contact"
+                    target="_blank"
+                    className="hover:text-ui-fg-base"
+                  >
+                    Contact Us
+                  </LocalizedClientLink>
+                </li>
               </ul>
             </div>
           </div>
