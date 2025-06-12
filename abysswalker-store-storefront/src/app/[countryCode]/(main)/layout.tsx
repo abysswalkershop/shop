@@ -38,7 +38,9 @@ export default async function PageLayout(props: { children: React.ReactNode }) {
           shippingOptions={shippingOptions}
         />
       )}
-      {props.children}
+      <div className="bg-abyss-background min-h-screen">
+        {props.children}
+      </div>
       <Footer />
     </>
   )

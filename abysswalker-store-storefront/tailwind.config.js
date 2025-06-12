@@ -21,6 +21,15 @@ module.exports = {
         padding: "padding-top padding-right padding-bottom padding-left",
       },
       colors: {
+        // Custom dark theme colors
+        abyss: {
+          "light-accent": "#00cbd0",
+          "medium-accent": "#0ed5a7",
+          "dark-accent": "#005557",
+          "background": "#141b22",
+          "text-light": "#e4f2ff",
+          "text-dark": "#000000",
+        },
         grey: {
           0: "#FFFFFF",
           5: "#F9FAFB",

@@ -29,7 +29,7 @@ const Hero = () => {
   }, [])
 
   return (
-    <div className="h-[75vh] w-full border-b border-ui-border-base relative bg-ui-bg-subtle overflow-hidden">
+    <div className="h-[75vh] w-full border-b border-abyss-dark-accent relative bg-abyss-background overflow-hidden">
       {/* Node Graph Background */}
       <div className="absolute inset-0">
         {/* Connection Lines */}
@@ -40,7 +40,7 @@ const Hero = () => {
             y1={`${nodePositions[0].currentY}%`}
             x2={`${nodePositions[1].currentX}%`}
             y2={`${nodePositions[1].currentY}%`}
-            stroke="#d1d5db"
+            stroke="#0ed5a7"
             strokeWidth="1"
             opacity="0.4"
           />
@@ -50,7 +50,7 @@ const Hero = () => {
             y1={`${nodePositions[1].currentY}%`}
             x2={`${nodePositions[2].currentX}%`}
             y2={`${nodePositions[2].currentY}%`}
-            stroke="#d1d5db"
+            stroke="#0ed5a7"
             strokeWidth="1"
             opacity="0.4"
           />
@@ -60,7 +60,7 @@ const Hero = () => {
             y1={`${nodePositions[2].currentY}%`}
             x2={`${nodePositions[0].currentX}%`}
             y2={`${nodePositions[0].currentY}%`}
-            stroke="#d1d5db"
+            stroke="#0ed5a7"
             strokeWidth="1"
             opacity="0.4"
           />
@@ -90,7 +90,7 @@ const Hero = () => {
             >
               {/* Front face - Image */}
               <div
-                className="absolute inset-0 w-full h-full rounded-xl shadow-lg bg-gradient-to-br from-gray-900 to-gray-700 backface-hidden overflow-hidden"
+                className="absolute inset-0 w-full h-full rounded-xl shadow-lg bg-gradient-to-br from-abyss-dark-accent to-abyss-background backface-hidden overflow-hidden"
                 style={{ backfaceVisibility: "hidden" }}
               >
                 <img
@@ -102,13 +102,13 @@ const Hero = () => {
 
               {/* Back face - Category text */}
               <div
-                className="absolute inset-0 w-full h-full rounded-xl shadow-lg bg-gradient-to-br from-gray-900 to-gray-700 backface-hidden flex items-center justify-center"
+                className="absolute inset-0 w-full h-full rounded-xl shadow-lg bg-gradient-to-br from-abyss-medium-accent to-abyss-light-accent backface-hidden flex items-center justify-center"
                 style={{
                   backfaceVisibility: "hidden",
                   transform: "rotateX(180deg)"
                 }}
               >
-                <span className="text-white text-sm font-medium text-center px-2">
+                <span className="text-abyss-text-dark text-sm font-medium text-center px-2">
                   {node.category}
                 </span>
               </div>
@@ -122,13 +122,13 @@ const Hero = () => {
         <span>
           <Heading
             level="h1"
-            className="text-3xl leading-10 text-ui-fg-base font-normal"
+            className="text-3xl leading-10 text-abyss-text-light font-normal"
           >
             Abysswalker
           </Heading>
           <Heading
             level="h2"
-            className="text-3xl leading-10 text-ui-fg-subtle font-normal"
+            className="text-3xl leading-10 text-abyss-medium-accent font-normal"
           >
             The LODESTONE ecosystem
           </Heading>
