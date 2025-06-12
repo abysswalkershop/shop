@@ -5,17 +5,20 @@ import { placeOrder } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import ErrorMessage from "../error-message"
+import { useSearchParams } from "next/navigation"
 
 type PaymentButtonProps = {
   cart: HttpTypes.StoreCart
-  "data-testid": string
+  "data-testid": string,
+  error?: string | null
 }
 
 const PaymentButton: React.FC<PaymentButtonProps> = ({
   cart,
   "data-testid": dataTestId,
+  error
 }) => {
   const notReady =
     !cart ||
@@ -33,6 +36,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
           notReady={notReady}
           cart={cart}
           data-testid={dataTestId}
+          error={error}
         />
       )
     case isManual(paymentSession?.provider_id):
@@ -48,13 +52,15 @@ const StripePaymentButton = ({
   cart,
   notReady,
   "data-testid": dataTestId,
+  error
 }: {
   cart: HttpTypes.StoreCart
   notReady: boolean
   "data-testid"?: string
+  error?: string | null
 }) => {
   const [submitting, setSubmitting] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(error || null)
 
   const onPaymentCompleted = async () => {
     await placeOrder()
@@ -97,7 +103,7 @@ const StripePaymentButton = ({
       elements,
       clientSecret: session?.data.client_secret as string,
       confirmParams: {
-        return_url: window.location.origin,
+        return_url: `${window.location.origin}/${cart.shipping_address?.country_code?.toLowerCase()}/checkout/callback?cart_id=${cart.id}`,
       },
       redirect: "if_required",
     })
