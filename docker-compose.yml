@@ -71,11 +71,15 @@ services:
 
     nginx:
       image: nginx:latest
+      depends_on:
+        - medusa-server
+        - frontend
       ports:
         - "443:443"
       volumes:
         - ./nginx.conf:/etc/nginx/nginx.conf:ro
-        - /etc/letsencrypt/live:/etc/letsencrypt/live:ro
+        - /etc/letsencrypt/live/abysswalker.org/fullchain.pem:/etc/letsencrypt/live/abysswalker.org/fullchain.pem:ro
+        - /etc/letsencrypt/live/abysswalker.org/privkey.pem:/etc/letsencrypt/live/abysswalker.org/privkey.pem:ro
       restart: unless-stopped
 
 volumes:

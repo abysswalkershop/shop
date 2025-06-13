@@ -3,7 +3,7 @@ FROM oven/bun:latest
 WORKDIR /app
 COPY . .
 
-RUN bun install --production
+RUN bun install
 RUN bun run build
 
 EXPOSE 8000
