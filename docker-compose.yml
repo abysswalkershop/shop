@@ -2,19 +2,22 @@ services:
     postgres:
       image: postgres:17
       volumes:
-        - ./pgdata:/var/lib/postgresql/data
+        - pgdata:/var/lib/postgresql/data
       ports:
         - "5432:5432"
-      environment:
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: postgres
-        POSTGRES_DB: shop
+      env_file:
+      - .env.db
       healthcheck:
         test:
           ['CMD', 'pg_isready', '-U', "postgres", '-d', "shop"]
         interval: 10s
         timeout: 5s
         retries: 5
+      command: >
+        postgres
+        -c ssl=on
+        -c ssl_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+        -c ssl_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
       restart: unless-stopped
 
     redis:
@@ -27,3 +30,53 @@ services:
         timeout: 5s
         retries: 5
       restart: unless-stopped
+
+    medusa-worker:
+      build:
+        context: ./abysswalker-store
+        dockerfile: Dockerfile.worker
+      depends_on:
+        - postgres
+        - redis
+      env_file:
+        - .env.backend
+        - .env.db
+      restart: unless-stopped
+    
+    medusa-server:
+      build:
+        context: ./abysswalker-store
+        dockerfile: Dockerfile
+      depends_on:
+        - postgres
+        - redis
+      ports:
+        - "9000:9000"
+      env_file:
+        - .env.backend
+        - .env.db
+      restart: unless-stopped
+
+    frontend:
+      build:
+        context: ./abysswalker-store-storefront
+        dockerfile: Dockerfile
+      depends_on:
+        - medusa-server
+      ports:
+        - "8000:8000"
+      env_file:
+        - .env.frontend
+      restart: unless-stopped
+
+    nginx:
+      image: nginx:latest
+      ports:
+        - "443:443"
+      volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf:ro
+        - /etc/letsencrypt/live:/etc/letsencrypt/live:ro
+      restart: unless-stopped
+
+volumes:
+  pgdata:
