@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY . .
 
+ENV NODE_ENV=production
+
 RUN npm install
 RUN npm run build
 
@@ -17,6 +19,8 @@ ENV MEDUSA_WORKER_MODE=server
 ENV PORT=9000
 
 COPY --from=builder /app/.medusa/server /app/
+
+ENV NODE_ENV=production
 
 RUN npm install
 
