@@ -17,6 +17,8 @@ type ShipmentCreatedEmailProps = {
     tracking_number?: string
     tracking_url?: string
     carrier?: string
+    customer_name?: string
+    estimated_delivery?: string
 }
 
 function ShipmentCreatedEmailComponent({
@@ -24,66 +26,95 @@ function ShipmentCreatedEmailComponent({
     shipment_id,
     tracking_number,
     tracking_url,
-    carrier
+    carrier,
+    customer_name,
+    estimated_delivery
 }: ShipmentCreatedEmailProps) {
     return (
         <Tailwind>
-            <Html>
+            <Html className="font-sans bg-gray-100">
                 <Head />
                 <Preview>Your order has been shipped!</Preview>
-                <Body className="bg-white my-auto mx-auto font-sans">
-                    <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] w-[465px]">
-                        <Section className="mt-[32px]">
-                            <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
-                                Your Order Has Been Shipped! 🚚
-                            </Heading>
-                        </Section>
+                <Body className="bg-white my-10 mx-auto w-full max-w-2xl">
+                    {/* Header */}
+                    <Section className="bg-[#27272a] text-white px-6 py-4">
+                        <Text className="text-lg font-bold">ABYSSWALKER</Text>
+                    </Section>
 
-                        <Text className="text-black text-[14px] leading-[24px]">
-                            Hi there,
+                    {/* Shipment Message */}
+                    <Container className="p-6">
+                        <Heading className="text-2xl font-bold text-center text-gray-800">
+                            Your Order Has Been Shipped! 🚚
+                        </Heading>
+                        <Text className="text-center text-gray-600 mt-2">
+                            Your order is on its way to you.
+                        </Text>
+                    </Container>
+
+                    {/* Content */}
+                    <Container className="px-6">
+                        <Text className="text-gray-800 text-base leading-relaxed">
+                            Hi {customer_name || 'there'},
                         </Text>
 
-                        <Text className="text-black text-[14px] leading-[24px]">
+                        <Text className="text-gray-800 text-base leading-relaxed">
                             Great news! Your order <strong>#{order_id}</strong> has been shipped and is on its way to you.
                         </Text>
 
-                        <Text className="text-black text-[14px] leading-[24px]">
-                            <strong>Shipment ID:</strong> {shipment_id}
-                        </Text>
-
-                        {tracking_number && (
-                            <Text className="text-black text-[14px] leading-[24px]">
-                                <strong>Tracking Number:</strong> {tracking_number}
+                        <Section className="bg-gray-50 p-4 rounded-lg my-6">
+                            <Text className="text-gray-700 font-semibold text-base m-0 mb-2">Shipment Details:</Text>
+                            <Text className="text-gray-600 text-sm m-0">
+                                <strong>Order ID:</strong> #{order_id}
                             </Text>
-                        )}
-
-                        {carrier && (
-                            <Text className="text-black text-[14px] leading-[24px]">
-                                <strong>Carrier:</strong> {carrier}
+                            <Text className="text-gray-600 text-sm m-0">
+                                <strong>Shipment ID:</strong> {shipment_id}
                             </Text>
-                        )}
+                            {tracking_number && (
+                                <Text className="text-gray-600 text-sm m-0">
+                                    <strong>Tracking Number:</strong> {tracking_number}
+                                </Text>
+                            )}
+                            {carrier && (
+                                <Text className="text-gray-600 text-sm m-0">
+                                    <strong>Carrier:</strong> {carrier}
+                                </Text>
+                            )}
+                            {estimated_delivery && (
+                                <Text className="text-gray-600 text-sm m-0">
+                                    <strong>Estimated Delivery:</strong> {estimated_delivery}
+                                </Text>
+                            )}
+                        </Section>
 
                         {tracking_url && (
-                            <Text className="text-black text-[14px] leading-[24px]">
-                                <Link href={tracking_url} className="text-blue-600 underline">
-                                    Track your shipment here
+                            <Section className="text-center my-6">
+                                <Link
+                                    href={tracking_url}
+                                    className="bg-[#27272a] rounded text-white text-base font-semibold no-underline text-center px-6 py-3 inline-block"
+                                >
+                                    Track Your Shipment
                                 </Link>
-                            </Text>
+                            </Section>
                         )}
 
-                        <Text className="text-black text-[14px] leading-[24px]">
+                        <Text className="text-gray-800 text-base leading-relaxed">
                             We'll notify you again when your package is out for delivery and when it arrives.
                         </Text>
 
-                        <Text className="text-black text-[14px] leading-[24px]">
-                            Thank you for your order!
-                        </Text>
-
-                        <Text className="text-black text-[14px] leading-[24px]">
-                            Best regards,<br />
-                            The Team
+                        <Text className="text-gray-800 text-base leading-relaxed">
+                            If you have any questions about your shipment, please contact our support team at contact@abysswalker.org.
                         </Text>
                     </Container>
+
+                    {/* Footer */}
+                    <Section className="bg-gray-50 p-6 mt-10">
+                        <Text className="text-center text-gray-500 text-sm">
+                            Thank you for choosing ABYSSWALKER.
+                        </Text>
+                        <Text className="text-center text-gray-400 text-xs mt-4">
+                            © {new Date().getFullYear()} EI Abyss Walker. All rights reserved.
+                        </Text>
+                    </Section>
                 </Body>
             </Html>
         </Tailwind>
@@ -93,3 +124,16 @@ function ShipmentCreatedEmailComponent({
 export const shipmentCreatedEmail = (props: ShipmentCreatedEmailProps) => (
     <ShipmentCreatedEmailComponent {...props} />
 )
+
+const mockShipment = {
+    "order_id": "1005",
+    "shipment_id": "ship_01JSNXDH9BPJWWKVW03B9E9KW8",
+    "tracking_number": "1Z999AA1234567890",
+    "tracking_url": "https://www.ups.com/track?tracknum=1Z999AA1234567890",
+    "carrier": "UPS",
+    "customer_name": "John Doe",
+    "estimated_delivery": "June 20, 2025"
+}
+
+// @ts-ignore
+export default () => <ShipmentCreatedEmailComponent {...mockShipment} />

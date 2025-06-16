@@ -20,44 +20,52 @@ type CustomerCreatedEmailProps = {
 function CustomerCreatedEmailComponent({ customer, store_url }: CustomerCreatedEmailProps) {
     return (
         <Tailwind>
-            <Html>
+            <Html className="font-sans bg-gray-100">
                 <Head />
-                <Preview>Welcome to our store!</Preview>
-                <Body className="bg-white my-auto mx-auto font-sans">
-                    <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] w-[465px]">
-                        <Section className="mt-[32px]">
-                            <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
-                                Welcome! 🎉
-                            </Heading>
-                        </Section>
+                <Preview>Welcome to ABYSSWALKER!</Preview>
+                <Body className="bg-white my-10 mx-auto w-full max-w-2xl">
+                    {/* Header */}
+                    <Section className="bg-[#27272a] text-white px-6 py-4">
+                        <Text className="text-lg font-bold">ABYSSWALKER</Text>
+                    </Section>
 
-                        <Text className="text-black text-[14px] leading-[24px]">
+                    {/* Welcome Message */}
+                    <Container className="p-6">
+                        <Heading className="text-2xl font-bold text-center text-gray-800">
+                            Welcome to ABYSSWALKER! 🎉
+                        </Heading>
+                        <Text className="text-center text-gray-600 mt-2">
+                            We're excited to have you as part of our community.
+                        </Text>
+                    </Container>
+
+                    {/* Content */}
+                    <Container className="px-6">
+                        <Text className="text-gray-800 text-base leading-relaxed">
                             Hi {customer.first_name || 'there'},
                         </Text>
 
-                        <Text className="text-black text-[14px] leading-[24px]">
-                            Welcome to our store! We're excited to have you as part of our community.
+                        <Text className="text-gray-800 text-base leading-relaxed">
+                            Welcome to our store! Your account has been successfully created with the email: <strong>{customer.email}</strong>
                         </Text>
 
-                        <Text className="text-black text-[14px] leading-[24px]">
-                            Your account has been successfully created with the email: <strong>{customer.email}</strong>
-                        </Text>
-
-                        <Text className="text-black text-[14px] leading-[24px]">
+                        <Text className="text-gray-800 text-base leading-relaxed">
                             You can now:
                         </Text>
 
-                        <Text className="text-black text-[14px] leading-[24px] ml-[20px]">
-                            • Browse our latest products<br />
-                            • Track your orders<br />
-                            • Manage your account settings<br />
-                            • Enjoy exclusive member benefits
-                        </Text>
+                        <Section className="bg-gray-50 p-4 rounded-lg my-4">
+                            <Text className="text-gray-700 text-base leading-relaxed m-0">
+                                • Browse our latest products<br />
+                                • Track your orders<br />
+                                • Manage your account settings<br />
+                                • Enjoy exclusive member benefits
+                            </Text>
+                        </Section>
 
                         {store_url && (
-                            <Section className="text-center mt-[32px] mb-[32px]">
+                            <Section className="text-center mt-8 mb-8">
                                 <Button
-                                    className="bg-black rounded text-white text-[12px] font-semibold no-underline text-center px-[20px] py-[12px]"
+                                    className="bg-[#27272a] rounded text-white text-base font-semibold no-underline text-center px-6 py-3"
                                     href={store_url}
                                 >
                                     Start Shopping
@@ -65,15 +73,20 @@ function CustomerCreatedEmailComponent({ customer, store_url }: CustomerCreatedE
                             </Section>
                         )}
 
-                        <Text className="text-black text-[14px] leading-[24px]">
-                            If you have any questions, feel free to reach out to our support team.
-                        </Text>
-
-                        <Text className="text-black text-[14px] leading-[24px]">
-                            Happy shopping!<br />
-                            The Team
+                        <Text className="text-gray-800 text-base leading-relaxed">
+                            If you have any questions, feel free to reach out to our support team at contact@abysswalker.org.
                         </Text>
                     </Container>
+
+                    {/* Footer */}
+                    <Section className="bg-gray-50 p-6 mt-10">
+                        <Text className="text-center text-gray-500 text-sm">
+                            Thank you for choosing ABYSSWALKER.
+                        </Text>
+                        <Text className="text-center text-gray-400 text-xs mt-4">
+                            © {new Date().getFullYear()} EI Abyss Walker. All rights reserved.
+                        </Text>
+                    </Section>
                 </Body>
             </Html>
         </Tailwind>
@@ -83,3 +96,24 @@ function CustomerCreatedEmailComponent({ customer, store_url }: CustomerCreatedE
 export const customerCreatedEmail = (props: CustomerCreatedEmailProps) => (
     <CustomerCreatedEmailComponent {...props} />
 )
+
+const mockCustomer = {
+    "customer": {
+        "id": "cus_01JSNXD6VQC1YH56E4TGC81NWX",
+        "company_name": null,
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john.doe@example.com",
+        "phone": "+1-555-0123",
+        "has_account": true,
+        "metadata": null,
+        "created_by": null,
+        "created_at": "2025-06-16T10:30:00.000Z",
+        "updated_at": "2025-06-16T10:30:00.000Z",
+        "deleted_at": null,
+    },
+    "store_url": "https://abysswalker.org"
+}
+
+// @ts-ignore
+export default () => <CustomerCreatedEmailComponent {...mockCustomer} />
