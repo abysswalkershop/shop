@@ -12,7 +12,6 @@ import {
 
 type OrderReturnReceivedEmailProps = {
   order_id?: string
-  return_id?: string
   received_at?: string
   customer_name?: string
   return_reason?: string
@@ -20,7 +19,6 @@ type OrderReturnReceivedEmailProps = {
 
 function OrderReturnReceivedEmailComponent({
   order_id,
-  return_id,
   received_at,
   customer_name,
   return_reason
@@ -41,7 +39,7 @@ function OrderReturnReceivedEmailComponent({
           {/* Return Message */}
           <Container className="p-6">
             <Heading className="text-2xl font-bold text-center text-gray-800">
-              Return Received 📦
+              Return Received
             </Heading>
             <Text className="text-center text-gray-600 mt-2">
               We've received your return and are processing it.
@@ -63,11 +61,6 @@ function OrderReturnReceivedEmailComponent({
               {order_id && (
                 <Text className="text-gray-600 text-sm m-0">
                   <strong>Order ID:</strong> #{order_id}
-                </Text>
-              )}
-              {return_id && (
-                <Text className="text-gray-600 text-sm m-0">
-                  <strong>Return ID:</strong> {return_id}
                 </Text>
               )}
               <Text className="text-gray-600 text-sm m-0">
@@ -104,7 +97,7 @@ function OrderReturnReceivedEmailComponent({
   )
 }
 
-export const orderReturnReceivedEmail = (props: OrderReturnReceivedEmailProps) => (
+export const OrderReturnReceivedEmail = (props: OrderReturnReceivedEmailProps) => (
   <OrderReturnReceivedEmailComponent {...props} />
 )
 

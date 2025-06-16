@@ -13,7 +13,6 @@ import {
 
 type OrderReturnRequestedEmailProps = {
     order_id: string
-    return_id: string
     reason?: string
     customer_name?: string
     items_to_return?: string[]
@@ -21,7 +20,6 @@ type OrderReturnRequestedEmailProps = {
 
 function OrderReturnRequestedEmailComponent({
     order_id,
-    return_id,
     reason,
     customer_name,
     items_to_return
@@ -40,7 +38,7 @@ function OrderReturnRequestedEmailComponent({
                     {/* Return Request Message */}
                     <Container className="p-6">
                         <Heading className="text-2xl font-bold text-center text-gray-800">
-                            Return Request Received 🔄
+                            Return Request Received
                         </Heading>
                         <Text className="text-center text-gray-600 mt-2">
                             We've received your return request and will process it soon.
@@ -61,9 +59,6 @@ function OrderReturnRequestedEmailComponent({
                             <Text className="text-gray-700 font-semibold text-base m-0 mb-2">Return Request Details:</Text>
                             <Text className="text-gray-600 text-sm m-0">
                                 <strong>Order ID:</strong> #{order_id}
-                            </Text>
-                            <Text className="text-gray-600 text-sm m-0">
-                                <strong>Return ID:</strong> {return_id}
                             </Text>
                             {reason && (
                                 <Text className="text-gray-600 text-sm m-0">

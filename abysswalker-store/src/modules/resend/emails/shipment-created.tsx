@@ -13,22 +13,22 @@ import {
 
 type ShipmentCreatedEmailProps = {
     order_id: string
-    shipment_id: string
     tracking_number?: string
     tracking_url?: string
     carrier?: string
     customer_name?: string
     estimated_delivery?: string
+    shipped_at?: string
 }
 
 function ShipmentCreatedEmailComponent({
     order_id,
-    shipment_id,
     tracking_number,
     tracking_url,
     carrier,
     customer_name,
-    estimated_delivery
+    estimated_delivery,
+    shipped_at
 }: ShipmentCreatedEmailProps) {
     return (
         <Tailwind>
@@ -44,7 +44,7 @@ function ShipmentCreatedEmailComponent({
                     {/* Shipment Message */}
                     <Container className="p-6">
                         <Heading className="text-2xl font-bold text-center text-gray-800">
-                            Your Order Has Been Shipped! 🚚
+                            Your Order Has Been Shipped!
                         </Heading>
                         <Text className="text-center text-gray-600 mt-2">
                             Your order is on its way to you.
@@ -66,9 +66,6 @@ function ShipmentCreatedEmailComponent({
                             <Text className="text-gray-600 text-sm m-0">
                                 <strong>Order ID:</strong> #{order_id}
                             </Text>
-                            <Text className="text-gray-600 text-sm m-0">
-                                <strong>Shipment ID:</strong> {shipment_id}
-                            </Text>
                             {tracking_number && (
                                 <Text className="text-gray-600 text-sm m-0">
                                     <strong>Tracking Number:</strong> {tracking_number}
@@ -82,6 +79,11 @@ function ShipmentCreatedEmailComponent({
                             {estimated_delivery && (
                                 <Text className="text-gray-600 text-sm m-0">
                                     <strong>Estimated Delivery:</strong> {estimated_delivery}
+                                </Text>
+                            )}
+                            {shipped_at && (
+                                <Text className="text-gray-600 text-sm m-0">
+                                    <strong>Shipped At:</strong> {new Date(shipped_at).toLocaleDateString()}
                                 </Text>
                             )}
                         </Section>
@@ -98,7 +100,7 @@ function ShipmentCreatedEmailComponent({
                         )}
 
                         <Text className="text-gray-800 text-base leading-relaxed">
-                            We'll notify you again when your package is out for delivery and when it arrives.
+                            We'll notify you again when your package arrives.
                         </Text>
 
                         <Text className="text-gray-800 text-base leading-relaxed">
@@ -127,7 +129,6 @@ export const shipmentCreatedEmail = (props: ShipmentCreatedEmailProps) => (
 
 const mockShipment = {
     "order_id": "1005",
-    "shipment_id": "ship_01JSNXDH9BPJWWKVW03B9E9KW8",
     "tracking_number": "1Z999AA1234567890",
     "tracking_url": "https://www.ups.com/track?tracknum=1Z999AA1234567890",
     "carrier": "UPS",

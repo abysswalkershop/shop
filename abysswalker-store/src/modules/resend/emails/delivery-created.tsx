@@ -12,7 +12,6 @@ import {
 
 type DeliveryCreatedEmailProps = {
     order_id: string
-    fulfillment_id: string
     delivery_date?: string | Date
     delivery_time?: string | Date
     customer_name?: string
@@ -21,7 +20,6 @@ type DeliveryCreatedEmailProps = {
 
 function DeliveryCreatedEmailComponent({
     order_id,
-    fulfillment_id,
     delivery_date,
     delivery_time,
     customer_name,
@@ -56,7 +54,7 @@ function DeliveryCreatedEmailComponent({
                     {/* Delivery Message */}
                     <Container className="p-6">
                         <Heading className="text-2xl font-bold text-center text-gray-800">
-                            Your Order Has Been Delivered! 📦✅
+                            Your Order Has Been Delivered!
                         </Heading>
                         <Text className="text-center text-gray-600 mt-2">
                             Your package has been successfully delivered.
@@ -77,9 +75,6 @@ function DeliveryCreatedEmailComponent({
                             <Text className="text-gray-700 font-semibold text-base m-0 mb-2">Delivery Details:</Text>
                             <Text className="text-gray-600 text-sm m-0">
                                 <strong>Order ID:</strong> #{order_id}
-                            </Text>
-                            <Text className="text-gray-600 text-sm m-0">
-                                <strong>Fulfillment ID:</strong> {fulfillment_id}
                             </Text>
                             {formattedDate && (
                                 <Text className="text-gray-600 text-sm m-0">

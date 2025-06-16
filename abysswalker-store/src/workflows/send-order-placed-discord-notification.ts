@@ -9,8 +9,8 @@ type WorkflowInput = {
     id: string
 }
 
-export const sendOrderCompletedNotificationWorkflow = createWorkflow(
-    "send-order-completed-notification",
+export const sendOrderPlacedDiscordNotificationWorkflow = createWorkflow(
+    "send-order-placed-discord-notification",
     ({ id }: WorkflowInput) => {
         // @ts-ignore
         const { data: orders } = useQueryGraphStep({
@@ -18,19 +18,18 @@ export const sendOrderCompletedNotificationWorkflow = createWorkflow(
             fields: [
                 "id",
                 "display_id",
-                "email",
+                "total",
                 "currency_code",
-                "customer.*",
             ],
             filters: {
                 id,
             },
-        })        // @ts-ignore
+        })
+
         const notification = sendNotificationStep([{
-            // @ts-ignore
-            to: orders[0].email,
-            channel: "email",
-            template: "order-completed",
+            to: "discord", // This is a placeholder since Discord webhooks don't need a specific recipient
+            channel: "discord",
+            template: "order-placed-discord",
             data: {
                 order: orders[0],
             },

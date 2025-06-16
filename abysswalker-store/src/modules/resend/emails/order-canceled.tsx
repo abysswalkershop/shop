@@ -72,7 +72,6 @@ function OrderCanceledEmailComponent({ order }: OrderCanceledEmailProps) {
                             <Text className="text-gray-700 font-semibold text-base m-0 mb-2">Order Details:</Text>
                             <Text className="text-gray-600 text-sm m-0">Order ID: #{order.display_id}</Text>
                             <Text className="text-gray-600 text-sm m-0">Order Total: {formatPrice(order.total)}</Text>
-                            <Text className="text-gray-600 text-sm m-0">Order Token: {order.id}</Text>
                         </Section>
 
                         <Text className="text-gray-800 text-base leading-relaxed">

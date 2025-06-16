@@ -33,7 +33,6 @@ export const sendOrderReturnRequestedNotificationWorkflow = createWorkflow(
             template: "order-return-requested",
             data: {
                 order_id: orders[0].display_id,
-                return_id: return_id,
                 customer_name: orders[0].customer?.first_name,
                 // You can extend this with return reason when available
                 reason: undefined,

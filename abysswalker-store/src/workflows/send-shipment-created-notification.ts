@@ -82,7 +82,9 @@ export const sendShipmentCreatedNotificationWorkflow = createWorkflow(
                 order_id: orderData.display_id,
                 shipment_id: shipment_id,
                 // @ts-ignore
-                tracking_number: fulfillment.tracking_numbers?.[0],
+                tracking_number: fulfillment.lables?.[0].tracking_number,
+                // @ts-ignore
+                tracking_url: fulfillment.lables?.[0].tracking_url,
                 // @ts-ignore
                 carrier: fulfillment.provider_id,
                 // @ts-ignore

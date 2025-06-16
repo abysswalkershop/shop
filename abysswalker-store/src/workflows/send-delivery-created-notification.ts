@@ -80,7 +80,6 @@ export const sendDeliveryCreatedNotificationWorkflow = createWorkflow(
             data: {
                 // @ts-ignore
                 order_id: orderData.display_id,
-                fulfillment_id: fulfillment_id,
                 // @ts-ignore
                 delivery_date: fulfillment.delivered_at,
                 // @ts-ignore

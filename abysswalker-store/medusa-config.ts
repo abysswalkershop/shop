@@ -34,8 +34,7 @@ module.exports = defineConfig({
           }
         ],
       },
-    },
-    {
+    }, {
       resolve: "@medusajs/medusa/notification",
       options: {
         providers: [
@@ -46,6 +45,14 @@ module.exports = defineConfig({
               channels: ["email"],
               api_key: process.env.RESEND_API_KEY,
               from: process.env.RESEND_FROM_EMAIL,
+            },
+          },
+          {
+            resolve: "./src/modules/discord",
+            id: "discord",
+            options: {
+              channels: ["discord"],
+              webhook_url: process.env.DISCORD_WEBHOOK_URL,
             },
           },
         ],

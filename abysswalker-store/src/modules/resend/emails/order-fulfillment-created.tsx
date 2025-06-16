@@ -42,10 +42,10 @@ function OrderFulfillmentCreatedEmailComponent({
                     {/* Fulfillment Message */}
                     <Container className="p-6">
                         <Heading className="text-2xl font-bold text-center text-gray-800">
-                            Your Order is Shipping! 📦
+                            Your Order is about to be Shipped!
                         </Heading>
                         <Text className="text-center text-gray-600 mt-2">
-                            Your order has been fulfilled and is on its way.
+                            Your order has been fulfilled and is about to be Shipped.
                         </Text>
                     </Container>
 
@@ -56,30 +56,8 @@ function OrderFulfillmentCreatedEmailComponent({
                         </Text>
 
                         <Text className="text-gray-800 text-base leading-relaxed">
-                            Great news! Your order <strong>#{order_id}</strong> has been fulfilled and is on its way to you.
+                            Great news! Your order <strong>#{order_id}</strong> has been fulfilled and will soon be on its way to you.
                         </Text>
-
-                        <Section className="bg-gray-50 p-4 rounded-lg my-6">
-                            <Text className="text-gray-700 font-semibold text-base m-0 mb-2">Fulfillment Details:</Text>
-                            <Text className="text-gray-600 text-sm m-0">
-                                <strong>Order ID:</strong> #{order_id}
-                            </Text>
-                            {tracking_number && (
-                                <Text className="text-gray-600 text-sm m-0">
-                                    <strong>Tracking Number:</strong> {tracking_number}
-                                </Text>
-                            )}
-                            {fulfillment_provider && (
-                                <Text className="text-gray-600 text-sm m-0">
-                                    <strong>Carrier:</strong> {fulfillment_provider}
-                                </Text>
-                            )}
-                            {estimated_delivery && (
-                                <Text className="text-gray-600 text-sm m-0">
-                                    <strong>Estimated Delivery:</strong> {estimated_delivery}
-                                </Text>
-                            )}
-                        </Section>
 
                         {tracking_url && (
                             <Section className="text-center my-6">
@@ -93,7 +71,7 @@ function OrderFulfillmentCreatedEmailComponent({
                         )}
 
                         <Text className="text-gray-800 text-base leading-relaxed">
-                            We'll send you another notification once your package is delivered.
+                            We'll send you another notification once your package is Shipping.
                         </Text>
 
                         <Text className="text-gray-800 text-base leading-relaxed">

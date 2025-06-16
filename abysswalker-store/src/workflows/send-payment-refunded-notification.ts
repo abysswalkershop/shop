@@ -36,7 +36,6 @@ export const sendPaymentRefundedNotificationWorkflow = createWorkflow(
             template: "payment-refunded",
             data: {
                 order_id: undefined,
-                payment_id: payment_id,
                 // @ts-ignore
                 refund_amount: payments[0]?.amount || 0,
                 // @ts-ignore

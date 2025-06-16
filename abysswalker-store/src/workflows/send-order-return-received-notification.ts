@@ -50,7 +50,6 @@ export const sendOrderReturnReceivedNotificationWorkflow = createWorkflow(
             data: {
                 // @ts-ignore
                 order_id: orders[0].display_id,
-                return_id: return_id,
                 // @ts-ignore
                 received_at: returns[0]?.received_at,
                 // @ts-ignore

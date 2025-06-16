@@ -12,7 +12,6 @@ import {
 
 type PaymentRefundedEmailProps = {
     order_id?: string
-    payment_id: string
     refund_amount: string | number
     currency: string
     reason?: string
@@ -22,7 +21,6 @@ type PaymentRefundedEmailProps = {
 
 function PaymentRefundedEmailComponent({
     order_id,
-    payment_id,
     refund_amount,
     currency,
     reason,
@@ -52,7 +50,7 @@ function PaymentRefundedEmailComponent({
                     {/* Refund Message */}
                     <Container className="p-6">
                         <Heading className="text-2xl font-bold text-center text-gray-800">
-                            Refund Processed 💰
+                            Refund Processed
                         </Heading>
                         <Text className="text-center text-gray-600 mt-2">
                             Your refund has been successfully processed.
@@ -76,9 +74,6 @@ function PaymentRefundedEmailComponent({
                                     <strong>Order ID:</strong> #{order_id}
                                 </Text>
                             )}
-                            <Text className="text-gray-600 text-sm m-0">
-                                <strong>Payment ID:</strong> {payment_id}
-                            </Text>
                             <Text className="text-gray-600 text-sm m-0">
                                 <strong>Refund Amount:</strong> {formatAmount(refund_amount)} {formatCurrency(currency)}
                             </Text>
