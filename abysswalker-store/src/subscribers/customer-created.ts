@@ -10,14 +10,13 @@ export default async function customerCreatedHandler({
     container,
 }: SubscriberArgs<{ id: string }[]>) {
     // Handle array of customer creations
-    for (const customer of data) {
-        await sendCustomerCreatedNotificationWorkflow(container)
-            .run({
-                input: {
-                    id: customer.id,
-                },
-            })
-    }
+    await sendCustomerCreatedNotificationWorkflow(container)
+        .run({
+            input: {
+                // @ts-ignore
+                id: data.id,
+            },
+        })
 }
 
 export const config: SubscriberConfig = {

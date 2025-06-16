@@ -17,9 +17,10 @@ import { orderCompletedEmail } from "./emails/order-completed"
 import { orderFulfillmentCreatedEmail } from "./emails/order-fulfillment-created"
 import { orderReturnRequestedEmail } from "./emails/order-return-requested"
 import { customerCreatedEmail } from "./emails/customer-created"
-import { userCreatedEmail } from "./emails/user-created"
-import { inviteCreatedEmail } from "./emails/invite-created"
-import { passwordResetEmail } from "./emails/password-reset"
+import { shipmentCreatedEmail } from "./emails/shipment-created"
+import { deliveryCreatedEmail } from "./emails/delivery-created"
+import { paymentRefundedEmail } from "./emails/payment-refunded"
+import { OrderReturnReceivedEmail } from "./emails/order-return-received"
 
 type ResendOptions = {
     api_key: string
@@ -40,10 +41,14 @@ enum Templates {
     ORDER_COMPLETED = "order-completed",
     ORDER_FULFILLMENT_CREATED = "order-fulfillment-created",
     ORDER_RETURN_REQUESTED = "order-return-requested",
+    ORDER_RETURN_RECEIVED = "order-return-received",
     CUSTOMER_CREATED = "customer-created",
     USER_CREATED = "user-created",
     INVITE_CREATED = "invite-created",
     PASSWORD_RESET = "password-reset",
+    SHIPMENT_CREATED = "shipment-created",
+    DELIVERY_CREATED = "delivery-created",
+    PAYMENT_REFUNDED = "payment-refunded",
 }
 
 
@@ -54,10 +59,11 @@ const templates: { [key in Templates]?: (props: unknown) => React.ReactNode } = 
     [Templates.ORDER_COMPLETED]: orderCompletedEmail,
     [Templates.ORDER_FULFILLMENT_CREATED]: orderFulfillmentCreatedEmail,
     [Templates.ORDER_RETURN_REQUESTED]: orderReturnRequestedEmail,
+    [Templates.ORDER_RETURN_RECEIVED]: OrderReturnReceivedEmail,
     [Templates.CUSTOMER_CREATED]: customerCreatedEmail,
-    [Templates.USER_CREATED]: userCreatedEmail,
-    [Templates.INVITE_CREATED]: inviteCreatedEmail,
-    [Templates.PASSWORD_RESET]: passwordResetEmail,
+    [Templates.SHIPMENT_CREATED]: shipmentCreatedEmail,
+    [Templates.DELIVERY_CREATED]: deliveryCreatedEmail,
+    [Templates.PAYMENT_REFUNDED]: paymentRefundedEmail,
 }
 
 class ResendNotificationProviderService extends AbstractNotificationProviderService {
@@ -105,8 +111,7 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
     getTemplateSubject(template: Templates) {
         if (this.options.html_templates?.[template]?.subject) {
             return this.options.html_templates[template].subject
-        }
-        switch (template) {
+        } switch (template) {
             case Templates.ORDER_PLACED:
                 return "Order Confirmation"
             case Templates.ORDER_CANCELED:
@@ -114,17 +119,17 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
             case Templates.ORDER_COMPLETED:
                 return "Order Completed"
             case Templates.ORDER_FULFILLMENT_CREATED:
-                return "Your Order is Shipping"
+                return "Your Order is about to be Shipped"
             case Templates.ORDER_RETURN_REQUESTED:
                 return "Return Request Received"
             case Templates.CUSTOMER_CREATED:
                 return "Welcome to Our Store"
-            case Templates.USER_CREATED:
-                return "Admin Access Granted"
-            case Templates.INVITE_CREATED:
-                return "You're Invited to Join Our Team"
-            case Templates.PASSWORD_RESET:
-                return "Reset Your Password"
+            case Templates.SHIPMENT_CREATED:
+                return "Your Order Has Been Shipped"
+            case Templates.DELIVERY_CREATED:
+                return "Your Order Has Been Delivered"
+            case Templates.PAYMENT_REFUNDED:
+                return "Refund Processed"
             default:
                 return "New Email"
         }
@@ -159,7 +164,14 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
             }
         }
 
-        const { data, error } = await this.resendClient.emails.send(emailOptions)
+        //const { data, error } = await this.resendClient.emails.send(emailOptions)
+        // Mock sending email for testing purposes
+        const data = {
+            id: "mock-email-id",
+        }
+        const error = null
+        this.logger.info(`Sending email to ${notification.to} with template ${notification.template}`)
+
 
         if (error || !data) {
             if (error) {
