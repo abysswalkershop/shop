@@ -164,13 +164,13 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
             }
         }
 
-        //const { data, error } = await this.resendClient.emails.send(emailOptions)
+        const { data, error } = await this.resendClient.emails.send(emailOptions)
         // Mock sending email for testing purposes
-        const data = {
+        /*const data = {
             id: "mock-email-id",
         }
         const error = null
-        this.logger.info(`Sending email to ${notification.to} with template ${notification.template}`)
+        this.logger.info(`Sending email to ${notification.to} with template ${notification.template}`)*/
 
 
         if (error || !data) {

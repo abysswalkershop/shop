@@ -12,7 +12,6 @@ type WorkflowInput = {
 export const sendShipmentCreatedNotificationWorkflow = createWorkflow(
     "send-shipment-created-notification",
     ({ shipment_id }: WorkflowInput) => {
-        console.log("Shipment ID received:", shipment_id)
 
         // Query fulfillment with expanded order details
         // @ts-ignore
@@ -35,8 +34,6 @@ export const sendShipmentCreatedNotificationWorkflow = createWorkflow(
             },
         }).config({ name: "query-fulfillment-with-order" })
 
-        console.log("Fulfillment data:", fulfillments)
-
         // @ts-ignore
         const fulfillment = fulfillments?.[0]
         if (!fulfillment) {
@@ -49,7 +46,6 @@ export const sendShipmentCreatedNotificationWorkflow = createWorkflow(
         // If order data is not expanded, query separately
         // @ts-ignore
         if (!orderData?.email && fulfillment.order_id) {
-            console.log("Order not expanded, querying separately...")
             // @ts-ignore
             const { data: orders } = useQueryGraphStep({
                 entity: "order",
@@ -68,8 +64,6 @@ export const sendShipmentCreatedNotificationWorkflow = createWorkflow(
             // @ts-ignore
             orderData = orders?.[0]
         }
-
-        console.log("Final order data:", orderData)
 
         if (!orderData?.email) {
             // @ts-ignore
