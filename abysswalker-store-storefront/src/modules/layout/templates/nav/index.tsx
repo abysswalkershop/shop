@@ -5,6 +5,8 @@ import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
+import CategoriesBar from "@modules/layout/components/categories-bar"
+import SkeletonCategory from "@modules/skeletons/components/skeleton-category"
 
 export default async function Nav() {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
@@ -17,9 +19,7 @@ export default async function Nav() {
             <div className="h-full">
               <SideMenu regions={regions} />
             </div>
-          </div>
-
-          <div className="flex items-center h-full">
+          </div>          <div className="flex items-center h-full">
             <LocalizedClientLink
               href="/"
               className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
@@ -30,6 +30,14 @@ export default async function Nav() {
           </div>
 
           <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
+            <div className="hidden small:flex items-center gap-x-6 h-full mr-10">
+              <Suspense
+                fallback={
+                  <SkeletonCategory />
+                }>
+                <CategoriesBar />
+              </Suspense>
+            </div>
             <div className="hidden small:flex items-center gap-x-6 h-full">
               <LocalizedClientLink
                 className="hover:text-ui-fg-base"
