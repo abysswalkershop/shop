@@ -1,6 +1,6 @@
 export default function PrivacyPolicyPage() {
     return (
-        <div className="text-ui-fg-base max-w-4xl mx-auto bg-white p-6 md:p-8 mt-8 mb-8">
+        <div className="text-ui-fg-base max-w-4xl mx-auto bg-white p-6 md:p-8 mt-8 mb-8 rounded-md text-black">
 
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">Privacy Policy</h1>
             <hr className="border-gray-300 mb-6" />

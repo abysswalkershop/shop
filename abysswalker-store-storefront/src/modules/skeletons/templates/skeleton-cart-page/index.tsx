@@ -10,7 +10,7 @@ const SkeletonCartPage = () => {
     <div className="py-12 bg-abyss-background">
       <div className="content-container">
         <div className="grid grid-cols-1 small:grid-cols-[1fr_360px] gap-x-40">
-          <div className="flex flex-col bg-abyss-background border border-abyss-dark-accent rounded-lg p-6 gap-y-6">
+          <div className="flex flex-col bg-abyss-background rounded-lg p-6 gap-y-6">
             <div className="bg-abyss-background flex items-start justify-between">
               <div className="flex flex-col gap-y-2">
                 <div className="w-60 h-8 bg-abyss-dark-accent animate-pulse" />
@@ -26,7 +26,7 @@ const SkeletonCartPage = () => {
               </div>
               <Table>
                 <Table.Header className="border-t-0">
-                  <Table.Row>
+                  <Table.Row className="!bg-abyss-background">
                     <Table.HeaderCell className="!pl-0">
                       <div className="w-10 h-6 bg-abyss-dark-accent animate-pulse" />
                     </Table.HeaderCell>

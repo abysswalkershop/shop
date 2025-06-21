@@ -1,6 +1,6 @@
 export default function ContactPage() {
     return (
-        <div className="text-ui-fg-base max-w-3xl mx-auto bg-white p-6 md:p-8 mt-8 mb-8">
+        <div className="text-ui-fg-base max-w-3xl mx-auto bg-white p-6 md:p-8 mt-8 mb-8 text-black rounded-md">
             <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
                 Contact
             </h1>

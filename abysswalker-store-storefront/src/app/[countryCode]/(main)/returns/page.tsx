@@ -2,7 +2,7 @@ import InteractiveLink from "@modules/common/components/interactive-link";
 
 export default function ReturnsPage() {
     return (
-        <div className="text-ui-fg-base max-w-3xl mx-auto bg-white p-6 md:p-8 mt-8 mb-8">
+        <div className="text-ui-fg-base max-w-3xl mx-auto bg-white p-6 md:p-8 mt-8 mb-8 rounded-md">
             <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
                 Returns & Shipping Policy
             </h1>

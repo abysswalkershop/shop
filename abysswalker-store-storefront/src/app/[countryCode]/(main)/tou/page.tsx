@@ -2,12 +2,12 @@ import InteractiveLink from "@modules/common/components/interactive-link";
 
 export default function TOUPage() {
     return (
-        <div className="text-abyss-text-light max-w-3xl mx-auto bg-abyss-background border border-abyss-dark-accent rounded-lg p-6 md:p-8 mt-8 mb-8">
-            <h1 className="text-3xl sm:text-4xl font-bold text-center mb-6 text-abyss-text-light">
+        <div className="max-w-3xl mx-auto bg-white rounded-md p-6 md:p-8 mt-8 mb-8 text-black">
+            <h1 className="text-3xl sm:text-4xl font-bold text-center mb-6 text-gray-900">
                 Terms of Use (TOU) - Abyss Walker
             </h1>
-            <hr className="border-abyss-dark-accent mb-6" />
-            <p className="text-sm text-abyss-medium-accent mb-6 text-center">
+            <hr className="border-gray-300 mb-6" />
+            <p className="text-sm text-gray-500 mb-6 text-center">
                 <strong>Last Updated:</strong> June 11, 2025
             </p>
 
@@ -18,7 +18,7 @@ export default function TOUPage() {
                 these TOU.
             </p>
 
-            <h2 className="text-2xl font-semibold mb-4 text-abyss-medium-accent">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800">
                 1. Your Use of the Website
             </h2>
             <p className="mb-4">
@@ -30,7 +30,7 @@ export default function TOUPage() {
                 of dialogue within our website.
             </p>
 
-            <h2 className="text-2xl font-semibold mb-4 text-abyss-medium-accent">2. Permitted Use</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-gray-800">2. Permitted Use</h2>
             <p className="mb-2">You are permitted to use the website for:</p>
             <ul className="list-disc list-inside space-y-1 mb-6">
                 <li>Browsing our products and services.</li>
