@@ -30,7 +30,7 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
         </LocalizedClientLink>
       </div>
       <div
-        className="flex flex-col gap-4 h-full bg-abyss-background border border-abyss-dark-accent rounded-lg w-full p-6"
+        className="flex flex-col gap-4 h-full bg-abyss-background w-full"
         data-testid="order-details-container"
       >
         <OrderDetails order={order} showStatus />

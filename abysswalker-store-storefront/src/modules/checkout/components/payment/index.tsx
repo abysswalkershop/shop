@@ -129,7 +129,7 @@ const Payment = ({
   }, [isOpen])
 
   return (
-    <div className="bg-white">
+    <div className="bg-abyss-background">
       <div className="flex flex-row items-center justify-between mb-6">
         <Heading
           level="h2"

@@ -8,11 +8,11 @@ import Divider from "@modules/common/components/divider"
 const CheckoutSummary = ({ cart }: { cart: any }) => {
   return (
     <div className="sticky top-0 flex flex-col-reverse small:flex-col gap-y-8 py-8 small:py-0 ">
-      <div className="w-full bg-abyss-background border border-abyss-dark-accent rounded-lg flex flex-col p-6">
+      <div className="w-full bg-abyss-background flex flex-col">
         <Divider className="my-6 small:hidden" />
         <Heading
           level="h2"
-          className="flex flex-row text-3xl-regular items-baseline text-abyss-text-light"
+          className="flex flex-row text-3xl-regular items-baseline"
         >
           In your Cart
         </Heading>

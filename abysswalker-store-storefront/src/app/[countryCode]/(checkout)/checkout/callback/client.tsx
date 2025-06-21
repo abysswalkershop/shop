@@ -64,11 +64,11 @@ export default function CallbackPageClient({ regioncode }: { regioncode: string 
 
     return (
         <div className="flex flex-col items-center justify-center p-8 mt-12">
-            <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
+            <div className="bg-abyss-background rounded-lg shadow-lg p-8 max-w-md w-full text-center">
                 {!errorMessage ? (
                     <>
                         <Spinner className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4" />
-                        <h2 className="text-xl font-semibold text-gray-800 mb-2">Processing Payment</h2>
+                        <h2 className="text-xl font-semibold text-abyss-text-light mb-2">Processing Payment</h2>
                         <p className="text-gray-600">Please wait while we process your payment...</p>
                     </>) : (
                     <>
