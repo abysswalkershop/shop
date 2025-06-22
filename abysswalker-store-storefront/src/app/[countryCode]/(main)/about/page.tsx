@@ -11,29 +11,27 @@ export default function AboutPage() {
                 Most of our projects and products are a direct result of community collaboration and research, and we do our best to support and facilitate new and innovative ideas.</p>
             <h2 className="text-abyss-text-light text-3xl">The Team</h2>
             <div className="flex flex-col md:flex-row items-center justify-evenly">
-                <div className="flex flex-col items-center shadow-xl p-5 m-5 rounded-lg bg-abyss-dark-accent md:w-1/4">
-                    <Image width={1024} height={1024} src={"/placeholder.png"} alt="Profile Image" className="rounded-full w-1/3"></Image>
+                <div className="flex flex-col items-center shadow-xl p-5 m-5 rounded-lg bg-abyss-dark-accent md:w-1/4 min-h-96">
+                    <Image width={1024} height={1024} src={"/merlin.jpg"} alt="Profile Image" className="rounded-full w-1/3"></Image>
                     <h3 className="text-xl text-abyss-text-light text-center font-semibold">Merlin</h3>
-                    <h4 className="text-sm text-abyss-text-light text-center">aka. Merlin</h4>
-                    <p className="text-abyss-text-light mt-5 text-center">Merlin is a vital member of our team, bringing [X years]
-                        of experience in [specific field/skill]. They are passionate about
-                        [key passion related to work] and dedicated to [a key contribution or goal, e.g., delivering exceptional results, fostering innovation].</p>
+                    <h4 className="text-sm text-abyss-text-light text-center">aka. 🦆</h4>
+                    <p className="text-abyss-text-light mt-5 text-center">Merlin is Abyss Walker's resident research and development expert and product producer and distributor within the EU.
+                        They enjoy wilderness excursions experimentation</p>
                 </div>
-                <div className="flex flex-col items-center shadow-xl p-5 m-5 rounded-lg bg-abyss-dark-accent md:w-1/4">
-                    <Image width={1024} height={1024} src={"/placeholder.png"} alt="Profile Image" className="rounded-full w-1/3"></Image>
+                <div className="flex flex-col items-center shadow-xl p-5 m-5 rounded-lg bg-abyss-dark-accent md:w-1/4 min-h-96">
+                    <Image width={1024} height={1024} src={"/axel.jpg"} alt="Profile Image" className="rounded-full w-1/3"></Image>
                     <h3 className="text-xl text-abyss-text-light text-center font-semibold">Axel Fougues</h3>
                     <h4 className="text-sm text-abyss-text-light text-center">aka. AxelF</h4>
-                    <p className="text-abyss-text-light mt-5 text-center">AxelF is a vital member of our team, bringing [X years]
-                        of experience in [specific field/skill]. They are passionate about
-                        [key passion related to work] and dedicated to [a key contribution or goal, e.g., delivering exceptional results, fostering innovation].</p>
+                    <p className="text-abyss-text-light mt-5 text-center">Axel is the founder and coordinator of Abyss Walker and an adventurous tinkerer, developer and biohacker.
+                        Fascinated with haptics and sensory manipulation, he's known for the LODESTONE ecosystem.
+                        A set of gadgets, implants and android app, to explore the full extent of subdermal magnetic implants.</p>
                 </div>
-                <div className="flex flex-col items-center shadow-xl p-5 m-5 rounded-lg bg-abyss-dark-accent md:w-1/4">
-                    <Image width={1024} height={1024} src={"/placeholder.png"} alt="Profile Image" className="rounded-full w-1/3"></Image>
-                    <h3 className="text-xl text-abyss-text-light text-center font-semibold">Joogle</h3>
+                <div className="flex flex-col items-center shadow-xl p-5 m-5 rounded-lg bg-abyss-dark-accent md:w-1/4 min-h-96">
+                    <Image width={1024} height={1024} src={"/joogle.png"} alt="Profile Image" className="rounded-full w-1/3"></Image>
+                    <h3 className="text-xl text-abyss-text-light text-center font-semibold">Jeff</h3>
                     <h4 className="text-sm text-abyss-text-light text-center">aka. Joogle</h4>
-                    <p className="text-abyss-text-light mt-5 text-center">Joogle is a vital member of our team, bringing [X years]
-                        of experience in [specific field/skill]. They are passionate about
-                        [key passion related to work] and dedicated to [a key contribution or goal, e.g., delivering exceptional results, fostering innovation].</p>
+                    <p className="text-abyss-text-light mt-5 text-center">Jeff is the North America producer and distributor for Abyss Walker.
+                        A data management expert by trade, he finds joy and fascination in experimenting with new technologies and methods for augmenting the human experience.</p>
                 </div>
             </div>
             <a className="bg-abyss-dark-accent py-2 m-5 rounded-lg shadow-xl flex flex-row items-center justify-center md:w-1/4" href="https://gametec-live.com" target="_blank" rel="noopener noreferrer">
