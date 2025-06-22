@@ -13,17 +13,16 @@ export default function ImprintPage() {
             <div className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-800 mb-3">Service Provider / Operator:</h2>
                 <p className="mb-1 text-gray-700"><strong>EI Abyss Walker</strong></p>
-                <p className="mb-1 text-gray-700">[Your Full Legal Company Name / Individual's Full Name if Sole Proprietor]</p>
-                <p className="mb-1 text-gray-700">[Your Full Legal Street Address]</p>
-                <p className="mb-1 text-gray-700">[Your City, Postal Code]</p>
-                <p className="mb-1 text-gray-700">[Your Country]</p>
+                <p className="mb-1 text-gray-700">Axel Fougues</p>
+                <p className="mb-1 text-gray-700">39 rue Victor Hugo</p>
+                <p className="mb-1 text-gray-700">Fort-de-France, 97200</p>
+                <p className="mb-1 text-gray-700">France/Martinique</p>
             </div>
 
             <div className="mb-8">
                 <h2 className="text-xl font-semibold text-gray-800 mb-3">Contact:</h2>
-                <p className="mb-1 text-gray-700">Email: <a href="mailto:[Your Official Contact Email Address]" className="text-blue-600 hover:underline">[Your Official Contact Email Address]</a></p>
-                <p className="mb-1 text-gray-700">Phone: [Your Official Contact Phone Number (Optional, if legally required/desired)]</p>
-                <p className="text-gray-700">Website: [Your Website URL]</p>
+                <p className="mb-1 text-gray-700">Email: <a href="mailto:contact@abysswalker.org" className="text-blue-600 hover:underline">contact@abysswalker.org</a></p>
+                <p className="text-gray-700">Website: https://abysswalker.org</p>
             </div>
 
             <div className="mb-8">
@@ -31,31 +30,18 @@ export default function ImprintPage() {
                 <ul className="list-disc pl-6 mb-4 text-gray-700">
                     <li className="mb-2">
                         <strong>Commercial Register:</strong>
-                        [If registered, e.g., Commercial Register No.: [Register Number], Registered at: [Court/City of Registration]]
-                        <span className="text-sm text-gray-500">(e.g., for GmbH, AG in Germany; not always required for sole proprietors)</span>
+                        Commercial Register No.: 98040526000012, Registered at: Fort de France Martinique
+                        <span className="text-sm text-gray-500">EI</span>
                     </li>
                     <li className="mb-2">
                         <strong>VAT ID:</strong>
-                        [Your VAT identification number (e.g., for EU businesses subject to VAT)]
-                        <span className="text-sm text-gray-500">(e.g., DE123456789)</span>
+                        <span className="text-sm text-gray-500">NA</span>
                     </li>
                     <li className="mb-2">
-                        <strong>Business License/Supervisory Authority:</strong>
-                        [If your business requires a specific license or is subject to a supervisory authority, state it here. E.g., for certain trades, financial services.]
-                        <span className="text-sm text-gray-500">(e.g., "Supervisory authority: [Name of Authority], [Address]")</span>
-                    </li>
-                    <li className="mb-2">
-                        <strong>Responsible for content according to Section 55 (2) RStV (German Interstate Broadcasting Treaty):</strong>
-                        [Full Name of the person responsible for content]
-                        [Address of the person responsible for content (if different from above)]
-                        <div>
-                            <span className="text-sm text-gray-500">(Primarily relevant for German law)</span>
-                        </div>
                         <div className="mb-2">
                             <strong>Dispute Resolution:</strong>
                             <p className="mb-1">The European Commission provides a platform for online dispute resolution (ODR): <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://ec.europa.eu/consumers/odr</a></p>
                             <p className="mb-1">We are not obliged or willing to participate in dispute settlement proceedings before a consumer arbitration board.</p>
-                            <span className="text-sm text-gray-500">(Primarily relevant for EU businesses)</span>
                         </div>
                     </li>
 
