@@ -2,7 +2,7 @@ import InteractiveLink from "@modules/common/components/interactive-link";
 
 export default function ReturnsPage() {
     return (
-        <div className="text-ui-fg-base max-w-3xl mx-auto bg-white p-6 md:p-8 mt-8 mb-8">
+        <div className="text-ui-fg-base max-w-3xl mx-auto bg-white p-6 md:p-8 mt-8 mb-8 rounded-md">
             <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
                 Returns & Shipping Policy
             </h1>
@@ -42,6 +42,11 @@ export default function ReturnsPage() {
                     allow an additional <span className="font-semibold">7</span> business
                     days for processing of custom or personalized items.
                 </li>
+                <li>
+                    <strong className="font-semibold">Backordered Items:</strong> Due
+                    to limited availablity some items may be <span className="font-semibold">backordered</span>.
+                    We will do our best to fufill your order as soon as possible, processing times may be extended and vary.
+                </li>
             </ul>
 
             <h3 className="text-xl font-medium text-gray-700 mb-3">
@@ -54,11 +59,6 @@ export default function ReturnsPage() {
             <ul className="list-disc list-inside text-gray-700 mb-4">
                 <li className="mb-2">
                     <strong className="font-semibold">Standard Shipping: </strong>
-                    <span className="font-semibold">1</span> -
-                    <span className="font-semibold">30</span> business days
-                </li>
-                <li className="mb-2">
-                    <strong className="font-semibold">Expedited Shipping: </strong>
                     <span className="font-semibold">1</span> -
                     <span className="font-semibold">30</span> business days
                 </li>
@@ -198,7 +198,7 @@ export default function ReturnsPage() {
                     <strong className="font-semibold">Approval:</strong> If approved, your refund
                     will be processed, and a credit will automatically be applied to your
                     original method of payment within
-                    <span className="font-semibold">7</span> business days.
+                    <span className="font-semibold"> 7</span> business days.
                 </li>
                 <li className="mb-2">
                     <strong className="font-semibold">Partial Refunds:</strong> There are certain
@@ -238,16 +238,15 @@ export default function ReturnsPage() {
 
             <h3 className="text-xl font-medium text-gray-700 mb-3">2.5 Exchanges</h3>
             <div className="text-gray-700 mb-4">
-                If you need to exchange an item for a different size or color, please contact us <InteractiveLink href="/contact" className="inline-flex">here</InteractiveLink> or
-                follow the return process as described above and place a new order for the desired
-                item. This ensures you get the item you want as quickly as possible.
+                If you need to exchange an item for a different size or color, please contact us <InteractiveLink href="/contact" className="inline-flex">here</InteractiveLink>.
+                We usually only replace items if they are defective or damaged, but we will consider your request on a case-by-case basis.
             </div>
 
             <h3 className="text-xl font-medium text-gray-700 mb-3">
                 2.6 Damaged or Defective Items
             </h3>
             <div className="text-gray-700 mb-8">
-                If you receive a damaged or defective item, please contact us immediately <InteractiveLink href="/contact" className="inline-flex">here</InteractiveLink>.
+                If you receive a damaged or defective item, please contact us immediately <InteractiveLink href="/contact" className="inline-flex">here</InteractiveLink>
                 with photos of the damage/defect. We will arrange for a replacement or a
                 full refund, including shipping costs.
             </div>

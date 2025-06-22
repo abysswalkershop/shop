@@ -2,7 +2,7 @@ import InteractiveLink from "@modules/common/components/interactive-link";
 
 export default function TOUPage() {
     return (
-        <div className="text-ui-fg-base max-w-3xl mx-auto bg-white p-6 md:p-8 mt-8 mb-8">
+        <div className="max-w-3xl mx-auto bg-white rounded-md p-6 md:p-8 mt-8 mb-8 text-black">
             <h1 className="text-3xl sm:text-4xl font-bold text-center mb-6 text-gray-900">
                 Terms of Use (TOU) - Abyss Walker
             </h1>

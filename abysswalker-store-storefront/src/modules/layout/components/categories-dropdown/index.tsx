@@ -67,7 +67,7 @@ const CategoryItem = ({ category }: { category: Category }) => {
                 >
                     <PopoverPanel
                         static
-                        className="hidden small:block absolute top-[calc(100%+1px)] right-0 bg-white border-x border-b border-gray-200 w-[250px] text-ui-fg-base"
+                        className="hidden small:block absolute top-[calc(100%+1px)] right-0 bg-abyss-background border-x border-b border-abyss-dark-accent w-[250px] text-ui-fg-base"
                         data-testid="nav-category-dropdown"
                     >
                         <div className="p-4 space-y-2">
@@ -75,7 +75,7 @@ const CategoryItem = ({ category }: { category: Category }) => {
                                 <LocalizedClientLink
                                     key={child.id}
                                     href={`/categories/${child.handle}`}
-                                    className="block py-2 px-3 text-small-regular text-ui-fg-subtle hover:text-ui-fg-base hover:bg-gray-50 rounded-md transition-colors"
+                                    className="block py-2 px-3 text-small-regular text-ui-fg-subtle hover:text-ui-fg-base hover:bg-abyss-dark-accent rounded-md transition-colors text-abyss-text-light"
                                     data-testid="category-child-link"
                                 >
                                     {child.name}
