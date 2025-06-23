@@ -12,10 +12,12 @@ import React from "react"
 
 type OrderDetailsTemplateProps = {
   order: HttpTypes.StoreOrder
+  trackingNumber?: string | null
 }
 
 const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
   order,
+  trackingNumber,
 }) => {
   return (
     <div className="flex flex-col justify-center gap-y-4 bg-abyss-background">
@@ -33,7 +35,7 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
         className="flex flex-col gap-4 h-full bg-abyss-background w-full"
         data-testid="order-details-container"
       >
-        <OrderDetails order={order} showStatus />
+        <OrderDetails order={order} showStatus trackingNumber={trackingNumber} />
         <Items order={order} />
         <ShippingDetails order={order} />
         <OrderSummary order={order} />
