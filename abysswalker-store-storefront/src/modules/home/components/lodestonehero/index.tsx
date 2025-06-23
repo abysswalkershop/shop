@@ -5,8 +5,12 @@ import { Button, Heading } from "@medusajs/ui"
 import InteractiveLink from "@modules/common/components/interactive-link"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { useState, useEffect, useRef } from "react"
+import { ScrollTrigger } from "gsap/all";
 
-const Hero = () => {
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
+
+const LodeStoneHero = () => {
     const containerRef = useRef<HTMLDivElement>(null)
     const nodesRef = useRef<(HTMLDivElement | null)[]>([])
     const linesRef = useRef<SVGLineElement[]>([])
@@ -15,8 +19,8 @@ const Hero = () => {
 
     const nodePositions = [
         { id: 1, category: "The App", href: "app", baseX: 20, baseY: 30, image: "/ZincHome.png" },
-        { id: 2, category: "The Implants", href: "implants", baseX: 70, baseY: 25, image: "/LodestoneHome.png" },
-        { id: 3, category: "The Merch", href: "merch", baseX: 45, baseY: 70, image: "/Silouhette.png" }
+        { id: 2, category: "The Implants", href: "biohacking", baseX: 70, baseY: 25, image: "/Magnets.png" },
+        { id: 3, category: "The Devices", href: "devices", baseX: 45, baseY: 70, image: "/LodestoneHome.png" }
     ]
 
     // Function to update line positions
@@ -83,7 +87,14 @@ const Hero = () => {
         if (!container || !content) return
 
         // Create GSAP timeline for initial animations
-        const tl = gsap.timeline()
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: containerRef.current,
+                start: "top 80%",
+                end: "bottom 20%",
+                once: true, // Only trigger once
+            }
+        })
 
         // Animate content entrance
         tl.fromTo(content,
@@ -258,8 +269,11 @@ const Hero = () => {
                             >
                                 {/* Front face - Image */}
                                 <div
-                                    className="absolute inset-0 w-full h-full rounded-xl shadow-lg bg-gradient-to-br from-abyss-dark-accent to-abyss-background overflow-hidden"
-                                    style={{ backfaceVisibility: "hidden" }}
+                                    className="absolute inset-0 w-full h-full p-3 rounded-full shadow-lg overflow-hidden"
+                                    style={{
+                                        backfaceVisibility: "hidden",
+                                        background: "radial-gradient(circle, #005557 40%, #141b22)"
+                                    }}
                                 >
                                     <img
                                         src={node.image}
@@ -270,10 +284,11 @@ const Hero = () => {
 
                                 {/* Back face - Category text */}
                                 <div
-                                    className="absolute inset-0 w-full h-full rounded-xl shadow-lg bg-gradient-to-br from-abyss-medium-accent to-abyss-light-accent flex items-center justify-center"
+                                    className="absolute inset-0 w-full h-full p-2 rounded-full shadow-lg flex items-center justify-center"
                                     style={{
                                         backfaceVisibility: "hidden",
-                                        transform: "rotateX(180deg)"
+                                        transform: "rotateX(180deg)",
+                                        background: "radial-gradient(circle, #0ed5a7, #00cbd0)"
                                     }}
                                 >
                                     <span className="text-abyss-text-dark text-sm font-medium text-center px-2">
@@ -294,15 +309,21 @@ const Hero = () => {
                 <span>
                     <Heading
                         level="h1"
-                        className="text-3xl leading-10 text-abyss-text-light font-normal"
+                        className="text-3xl leading-10 text-abyss-text-light font-thin"
                     >
-                        Abysswalker
+                        THE
                     </Heading>
                     <Heading
                         level="h2"
-                        className="text-3xl leading-10 text-abyss-medium-accent font-normal"
+                        className="text-5xl leading-10 bg-gradient-to-r from-abyss-medium-accent to-abyss-light-accent bg-clip-text text-transparent font-bold"
                     >
-                        The LODESTONE ecosystem
+                        LODESTONE
+                    </Heading>
+                    <Heading
+                        level="h1"
+                        className="text-3xl leading-10 text-abyss-text-light font-thin"
+                    >
+                        ECOSYSTEM
                     </Heading>
                 </span>
                 <InteractiveLink href="/store" prefetch>Shop now</InteractiveLink>
@@ -311,4 +332,4 @@ const Hero = () => {
     )
 }
 
-export default Hero
+export default LodeStoneHero

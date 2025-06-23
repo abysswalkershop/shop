@@ -19,7 +19,7 @@ export default async function Footer() {
               href="/"
               className="txt-compact-xlarge-plus text-abyss-text-light hover:text-abyss-light-accent uppercase"
             >
-              Abysswalker
+              Abyss Walker
             </LocalizedClientLink>
           </div>
           <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
