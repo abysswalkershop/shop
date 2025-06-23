@@ -140,7 +140,7 @@ export default function PrivacyPolicyPage() {
                 If you have any questions about this Privacy Policy, please contact us:
             </p>
             <p className="mb-1 text-black"><strong>EI Abyss Walker</strong></p>
-            <p className="mb-1 text-black">Email: <a href="mailto:abysswalkershop@gmail.com" className="text-blue-600 hover:underline">abysswalkershop@gmail.com</a></p>
+            <p className="mb-1 text-black">Email: <a href="mailto:contact@abysswalker.org" className="text-blue-600 hover:underline">contact@abysswalker.org</a></p>
             <p className="text-black">39 rue Victor Hugo 97200 Fort de France, Martinique</p>
         </div>
     );

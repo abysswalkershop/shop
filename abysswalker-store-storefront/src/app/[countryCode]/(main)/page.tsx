@@ -4,12 +4,15 @@ import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
-import ShowCaseBar from "@modules/home/components/showcase-bar/page"
+import LodeStoneHero from "@modules/home/components/lodestonehero"
+import GlowHero from "@modules/home/components/glowhero"
+import ShowCaseBarGlow from "@modules/home/components/showcase-bar-glow/page"
+import ShowCaseBarMagnet from "@modules/home/components/showcase-bar-magnet/page"
 
 export const metadata: Metadata = {
-  title: "Abysswalker",
+  title: "Abyss Walker",
   description:
-    "REPLACEME",
+    "Experience Biohacking",
 }
 
 export default async function Home(props: {
@@ -32,7 +35,10 @@ export default async function Home(props: {
   return (
     <>
       <Hero />
-      <ShowCaseBar />
+      <ShowCaseBarMagnet />
+      <LodeStoneHero />
+      <ShowCaseBarGlow />
+      <GlowHero />
       <div className="py-12 bg-abyss-background">
         <ul className="flex flex-col gap-x-6">
           <FeaturedProducts collections={collections} region={region} />

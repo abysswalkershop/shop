@@ -28,7 +28,7 @@ export default function CheckoutLayout({
             className="txt-compact-xlarge-plus text-abyss-text-light hover:text-abyss-light-accent uppercase"
             data-testid="store-link"
           >
-            Abysswalker
+            Abyss Walker
           </LocalizedClientLink>
           <div className="flex-1 basis-0" />
         </nav>

@@ -7,6 +7,7 @@ import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import CategoriesBar from "@modules/layout/components/categories-bar"
 import SkeletonCategory from "@modules/skeletons/components/skeleton-category"
+import Image from "next/image"
 
 export default async function Nav() {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
@@ -25,7 +26,13 @@ export default async function Nav() {
               className="txt-compact-xlarge-plus hover:text-abyss-light-accent uppercase"
               data-testid="nav-store-link"
             >
-              Abysswalker
+              <Image
+                src={"/simple-logo.png"}
+                alt="logo"
+                width={512}
+                height={512}
+                className="h-12 w-auto object-contain"
+              />
             </LocalizedClientLink>
           </div>
 

@@ -1,13 +1,13 @@
 import Image from "next/image";
 
-export default function ShowCaseBar() {
+export default function ShowCaseBarMagnet() {
     const showcaseItems = [
-        { id: 1, src: "/showcase/1.jpg", alt: "Glow 1" },
-        { id: 2, src: "/showcase/2.jpg", alt: "Glow 2" },
-        { id: 3, src: "/showcase/3.jpg", alt: "Glow 3" },
-        { id: 4, src: "/showcase/4.jpg", alt: "Magnet 4" },
-        { id: 5, src: "/showcase/5.jpg", alt: "Glow 5" },
-        { id: 6, src: "/showcase/6.jpg", alt: "Magnet 6" },
+        { id: 1, src: "/showcase/magnet/4.jpg", alt: "Magnet 1" },
+        { id: 2, src: "/showcase/magnet/4.jpg", alt: "Magnet 2" },
+        { id: 3, src: "/showcase/magnet/4.jpg", alt: "Magnet 3" },
+        { id: 4, src: "/showcase/magnet/4.jpg", alt: "Magnet 4" },
+        { id: 5, src: "/showcase/magnet/4.jpg", alt: "Magnet 5" },
+        { id: 6, src: "/showcase/magnet/6.jpg", alt: "Magnet 6" },
     ];
 
     return (

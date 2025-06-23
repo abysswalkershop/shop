@@ -40,7 +40,7 @@ const Review = ({ cart }: { cart: any }) => {
             <div className="w-full">
               <Text className="txt-medium-plus text-ui-fg-base mb-1">
                 By clicking the Place Order button, you confirm that you have
-                read, understand and accept our <Link href="/tou">Terms of Use</Link>, <Link href="/termsofsale">Terms of Sale</Link>, <Link href="/tos">Terms of Service</Link> and <Link href="/returns">Returns Policy</Link> and acknowledge that you have read Abysswalker&apos;s <Link href="/privacy-policy">Privacy Policy</Link>.
+                read, understand and accept our <Link href="/tou">Terms of Use</Link>, <Link href="/termsofsale">Terms of Sale</Link>, <Link href="/tos">Terms of Service</Link> and <Link href="/returns">Returns Policy</Link> and acknowledge that you have read Abyss Walker&apos;s <Link href="/privacy-policy">Privacy Policy</Link>.
               </Text>
             </div>
           </div>
