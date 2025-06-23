@@ -13,11 +13,44 @@ const Hero = () => {
   const linesRef = useRef<SVGLineElement[]>([]);
   const svgRef = useRef<SVGSVGElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const nodePositions = [
-    { id: 1, category: "The App", href: "app", baseX: 75, baseY: 30, image: "/ZincHome.png" },
-    { id: 2, category: "The Implants", href: "biohacking", baseX: 85, baseY: 25, image: "/Magnets.png" },
-    { id: 3, category: "The Devices", href: "devices", baseX: 80, baseY: 70, image: "/LodestoneHome.png" }
+    {
+      id: 1,
+      category: "The App",
+      href: "app",
+      baseX: isMobile ? 60 : 75,
+      baseY: isMobile ? 25 : 30,
+      image: "/ZincHome.png"
+    },
+    {
+      id: 2,
+      category: "The Implants",
+      href: "biohacking",
+      baseX: 85,
+      baseY: isMobile ? 15 : 25,
+      image: "/Magnets.png"
+    },
+    {
+      id: 3,
+      category: "The Devices",
+      href: "devices",
+      baseX: isMobile ? 75 : 80,
+      baseY: isMobile ? 65 : 70,
+      image: "/LodestoneHome.png"
+    }
   ];
 
   // Function to update line positions
@@ -123,7 +156,7 @@ const Hero = () => {
 
     // Animate glow powder from left (stopping at ~1/3 of screen)
     particles.forEach((particle, index) => {
-      const endX = Math.random() * (window.innerWidth * 0.33) + 50; // Stop at ~1/3
+      const endX = Math.random() * (window.innerWidth * (window.innerWidth < 768 ? 0.5 : 0.33)) + 50;
       const endY = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.1;
       const duration = Math.random() * 1.5 + 1;
       const delay = Math.random() * 0.8;
@@ -158,9 +191,7 @@ const Hero = () => {
           yoyo: true,
           delay: duration + delay + 0.3
         }, 0);
-    });
-
-    // Animate nodes from right side (stopping at ~2/3 of screen)
+    });    // Animate nodes from right side (stopping at ~2/3 of screen on desktop, ~1/2 on mobile)
     nodes.forEach((node, index) => {
       if (node) {
         // Start nodes from right side, off-screen
@@ -376,7 +407,7 @@ const Hero = () => {
         <span>
           <Heading
             level="h1"
-            className="text-6xl leading-10 pb-3 font-normal bg-gradient-to-r from-abyss-medium-accent to-abyss-light-accent bg-clip-text text-transparent"
+            className="text-5xl md:text-6xl leading-20 pt-1 pb-3 font-normal bg-gradient-to-r from-abyss-medium-accent to-abyss-light-accent bg-clip-text text-transparent"
           >
             ABYSS WALKER
           </Heading>

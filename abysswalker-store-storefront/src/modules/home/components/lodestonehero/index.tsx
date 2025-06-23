@@ -304,7 +304,7 @@ const LodeStoneHero = () => {
             {/* Hero Content */}
             <div
                 ref={contentRef}
-                className="absolute inset-0 flex flex-col justify-center items-center text-center small:p-32 gap-6"
+                className="absolute inset-0 flex flex-col justify-center items-center text-center small:p-32 gap-6 z-30"
             >
                 <span>
                     <Heading
