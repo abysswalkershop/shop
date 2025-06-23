@@ -16,11 +16,23 @@ const LodeStoneHero = () => {
     const linesRef = useRef<SVGLineElement[]>([])
     const contentRef = useRef<HTMLDivElement>(null)
     const svgRef = useRef<SVGSVGElement>(null)
+    const [isLandscape, setIsLandscape] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsLandscape(window.innerWidth < 768 || window.innerHeight < 768);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     const nodePositions = [
         { id: 1, category: "The App", href: "app", baseX: 20, baseY: 30, image: "/ZincHome.png" },
         { id: 2, category: "The Implants", href: "biohacking", baseX: 70, baseY: 25, image: "/Magnets.png" },
-        { id: 3, category: "The Devices", href: "devices", baseX: 45, baseY: 70, image: "/LodestoneHome.png" }
+        { id: 3, category: "The Devices", href: "devices", baseX: isLandscape ? 25 : 45, baseY: 70, image: "/LodestoneHome.png" }
     ]
 
     // Function to update line positions
@@ -304,7 +316,7 @@ const LodeStoneHero = () => {
             {/* Hero Content */}
             <div
                 ref={contentRef}
-                className="absolute inset-0 flex flex-col justify-center items-center text-center small:p-32 gap-6 z-30"
+                className="absolute inset-0 flex flex-col justify-center items-center text-center small:p-32 gap-6"
             >
                 <span>
                     <Heading
