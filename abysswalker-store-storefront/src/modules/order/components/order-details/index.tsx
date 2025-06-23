@@ -4,9 +4,10 @@ import { Text } from "@medusajs/ui"
 type OrderDetailsProps = {
   order: HttpTypes.StoreOrder
   showStatus?: boolean
+  trackingNumber?: string | null
 }
 
-const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
+const OrderDetails = ({ order, showStatus, trackingNumber }: OrderDetailsProps) => {
   const formatStatus = (str: string) => {
     const formatted = str.split("_").join(" ")
 
@@ -53,6 +54,17 @@ const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
                 {formatStatus(order.payment_status)}
               </span>
             </Text>
+            {trackingNumber && (
+              <Text>
+                Tracking number:{" "}
+                <span
+                  className="text-ui-fg-subtle "
+                  data-testid="order-tracking-number"
+                >
+                  {trackingNumber}
+                </span>
+              </Text>
+            )}
           </>
         )}
       </div>

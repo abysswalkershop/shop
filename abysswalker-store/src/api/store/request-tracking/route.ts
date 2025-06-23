@@ -5,42 +5,42 @@ import type {
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-    const fulfillmentId = req.query.id as string
-    if (!fulfillmentId) {
+    const orderId = req.query.id as string
+    if (!orderId) {
         return res.status(400).json({
-            error: "Fulfillment ID is required"
+            error: "Order ID is required"
         });
     }
 
     const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
 
-    // @ts-ignore
-    const { data: fulfillment } = await query.graph(
+    const { data: order } = await query.graph(
         {
-            entity: "fulfillment",
+            entity: "order",
             fields: [
                 "id",
-                "order_id",
-                "labels.tracking_number"
+                "fulfillments.labels.tracking_number"
             ],
             filters: {
-                id: fulfillmentId,
-            },
+                id: orderId
+            }
         }
-
     )
 
-    if (!fulfillment || fulfillment.length === 0) {
+    if (!order || order.length === 0) {
+        return res.status(404).json({
+            error: "Order not found"
+        });
+    }
+
+    if (!order[0].fulfillments) {
         return res.status(404).json({
             error: "Fulfillment not found"
         });
     }
 
     res.json({
-        fulfillment: {
-            id: fulfillment[0].id,
-            order_id: fulfillment[0].order?.id,
-            tracking_number: fulfillment[0].labels[0]?.tracking_number
-        }
+        order_id: order[0].id,
+        tracking_number: order[0].fulfillments[0]?.labels[0]?.tracking_number
     })
 }

@@ -4,6 +4,7 @@ import { sdk } from "@lib/config"
 import medusaError from "@lib/util/medusa-error"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { HttpTypes } from "@medusajs/types"
+import { TrackingResponse } from "types/responses"
 
 export const retrieveOrder = async (id: string) => {
   const headers = {
@@ -28,6 +29,22 @@ export const retrieveOrder = async (id: string) => {
     .then(({ order }) => order)
     .catch((err) => medusaError(err))
 }
+
+export const retrieveTrackingNumberByOrder = async (id: string) => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  return sdk.client
+    .fetch<TrackingResponse>(`/store/request-tracking?id=${id}`, {
+      method: "GET",
+      headers,
+      cache: "force-cache",
+    })
+    .then(({ tracking_number }) => tracking_number)
+    .catch((err) => medusaError(err))
+}
+
 
 export const listOrders = async (
   limit: number = 10,
