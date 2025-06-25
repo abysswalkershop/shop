@@ -5,6 +5,8 @@ services:
         - pgdata:/var/lib/postgresql/data
       env_file:
       - .env.db
+      ports:
+        - "127.0.0.1:5432:5432"
       healthcheck:
         test:
           ['CMD', 'pg_isready', '-U', "postgres", '-d', "shop"]
@@ -20,6 +22,8 @@ services:
 
     redis:
       image: redis:8
+      ports:
+        - "127.0.0.1:6379:6379"
       healthcheck:
         test: ["CMD", "redis-cli", "ping"]
         interval: 10s
