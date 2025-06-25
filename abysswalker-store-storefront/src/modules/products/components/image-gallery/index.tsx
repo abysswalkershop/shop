@@ -1,15 +1,33 @@
 import { HttpTypes } from "@medusajs/types"
 import { Container } from "@medusajs/ui"
 import Image from "next/image"
+import { Suspense } from "react"
+import ModelViewer from "@modules/products/components/model-viewer"
+import { isValid3DModelUrl } from "@lib/util/3d-models"
+import ModelViewerSkeleton from "@modules/skeletons/components/skeleton-model-viewer"
 
 type ImageGalleryProps = {
   images: HttpTypes.StoreProductImage[]
+  product: HttpTypes.StoreProduct
 }
 
-const ImageGallery = ({ images }: ImageGalleryProps) => {
+
+const ImageGallery = ({ images, product }: ImageGalleryProps) => {
+  // Check if product has a valid 3D model in metadata
+  const modelUrl = product.metadata?.["3dmodel"] as string | undefined
+  const hasValid3DModel = modelUrl && isValid3DModelUrl(modelUrl)
+
   return (
     <div className="flex items-start relative">
       <div className="flex flex-col flex-1 small:mx-16 gap-y-4">
+        {/* Render 3D model viewer first if available and valid */}
+        {hasValid3DModel && (
+          <Suspense fallback={<ModelViewerSkeleton />}>
+            <ModelViewer modelUrl={modelUrl} />
+          </Suspense>
+        )}
+
+        {/* Render regular images */}
         {images.map((image, index) => {
           return (
             <Container
