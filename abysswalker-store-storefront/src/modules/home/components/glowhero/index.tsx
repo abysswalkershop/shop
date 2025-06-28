@@ -171,7 +171,7 @@ const GlowHero = () => {
                         BODYART
                     </Heading>
                 </span>
-                <InteractiveLink href="/store" prefetch>Shop now</InteractiveLink>
+                <InteractiveLink href="/collections/glow" prefetch>Shop now</InteractiveLink>
             </div>
         </div>
     )

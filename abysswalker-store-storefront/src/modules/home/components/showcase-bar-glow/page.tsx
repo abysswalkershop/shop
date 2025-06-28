@@ -5,9 +5,9 @@ export default function ShowCaseBarGlow() {
         { id: 1, src: "/showcase/glow/1.jpg", alt: "Glow 1" },
         { id: 2, src: "/showcase/glow/2.jpg", alt: "Glow 2" },
         { id: 3, src: "/showcase/glow/3.jpg", alt: "Glow 3" },
-        { id: 4, src: "/showcase/glow/5.jpg", alt: "Glow 4" },
+        { id: 4, src: "/showcase/glow/4.jpg", alt: "Glow 4" },
         { id: 5, src: "/showcase/glow/5.jpg", alt: "Glow 5" },
-        { id: 6, src: "/showcase/glow/3.jpg", alt: "Glow 6" },
+        { id: 6, src: "/showcase/glow/6.jpg", alt: "Glow 6" },
     ];
 
     return (

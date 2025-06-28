@@ -6,6 +6,7 @@ import InteractiveLink from "@modules/common/components/interactive-link"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { useState, useEffect, useRef } from "react"
 import { ScrollTrigger } from "gsap/all";
+import Link from "next/link";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -30,8 +31,8 @@ const LodeStoneHero = () => {
     }, []);
 
     const nodePositions = [
-        { id: 1, category: "The App", href: "app", baseX: 20, baseY: 30, image: "/ZincHome.png" },
-        { id: 2, category: "The Implants", href: "biohacking", baseX: 70, baseY: 25, image: "/Magnets.png" },
+        { id: 1, category: "The App", chref: "https://play.google.com/store/apps/details?id=com.AzApps.ZINC", baseX: 20, baseY: 30, image: "/ZincHome.png" },
+        { id: 2, category: "The Implants", href: "magnets", baseX: 70, baseY: 25, image: "/Magnets.png" },
         { id: 3, category: "The Devices", href: "devices", baseX: isLandscape ? 25 : 45, baseY: 70, image: "/LodestoneHome.png" }
     ]
 
@@ -270,45 +271,88 @@ const LodeStoneHero = () => {
                             perspective: "1000px"
                         }}
                     >
-                        <LocalizedClientLink
-                            href={`/categories/${node.href}`}
-                            onMouseEnter={() => handleNodeHover(node.id, true)}
-                            onMouseLeave={() => handleNodeHover(node.id, false)}
-                        >
-                            <div
-                                className="node-container relative w-20 h-20"
-                                style={{ transformStyle: "preserve-3d" }}
+                        {node.chref ? (
+                            <Link
+                                href={node.chref}
+                                target="_blank"
+                                onMouseEnter={() => handleNodeHover(node.id, true)}
+                                onMouseLeave={() => handleNodeHover(node.id, false)}
                             >
-                                {/* Front face - Image */}
                                 <div
-                                    className="absolute inset-0 w-full h-full p-3 rounded-full shadow-lg overflow-hidden"
-                                    style={{
-                                        backfaceVisibility: "hidden",
-                                        background: "radial-gradient(circle, #005557 40%, #141b22)"
-                                    }}
+                                    className="node-container relative w-20 h-20"
+                                    style={{ transformStyle: "preserve-3d" }}
                                 >
-                                    <img
-                                        src={node.image}
-                                        alt={`Node ${node.id}`}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
+                                    {/* Front face - Image */}
+                                    <div
+                                        className="absolute inset-0 w-full h-full p-3 rounded-full shadow-lg overflow-hidden"
+                                        style={{
+                                            backfaceVisibility: "hidden",
+                                            background: "radial-gradient(circle, #005557 40%, #141b22)"
+                                        }}
+                                    >
+                                        <img
+                                            src={node.image}
+                                            alt={`Node ${node.id}`}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
 
-                                {/* Back face - Category text */}
-                                <div
-                                    className="absolute inset-0 w-full h-full p-2 rounded-full shadow-lg flex items-center justify-center"
-                                    style={{
-                                        backfaceVisibility: "hidden",
-                                        transform: "rotateX(180deg)",
-                                        background: "radial-gradient(circle, #0ed5a7, #00cbd0)"
-                                    }}
-                                >
-                                    <span className="text-abyss-text-dark text-sm font-medium text-center px-2">
-                                        {node.category}
-                                    </span>
+                                    {/* Back face - Category text */}
+                                    <div
+                                        className="absolute inset-0 w-full h-full p-2 rounded-full shadow-lg flex items-center justify-center"
+                                        style={{
+                                            backfaceVisibility: "hidden",
+                                            transform: "rotateX(180deg)",
+                                            background: "radial-gradient(circle, #0ed5a7, #00cbd0)"
+                                        }}
+                                    >
+                                        <span className="text-abyss-text-dark text-sm font-medium text-center px-2">
+                                            {node.category}
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                        </LocalizedClientLink>
+                            </Link>
+                        ) : (
+                            <LocalizedClientLink
+                                href={`/categories/${node.href}`}
+                                onMouseEnter={() => handleNodeHover(node.id, true)}
+                                onMouseLeave={() => handleNodeHover(node.id, false)}
+                            >
+                                <div
+                                    className="node-container relative w-20 h-20"
+                                    style={{ transformStyle: "preserve-3d" }}
+                                >
+                                    {/* Front face - Image */}
+                                    <div
+                                        className="absolute inset-0 w-full h-full p-3 rounded-full shadow-lg overflow-hidden"
+                                        style={{
+                                            backfaceVisibility: "hidden",
+                                            background: "radial-gradient(circle, #005557 40%, #141b22)"
+                                        }}
+                                    >
+                                        <img
+                                            src={node.image}
+                                            alt={`Node ${node.id}`}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+
+                                    {/* Back face - Category text */}
+                                    <div
+                                        className="absolute inset-0 w-full h-full p-2 rounded-full shadow-lg flex items-center justify-center"
+                                        style={{
+                                            backfaceVisibility: "hidden",
+                                            transform: "rotateX(180deg)",
+                                            background: "radial-gradient(circle, #0ed5a7, #00cbd0)"
+                                        }}
+                                    >
+                                        <span className="text-abyss-text-dark text-sm font-medium text-center px-2">
+                                            {node.category}
+                                        </span>
+                                    </div>
+                                </div>
+                            </LocalizedClientLink>
+                        )}
                     </div>
                 ))}
             </div>
@@ -338,7 +382,7 @@ const LodeStoneHero = () => {
                         ECOSYSTEM
                     </Heading>
                 </span>
-                <InteractiveLink href="/store" prefetch>Shop now</InteractiveLink>
+                <InteractiveLink href="/collections/lodestone" prefetch>Shop now</InteractiveLink>
             </div>
         </div>
     )

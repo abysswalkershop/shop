@@ -3,7 +3,7 @@
 import React from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, useGLTF, Environment, ContactShadows, Center } from '@react-three/drei'
-import { Suspense, useState, useEffect } from 'react'
+import { Suspense, useState, useEffect, Component, ErrorInfo, ReactNode } from 'react'
 import { Container } from '@medusajs/ui'
 import { HttpTypes } from '@medusajs/types'
 import * as THREE from 'three'
@@ -14,10 +14,40 @@ type ModelViewerProps = {
     className?: string
 }
 
+interface ErrorBoundaryState {
+    hasError: boolean
+}
+
+class ModelErrorBoundary extends Component<
+    { children: ReactNode; onError: (error: any) => void },
+    ErrorBoundaryState
+> {
+    constructor(props: { children: ReactNode; onError: (error: any) => void }) {
+        super(props)
+        this.state = { hasError: false }
+    }
+
+    static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+        return { hasError: true }
+    }
+
+    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+        console.error('3D Model Error Boundary caught an error:', error, errorInfo)
+        this.props.onError(error)
+    }
+
+    render() {
+        if (this.state.hasError) {
+            return null
+        }
+
+        return this.props.children
+    }
+}
+
 function Model({ url }: { url: string }) {
     const proxiedUrl = get3DModelUrl(url)
     const gltf = useGLTF(proxiedUrl)
-
     const clonedScene = gltf.scene.clone()
 
     useEffect(() => {
@@ -55,27 +85,6 @@ function Model({ url }: { url: string }) {
 
 function ModelWithErrorHandling({ url, onError }: { url: string; onError: (error: any) => void }) {
     const [hasError, setHasError] = useState(false)
-
-    useEffect(() => {
-        // Preload and test the model URL
-        const testLoad = async () => {
-            try {
-                const proxiedUrl = get3DModelUrl(url)
-                // Test if the URL is accessible
-                const response = await fetch(proxiedUrl, { method: 'HEAD' })
-                if (!response.ok) {
-                    throw new Error(`Failed to load model: ${response.status}`)
-                }
-                setHasError(false)
-            } catch (error) {
-                console.error('Model URL test failed:', error)
-                setHasError(true)
-                onError(error)
-            }
-        }
-
-        testLoad()
-    }, [url, onError])
 
     if (hasError) {
         return null
@@ -156,49 +165,53 @@ function ModelViewer({ modelUrl, className }: ModelViewerProps) {
             {isLoading && <LoadingSpinner />}
 
             <div className="absolute inset-0 w-full h-full">
-                <Canvas
-                    camera={{ position: [0, 0, 5], fov: 50 }}
-                    style={{ width: '100%', height: '100%' }}
-                    onCreated={handleLoad}
-                    onError={handleError}
-                    shadows
-                >
-                    <Suspense fallback={null}>
-                        <Environment preset="studio" />
-                        <ambientLight intensity={0.4} />
-                        <directionalLight
-                            position={[10, 10, 5]}
-                            intensity={1}
-                            castShadow
-                            shadow-mapSize={[1024, 1024]}
-                        />
-                        <pointLight position={[-10, -10, -10]} intensity={0.5} />
+                <ModelErrorBoundary onError={handleError}>
+                    <Canvas
+                        camera={{ position: [0, 0, 5], fov: 50 }}
+                        style={{ width: '100%', height: '100%' }}
+                        onCreated={handleLoad}
+                        onError={handleError}
+                        shadows
+                        onPointerMissed={() => { }}
+                        gl={{ preserveDrawingBuffer: true }}
+                    >
+                        <Suspense fallback={null}>
+                            <Environment preset="studio" />
+                            <ambientLight intensity={0.4} />
+                            <directionalLight
+                                position={[10, 10, 5]}
+                                intensity={1}
+                                castShadow
+                                shadow-mapSize={[1024, 1024]}
+                            />
+                            <pointLight position={[-10, -10, -10]} intensity={0.5} />
 
-                        <ModelWithErrorHandling url={modelUrl} onError={handleError} />
+                            <ModelWithErrorHandling url={modelUrl} onError={handleError} />
 
-                        <ContactShadows
-                            position={[0, -1.5, 0]}
-                            opacity={0.3}
-                            scale={10}
-                            blur={2.5}
-                            far={4}
-                        />
+                            <ContactShadows
+                                position={[0, -1.5, 0]}
+                                opacity={0.3}
+                                scale={10}
+                                blur={2.5}
+                                far={4}
+                            />
 
-                        <OrbitControls
-                            enablePan={true}
-                            enableZoom={true}
-                            enableRotate={true}
-                            autoRotate={false}
-                            autoRotateSpeed={0.5}
-                            minDistance={2}
-                            maxDistance={20}
-                            minPolarAngle={0}
-                            maxPolarAngle={Math.PI}
-                            enableDamping
-                            dampingFactor={0.05}
-                        />
-                    </Suspense>
-                </Canvas>
+                            <OrbitControls
+                                enablePan={true}
+                                enableZoom={true}
+                                enableRotate={true}
+                                autoRotate={false}
+                                autoRotateSpeed={0.5}
+                                minDistance={2}
+                                maxDistance={20}
+                                minPolarAngle={0}
+                                maxPolarAngle={Math.PI}
+                                enableDamping
+                                dampingFactor={0.05}
+                            />
+                        </Suspense>
+                    </Canvas>
+                </ModelErrorBoundary>
             </div>
 
             {/* Controls hint */}
