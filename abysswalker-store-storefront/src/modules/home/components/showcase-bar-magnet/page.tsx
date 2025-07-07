@@ -2,11 +2,11 @@ import Image from "next/image";
 
 export default function ShowCaseBarMagnet() {
     const showcaseItems = [
-        { id: 1, src: "/showcase/magnet/4.jpg", alt: "Magnet 1" },
-        { id: 2, src: "/showcase/magnet/4.jpg", alt: "Magnet 2" },
-        { id: 3, src: "/showcase/magnet/4.jpg", alt: "Magnet 3" },
+        { id: 1, src: "/showcase/magnet/1.jpg", alt: "Magnet 1" },
+        { id: 2, src: "/showcase/magnet/2.jpg", alt: "Magnet 2" },
+        { id: 3, src: "/showcase/magnet/3.webp", alt: "Magnet 3" },
         { id: 4, src: "/showcase/magnet/4.jpg", alt: "Magnet 4" },
-        { id: 5, src: "/showcase/magnet/4.jpg", alt: "Magnet 5" },
+        { id: 5, src: "/showcase/magnet/5.webp", alt: "Magnet 5" },
         { id: 6, src: "/showcase/magnet/6.jpg", alt: "Magnet 6" },
     ];
 
