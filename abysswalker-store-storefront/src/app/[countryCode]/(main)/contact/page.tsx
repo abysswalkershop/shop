@@ -10,7 +10,7 @@ export default function ContactPage() {
                 If you have any questions or need assistance, please reach out to us.
             </p>
             <p className="text-lg text-gray-700 mb-4">
-                You can contact us via email at <a href="mailto:contact@abysswalker.org" className="text-blue-600 hover:underline">contact@abysswalker.org</a> or through our social media channels.
+                You can contact us via email at <a href="mailto:contact@abysswalker.org" className="text-blue-600 hover:underline">contact@abysswalker.org</a>, via phone at <a href="tel:+16893022977" className="text-blue-600 hover:underline">+168930ABYSS (+16893022977)</a> or through our social media channels.
             </p>
 
         </div>
