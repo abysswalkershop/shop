@@ -81,7 +81,7 @@ export default function ShippingPriceNudge({
   cart: StoreCart
   shippingOptions: StoreCartShippingOption[]
 }) {
-  if (!cart || !shippingOptions?.length) {
+  if (!cart || !shippingOptions?.length || (cart.items?.length ?? 0) <= 0) {
     return
   }
 
@@ -142,9 +142,9 @@ function FreeShippingInline({
   }
 }) {
   return (
-    <div className="bg-neutral-100 p-2 rounded-lg border">
+    <div className="bg-abyss-dark-accent p-2 border">
       <div className="space-y-1.5">
-        <div className="flex justify-between text-xs text-neutral-600">
+        <div className="flex justify-between text-xs text-abyss-text-light">
           <div>
             {price.target_reached ? (
               <div className="flex items-center gap-1.5">
@@ -162,7 +162,7 @@ function FreeShippingInline({
             })}
           >
             Only{" "}
-            <span className="text-neutral-950">
+            <span className="text-abyss-light-accent">
               {convertToLocale({
                 amount: price.target_remaining,
                 currency_code: cart.currency_code,
@@ -174,14 +174,14 @@ function FreeShippingInline({
         <div className="flex justify-between gap-1">
           <div
             className={clx(
-              "bg-gradient-to-r from-zinc-400 to-zinc-500 h-1 rounded-full max-w-full duration-500 ease-in-out",
+              "bg-gradient-to-r from-abyss-background to-abyss-medium-accent h-1 rounded-full max-w-full duration-500 ease-in-out",
               {
-                "from-green-400 to-green-500": price.target_reached,
+                "from-abyss-medium-accent to-abyss-light-accent": price.target_reached,
               }
             )}
             style={{ width: `${price.remaining_percentage}%` }}
           ></div>
-          <div className="bg-neutral-300 h-1 rounded-full w-fit flex-grow"></div>
+          <div className="bg-abyss-background h-1 rounded-full w-fit flex-grow"></div>
         </div>
       </div>
     </div>
@@ -200,7 +200,7 @@ function FreeShippingPopup({
   return (
     <div
       className={clx(
-        "fixed bottom-5 right-5 flex flex-col items-end gap-2 transition-all duration-500 ease-in-out z-10",
+        "fixed bottom-5 right-5 flex flex-col items-end gap-2 transition-all duration-500 ease-in-out z-20",
         {
           "opacity-0 invisible delay-1000": price.target_reached,
           "opacity-0 invisible": isClosed,
@@ -217,10 +217,10 @@ function FreeShippingPopup({
         </Button>
       </div>
 
-      <div className="w-[400px] bg-black text-white p-6 rounded-lg ">
+      <div className="w-[400px] bg-abyss-dark-accent text-abyss-text-light p-6 rounded-lg ">
         <div className="pb-4">
           <div className="space-y-3">
-            <div className="flex justify-between text-[15px] text-neutral-400">
+            <div className="flex justify-between text-[15px]">
               <div>
                 {price.target_reached ? (
                   <div className="flex items-center gap-1.5">
@@ -238,7 +238,7 @@ function FreeShippingPopup({
                 })}
               >
                 Only{" "}
-                <span className="text-white">
+                <span className="text-abyss-light-accent">
                   {convertToLocale({
                     amount: price.target_remaining,
                     currency_code: cart.currency_code,
@@ -250,21 +250,21 @@ function FreeShippingPopup({
             <div className="flex justify-between gap-1">
               <div
                 className={clx(
-                  "bg-gradient-to-r from-zinc-400 to-zinc-500 h-1.5 rounded-full max-w-full duration-500 ease-in-out",
+                  "bg-gradient-to-r from-abyss-light-accent to-abyss-medium-accent h-1.5 rounded-full max-w-full duration-500 ease-in-out",
                   {
                     "from-green-400 to-green-500": price.target_reached,
                   }
                 )}
                 style={{ width: `${price.remaining_percentage}%` }}
               ></div>
-              <div className="bg-zinc-600 h-1.5 rounded-full w-fit flex-grow"></div>
+              <div className="bg-abyss-background h-1.5 rounded-full w-fit flex-grow"></div>
             </div>
           </div>
         </div>
 
         <div className="flex gap-3">
           <LocalizedClientLink
-            className="rounded-2xl bg-transparent shadow-none outline-none border-[1px] border-white text-[15px] py-2.5 px-4"
+            className="rounded-2xl bg-transparent shadow-none outline-none border-[1px] border-abyss-light-accent text-[15px] py-2.5 px-4"
             href="/cart"
           >
             View cart
