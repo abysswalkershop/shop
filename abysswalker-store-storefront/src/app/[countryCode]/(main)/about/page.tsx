@@ -16,7 +16,7 @@ export default function AboutPage() {
                     <h3 className="text-xl text-abyss-text-light text-center font-semibold">Merlin</h3>
                     <h4 className="text-sm text-abyss-text-light text-center">aka. 🦆</h4>
                     <p className="text-abyss-text-light mt-5 text-center">Merlin is Abyss Walker's resident research and development expert and product producer and distributor within the EU.
-                        They enjoy wilderness excursions experimentation</p>
+                        They enjoy wilderness, excursions and experimentation.</p>
                 </div>
                 <div className="flex flex-col items-center shadow-xl p-5 m-5 rounded-lg bg-abyss-dark-accent md:w-1/4 min-h-96">
                     <Image width={1024} height={1024} src={"/axel.jpg"} alt="Profile Image" className="rounded-full w-1/3"></Image>
