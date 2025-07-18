@@ -24,10 +24,10 @@
     "dev:email": "email dev --dir ./src/modules/resend/emails"
   },
   "dependencies": {
-    "@medusajs/admin-sdk": "2.8.5",
-    "@medusajs/cli": "2.8.5",
-    "@medusajs/framework": "2.8.5",
-    "@medusajs/medusa": "2.8.5",
+    "@medusajs/admin-sdk": "2.8.7",
+    "@medusajs/cli": "2.8.7",
+    "@medusajs/framework": "2.8.7",
+    "@medusajs/medusa": "2.8.7",
     "@mikro-orm/core": "6.4.3",
     "@mikro-orm/knex": "6.4.3",
     "@mikro-orm/migrations": "6.4.3",
@@ -39,7 +39,7 @@
     "resend": "^4.5.2"
   },
   "devDependencies": {
-    "@medusajs/test-utils": "2.8.5",
+    "@medusajs/test-utils": "2.8.7",
     "@mikro-orm/cli": "6.4.3",
     "@swc/core": "1.5.7",
     "@swc/jest": "^0.2.36",
