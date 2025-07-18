@@ -116,7 +116,7 @@ export default async function Footer() {
                     target="_blank"
                     className="hover:text-abyss-light-accent"
                   >
-                    About
+                    The Team
                   </LocalizedClientLink>
                 </li>
                 <li>
