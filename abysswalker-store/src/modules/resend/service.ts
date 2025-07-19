@@ -20,6 +20,7 @@ import { shipmentCreatedEmail } from "./emails/shipment-created"
 import { deliveryCreatedEmail } from "./emails/delivery-created"
 import { paymentRefundedEmail } from "./emails/payment-refunded"
 import { OrderReturnReceivedEmail } from "./emails/order-return-received"
+import { transferRequestedEmail } from "./emails/transfer-requested"
 
 type ResendOptions = {
     api_key: string
@@ -44,6 +45,7 @@ enum Templates {
     SHIPMENT_CREATED = "shipment-created",
     DELIVERY_CREATED = "delivery-created",
     PAYMENT_REFUNDED = "payment-refunded",
+    TRANSFER_REQUESTED = "transfer-requested",
 }
 
 
@@ -58,6 +60,7 @@ const templates: { [key in Templates]?: (props: unknown) => React.ReactNode } = 
     [Templates.SHIPMENT_CREATED]: shipmentCreatedEmail,
     [Templates.DELIVERY_CREATED]: deliveryCreatedEmail,
     [Templates.PAYMENT_REFUNDED]: paymentRefundedEmail,
+    [Templates.TRANSFER_REQUESTED]: transferRequestedEmail,
 }
 
 class ResendNotificationProviderService extends AbstractNotificationProviderService {
@@ -124,6 +127,8 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
                 return "Refund Processed"
             case Templates.ORDER_RETURN_RECEIVED:
                 return "Return Received"
+            case Templates.TRANSFER_REQUESTED:
+                return "Order Transfer Requested"
             default:
                 return "New Email"
         }

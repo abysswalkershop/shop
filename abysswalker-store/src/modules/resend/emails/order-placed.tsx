@@ -101,7 +101,7 @@ function OrderPlacedEmailComponent({ order, email_banner }: OrderPlacedEmailProp
                         </Heading>
                         <Row>
                             <Column>
-                                <Text className="text-sm m-0 my-2 text-gray-500">Order ID: #{order.display_id}</Text>
+                                <Text className="text-sm m-0 my-2 text-gray-500">Order Number: #{order.display_id}</Text>
                             </Column>
                         </Row>
                         {order.items?.map((item) => (
@@ -178,7 +178,7 @@ function OrderPlacedEmailComponent({ order, email_banner }: OrderPlacedEmailProp
                             If you have any questions, contact our support at contact@abysswalker.org.
                         </Text>
                         <Text className="text-center text-gray-500 text-sm">
-                            Order Token: {order.id}
+                            Order ID: {order.id}
                         </Text>
                         <Text className="text-center text-gray-400 text-xs mt-4">
                             © {new Date().getFullYear()} EI Abyss Walker. All rights reserved.
