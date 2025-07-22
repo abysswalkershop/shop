@@ -27,6 +27,26 @@ const optionsAsKeymap = (
   }, {})
 }
 
+// Helper function to check if a variant is in stock
+const isVariantInStock = (variant: HttpTypes.StoreProductVariant) => {
+  // If we don't manage inventory, it's always in stock
+  if (!variant.manage_inventory) {
+    return true
+  }
+
+  // If we allow back orders, it's always in stock
+  if (variant.allow_backorder) {
+    return true
+  }
+
+  // If there is inventory available, it's in stock
+  if (variant.manage_inventory && (variant.inventory_quantity || 0) > 0) {
+    return true
+  }
+
+  return false
+}
+
 export default function ProductActions({
   product,
   disabled,
@@ -35,11 +55,22 @@ export default function ProductActions({
   const [isAdding, setIsAdding] = useState(false)
   const countryCode = useParams().countryCode as string
 
-  // If there is only 1 variant, preselect the options
+  // Automatically select the first in-stock variant
   useEffect(() => {
-    if (product.variants?.length === 1) {
-      const variantOptions = optionsAsKeymap(product.variants[0].options)
-      setOptions(variantOptions ?? {})
+    if (product.variants && product.variants.length > 0) {
+      // Find the first in-stock variant
+      const firstInStockVariant = product.variants.find(variant =>
+        isVariantInStock(variant)
+      )
+
+      if (firstInStockVariant) {
+        const variantOptions = optionsAsKeymap(firstInStockVariant.options)
+        setOptions(variantOptions ?? {})
+      } else if (product.variants.length === 1) {
+        // Fallback: if only one variant and it's out of stock, still select it
+        const variantOptions = optionsAsKeymap(product.variants[0].options)
+        setOptions(variantOptions ?? {})
+      }
     }
   }, [product.variants])
 
@@ -72,26 +103,8 @@ export default function ProductActions({
 
   // check if the selected variant is in stock
   const inStock = useMemo(() => {
-    // If we don't manage inventory, we can always add to cart
-    if (selectedVariant && !selectedVariant.manage_inventory) {
-      return true
-    }
-
-    // If we allow back orders on the variant, we can add to cart
-    if (selectedVariant?.allow_backorder) {
-      return true
-    }
-
-    // If there is inventory available, we can add to cart
-    if (
-      selectedVariant?.manage_inventory &&
-      (selectedVariant?.inventory_quantity || 0) > 0
-    ) {
-      return true
-    }
-
-    // Otherwise, we can't add to cart
-    return false
+    if (!selectedVariant) return false
+    return isVariantInStock(selectedVariant)
   }, [selectedVariant])
 
   const actionsRef = useRef<HTMLDivElement>(null)
@@ -154,11 +167,11 @@ export default function ProductActions({
           isLoading={isAdding}
           data-testid="add-product-button"
         >
-          {!selectedVariant && !options
+          {!selectedVariant && options
             ? "Select variant"
             : !inStock || !isValidVariant
-            ? "Out of stock"
-            : "Add to cart"}
+              ? "Out of stock"
+              : "Add to cart"}
         </Button>
         <MobileActions
           product={product}

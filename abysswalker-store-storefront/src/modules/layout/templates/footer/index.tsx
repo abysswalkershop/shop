@@ -3,6 +3,7 @@ import { listCollections } from "@lib/data/collections"
 import { Text, clx } from "@medusajs/ui"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Link from "next/link"
 
 export default async function Footer() {
   const { collections } = await listCollections({
@@ -107,6 +108,47 @@ export default async function Footer() {
                 </ul>
               </div>
             )}
+            <div className="flex flex-col gap-y-2">
+              <span className="txt-small-plus text-abyss-medium-accent">Social</span>
+              <ul className="grid grid-cols-1 gap-y-2 text-abyss-text-light txt-small">
+                <li>
+                  <Link
+                    href="https://blog.abysswalker.org"
+                    target="_blank"
+                    className="hover:text-abyss-light-accent"
+                  >
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="https://forum.abysswalker.org"
+                    target="_blank"
+                    className="hover:text-abyss-light-accent"
+                  >
+                    Forum
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="https://www.instagram.com/abysswalker_shop?igsh=MTEya2tqcWc1dzJ2aQ=="
+                    target="_blank"
+                    className="hover:text-abyss-light-accent"
+                  >
+                    Instagram
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="https://www.tiktok.com/@abysswalkerorg"
+                    target="_blank"
+                    className="hover:text-abyss-light-accent"
+                  >
+                    Tiktok
+                  </Link>
+                </li>
+              </ul>
+            </div>
             <div className="flex flex-col gap-y-2">
               <span className="txt-small-plus text-abyss-medium-accent">About</span>
               <ul className="grid grid-cols-1 gap-y-2 text-abyss-text-light txt-small">
