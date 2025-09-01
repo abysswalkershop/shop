@@ -136,5 +136,4 @@ const mockShipment = {
     "estimated_delivery": "June 20, 2025"
 }
 
-// @ts-ignore
 export default () => <ShipmentCreatedEmailComponent {...mockShipment} />

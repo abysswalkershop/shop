@@ -12,7 +12,6 @@ type WorkflowInput = {
 export const sendOrderPlacedDiscordNotificationWorkflow = createWorkflow(
     "send-order-placed-discord-notification",
     ({ id }: WorkflowInput) => {
-        // @ts-ignore
         const { data: orders } = useQueryGraphStep({
             entity: "order",
             fields: [

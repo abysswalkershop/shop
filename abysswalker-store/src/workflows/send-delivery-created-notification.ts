@@ -14,7 +14,6 @@ export const sendDeliveryCreatedNotificationWorkflow = createWorkflow(
     ({ fulfillment_id }: WorkflowInput) => {
 
         // Query fulfillment with expanded order details
-        // @ts-ignore
         const { data: fulfillments } = useQueryGraphStep({
             entity: "fulfillment",
             fields: [
@@ -25,14 +24,13 @@ export const sendDeliveryCreatedNotificationWorkflow = createWorkflow(
                 "order.id",
                 "order.display_id",
                 "order.email",
-                "order.customer.*",
+                "order.customer.*"
             ],
             filters: {
                 id: fulfillment_id,
             },
         }).config({ name: "query-fulfillment-with-order" })
 
-        // @ts-ignore
         const fulfillment = fulfillments?.[0]
         if (!fulfillment) {
             console.error("No fulfillment found for ID:", fulfillment_id)
@@ -40,13 +38,11 @@ export const sendDeliveryCreatedNotificationWorkflow = createWorkflow(
         }
 
         // Try to get order info from the expanded query first
-        // @ts-ignore
         let orderData = fulfillment.order
 
         // If order data is not expanded, query separately
         // @ts-ignore
         if (!orderData?.email && fulfillment.order_id) {
-            // @ts-ignore
             const { data: orders } = useQueryGraphStep({
                 entity: "order",
                 fields: [
@@ -55,13 +51,10 @@ export const sendDeliveryCreatedNotificationWorkflow = createWorkflow(
                     "email",
                     "customer.*",
                 ],
-                filters: {
-                    // @ts-ignore
+                filters: { // @ts-ignore
                     id: fulfillment.order_id,
                 },
             }).config({ name: "query-order-separate" })
-
-            // @ts-ignore
             orderData = orders?.[0]
         }
 
@@ -71,20 +64,14 @@ export const sendDeliveryCreatedNotificationWorkflow = createWorkflow(
             return new WorkflowResponse(null)
         }
 
-        // @ts-ignore
         const notification = sendNotificationStep([{
-            // @ts-ignore
             to: orderData.email,
             channel: "email",
             template: "delivery-created",
-            data: {
-                // @ts-ignore
+            data: { // @ts-ignore
                 order_id: orderData.display_id,
-                // @ts-ignore
                 delivery_date: fulfillment.delivered_at,
-                // @ts-ignore
                 delivery_time: fulfillment.delivered_at,
-                // @ts-ignore
                 customer_email: orderData.email, // For debugging
             },
         }])

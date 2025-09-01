@@ -152,5 +152,4 @@ const mockOrder = {
     },
 }
 
-// @ts-ignore
-export default () => <OrderCanceledEmailComponent {...mockOrder} />
+export default () => <OrderCanceledEmailComponent order={mockOrder.order as unknown as OrderDTO & { customer: CustomerDTO }} />

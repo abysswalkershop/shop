@@ -12,11 +12,12 @@
     "build": "next build",
     "start": "next start -p 8000",
     "lint": "next lint",
-    "analyze": "ANALYZE=true next build"
+    "analyze": "ANALYZE=true next build",
+    "inspect": "NODE_OPTIONS=--inspect next start -p 8000"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
-    "@medusajs/js-sdk": "latest",
+    "@medusajs/js-sdk": "2.10.1",
     "@medusajs/ui": "latest",
     "@radix-ui/react-accordion": "^1.2.1",
     "@react-three/drei": "^10.3.0",
@@ -38,7 +39,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
-    "@medusajs/types": "latest",
+    "@medusajs/types": "2.10.1",
     "@medusajs/ui-preset": "latest",
     "@types/lodash": "^4.14.195",
     "@types/node": "17.0.21",

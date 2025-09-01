@@ -13,7 +13,6 @@ type WorkflowInput = {
 export const sendOrderReturnRequestedNotificationWorkflow = createWorkflow(
     "send-order-return-requested-notification",
     ({ order_id, return_id }: WorkflowInput) => {
-        // @ts-ignore
         const { data: orders } = useQueryGraphStep({
             entity: "order",
             fields: [
@@ -25,13 +24,12 @@ export const sendOrderReturnRequestedNotificationWorkflow = createWorkflow(
             filters: {
                 id: order_id,
             },
-        })        // @ts-ignore
+        })
         const notification = sendNotificationStep([{
-            // @ts-ignore
-            to: orders[0].email,
+            to: orders[0].email ?? "",
             channel: "email",
             template: "order-return-requested",
-            data: {
+            data: { // @ts-ignore
                 order_id: orders[0].display_id,
                 customer_name: orders[0].customer?.first_name,
                 // You can extend this with return reason when available

@@ -12,7 +12,6 @@ type WorkflowInput = {
 export const sendOrderCanceledNotificationWorkflow = createWorkflow(
     "send-order-canceled-notification",
     ({ id }: WorkflowInput) => {
-        // @ts-ignore
         const { data: orders } = useQueryGraphStep({
             entity: "order",
             fields: [
@@ -25,10 +24,9 @@ export const sendOrderCanceledNotificationWorkflow = createWorkflow(
             filters: {
                 id,
             },
-        })        // @ts-ignore
+        })
         const notification = sendNotificationStep([{
-            // @ts-ignore
-            to: orders[0].email,
+            to: orders[0].email ?? "",
             channel: "email",
             template: "order-canceled",
             data: {

@@ -12,7 +12,6 @@ type WorkflowInput = {
 export const sendPaymentRefundedNotificationWorkflow = createWorkflow(
     "send-payment-refunded-notification",
     ({ payment_id }: WorkflowInput) => {
-        // @ts-ignore
         const { data: payments } = useQueryGraphStep({
             entity: "payment",
             fields: [
@@ -26,19 +25,13 @@ export const sendPaymentRefundedNotificationWorkflow = createWorkflow(
             },
         })
 
-        // @ts-ignore
-        const notification = sendNotificationStep([{
-            // For now, we'll use a fallback email. In production, you'd want to
-            // extract the customer email from the payment collection metadata
-            // @ts-ignore
-            to: payments[0]?.payment_collection?.metadata?.customer_email || "customer@example.com",
+        const notification = sendNotificationStep([{ // @ts-ignore
+            to: payments[0]?.payment_collection?.metadata?.customer_email || "",
             channel: "email",
             template: "payment-refunded",
             data: {
                 order_id: undefined,
-                // @ts-ignore
                 refund_amount: payments[0]?.amount || 0,
-                // @ts-ignore
                 currency: payments[0]?.currency_code || "USD",
                 reason: "Refund processed",
                 refund_method: "Original payment method",

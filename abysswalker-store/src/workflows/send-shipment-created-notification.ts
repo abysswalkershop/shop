@@ -14,7 +14,7 @@ export const sendShipmentCreatedNotificationWorkflow = createWorkflow(
     ({ shipment_id }: WorkflowInput) => {
 
         // Query fulfillment with expanded order details
-        // @ts-ignore
+        // 
         const { data: fulfillments } = useQueryGraphStep({
             entity: "fulfillment",
             fields: [
@@ -35,19 +35,16 @@ export const sendShipmentCreatedNotificationWorkflow = createWorkflow(
             },
         }).config({ name: "query-fulfillment-with-order" })
 
-        // @ts-ignore
         const fulfillment = fulfillments?.[0]
         if (!fulfillment) {
             console.error("No fulfillment found for shipment ID:", shipment_id)
             return new WorkflowResponse(null)
         }        // Try to get order info from the expanded query first
-        // @ts-ignore
         let orderData = fulfillment.order
 
         // If order data is not expanded, query separately
         // @ts-ignore
         if (!orderData?.email && fulfillment.order_id) {
-            // @ts-ignore
             const { data: orders } = useQueryGraphStep({
                 entity: "order",
                 fields: [
@@ -62,7 +59,6 @@ export const sendShipmentCreatedNotificationWorkflow = createWorkflow(
                 },
             }).config({ name: "query-order-separate" })
 
-            // @ts-ignore
             orderData = orders?.[0]
         }
 
@@ -72,9 +68,7 @@ export const sendShipmentCreatedNotificationWorkflow = createWorkflow(
             return new WorkflowResponse(null)
         }
 
-        // @ts-ignore
         const notification = sendNotificationStep([{
-            // @ts-ignore
             to: orderData.email,
             channel: "email",
             template: "shipment-created",
@@ -82,15 +76,10 @@ export const sendShipmentCreatedNotificationWorkflow = createWorkflow(
                 // @ts-ignore
                 order_id: orderData.display_id,
                 shipment_id: shipment_id,
-                // @ts-ignore
                 tracking_number: fulfillment.labels[0].tracking_number,
-                // @ts-ignore
                 tracking_url: fulfillment.labels[0].tracking_url,
-                // @ts-ignore
                 carrier: fulfillment.provider_id,
-                // @ts-ignore
                 shipped_at: fulfillment.shipped_at,
-                // @ts-ignore
                 customer_email: orderData.email, // For debugging
             },
         }])

@@ -106,14 +106,17 @@ const mockCustomer = {
         "email": "john.doe@example.com",
         "phone": "+1-555-0123",
         "has_account": true,
-        "metadata": null,
+        "metadata": {},
         "created_by": null,
         "created_at": "2025-06-16T10:30:00.000Z",
         "updated_at": "2025-06-16T10:30:00.000Z",
         "deleted_at": null,
+        "default_billing_address_id": null,
+        "default_shipping_address_id": null,
+        "addresses": [],
+        "groups": []
     },
     "store_url": "https://abysswalker.org"
 }
 
-// @ts-ignore
 export default () => <CustomerCreatedEmailComponent {...mockCustomer} />

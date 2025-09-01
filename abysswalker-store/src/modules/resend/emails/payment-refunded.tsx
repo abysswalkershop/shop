@@ -127,5 +127,4 @@ const mockRefund = {
     "customer_name": "John Doe"
 }
 
-// @ts-ignore
 export default () => <PaymentRefundedEmailComponent {...mockRefund} />

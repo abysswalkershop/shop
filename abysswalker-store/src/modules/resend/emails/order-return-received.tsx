@@ -109,5 +109,4 @@ const mockReturn = {
   "return_reason": "Product not as described"
 }
 
-// @ts-ignore
 export default () => <OrderReturnReceivedEmailComponent {...mockReturn} />

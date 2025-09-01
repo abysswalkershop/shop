@@ -8,12 +8,10 @@ import { sendCustomerCreatedNotificationWorkflow } from "../workflows/send-custo
 export default async function customerCreatedHandler({
     event: { data },
     container,
-}: SubscriberArgs<{ id: string }[]>) {
-    // Handle array of customer creations
+}: SubscriberArgs<{ id: string }>) {
     await sendCustomerCreatedNotificationWorkflow(container)
         .run({
             input: {
-                // @ts-ignore
                 id: data.id,
             },
         })

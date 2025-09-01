@@ -108,5 +108,4 @@ const mockReturnRequest = {
     "items_to_return": ["Medusa Sweatshirt - Size L", "Medusa T-Shirt - Size M"]
 }
 
-// @ts-ignore
 export default () => <OrderReturnRequestedEmailComponent {...mockReturnRequest} />

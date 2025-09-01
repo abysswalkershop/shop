@@ -5,7 +5,7 @@
       "name": "medusa-next",
       "dependencies": {
         "@headlessui/react": "^2.2.0",
-        "@medusajs/js-sdk": "latest",
+        "@medusajs/js-sdk": "2.10.1",
         "@medusajs/ui": "latest",
         "@radix-ui/react-accordion": "^1.2.1",
         "@react-three/drei": "^10.3.0",
@@ -27,7 +27,7 @@
       },
       "devDependencies": {
         "@babel/core": "^7.17.5",
-        "@medusajs/types": "latest",
+        "@medusajs/types": "2.10.1",
         "@medusajs/ui-preset": "latest",
         "@types/lodash": "^4.14.195",
         "@types/node": "17.0.21",
@@ -225,9 +225,9 @@
 
     "@medusajs/icons": ["@medusajs/icons@2.8.4", "", { "peerDependencies": { "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc" } }, "sha512-g6Hc+8eRH4HTlYpW3tyNPdQ6Iym1Lvul/7MVD6ANYn9LCNchVU2HFhYz9m6M+tC96/gMDWRExiVWaW/hexvPTg=="],
 
-    "@medusajs/js-sdk": ["@medusajs/js-sdk@2.8.4", "", { "dependencies": { "@medusajs/types": "2.8.4", "fetch-event-stream": "^0.1.5", "qs": "^6.12.1" } }, "sha512-G2B/NpXrQl/sry0FotFs4qRpsEaIK2VGQQL5fs49lk1Nt0khWLYc10NtfcEyaSbb2jQI9ese3rocIqQP0McJ1A=="],
+    "@medusajs/js-sdk": ["@medusajs/js-sdk@2.10.1", "", { "dependencies": { "@medusajs/types": "2.10.1", "fetch-event-stream": "^0.1.5", "qs": "^6.12.1" } }, "sha512-KOXSU56cFu58w85PxgnqJsxaYNmGVCh4a70pROc4709u/Z6eGx5RdbdOdksk5vwEDWqr4OlngFB8aYVzLpXX4w=="],
 
-    "@medusajs/types": ["@medusajs/types@2.8.4", "", { "dependencies": { "bignumber.js": "^9.1.2" }, "peerDependencies": { "awilix": "^8.0.1", "ioredis": "^5.4.1", "vite": "^5 || ^6" }, "optionalPeers": ["ioredis", "vite"] }, "sha512-AMl9XmbMOXk09jwrV2Df1pRVW/Qz74vN2AS0UNFbEBC3YhcFDqTrt4nZpZZrLtckOOcMrR/xG6GgcWvb0vKimw=="],
+    "@medusajs/types": ["@medusajs/types@2.10.1", "", { "dependencies": { "bignumber.js": "^9.1.2" }, "peerDependencies": { "awilix": "^8.0.1", "ioredis": "^5.4.1", "vite": "^5 || ^6" }, "optionalPeers": ["ioredis", "vite"] }, "sha512-V4pRtwdCZQRnaXTgtTOD2EFOWaIz4Z59EMueGxHyepV/lST16hMNxzve3pf0KvqkWHSg8yGLMuXGwQDbfSYsIw=="],
 
     "@medusajs/ui": ["@medusajs/ui@4.0.14", "", { "dependencies": { "@medusajs/icons": "2.8.4", "@tanstack/react-table": "8.20.5", "clsx": "^1.2.1", "copy-to-clipboard": "^3.3.3", "cva": "1.0.0-beta.1", "prism-react-renderer": "^2.0.6", "prismjs": "^1.29.0", "radix-ui": "1.1.2", "react-aria": "^3.33.1", "react-currency-input-field": "^3.6.11", "react-stately": "^3.31.1", "sonner": "^1.5.0", "tailwind-merge": "^2.2.1" }, "peerDependencies": { "react": "^18.0.0 || ^19.0.0 || ^19.0.0-rc", "react-dom": "^18.0.0 || ^19.0.0 || ^19.0.0-rc" } }, "sha512-2Abq8r9X/xlzSk3uotiVlHD9ZtfnysNS3e/vpToqGvQeqkyPwLMbqQIIj1WzfnkiI9fKMFhPsgyxwyokQjpjeg=="],
 

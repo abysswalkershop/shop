@@ -12,7 +12,7 @@ type WorkflowInput = {
 export const sendOrderFulfillmentCreatedNotificationWorkflow = createWorkflow(
     "send-order-fulfillment-created-notification",
     ({ order_id }: WorkflowInput) => {
-        // @ts-ignore
+        // 
         const { data: orders } = useQueryGraphStep({
             entity: "order",
             fields: [
@@ -24,13 +24,12 @@ export const sendOrderFulfillmentCreatedNotificationWorkflow = createWorkflow(
             filters: {
                 id: order_id,
             },
-        })        // @ts-ignore
+        })
         const notification = sendNotificationStep([{
-            // @ts-ignore
-            to: orders[0].email,
+            to: orders[0].email ?? "",
             channel: "email",
             template: "order-fulfillment-created",
-            data: {
+            data: { // @ts-ignore
                 order_id: orders[0].display_id,
                 // You can extend this with tracking information when available
                 tracking_number: undefined,

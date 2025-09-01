@@ -515,5 +515,5 @@ const mockOrder = {
         },
     },
 }
-// @ts-ignore
-export default () => <OrderPlacedEmailComponent {...mockOrder} />
+
+export default () => <OrderPlacedEmailComponent {...(mockOrder as unknown as OrderPlacedEmailProps)} />

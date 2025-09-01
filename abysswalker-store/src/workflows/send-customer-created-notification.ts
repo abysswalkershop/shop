@@ -12,7 +12,6 @@ type WorkflowInput = {
 export const sendCustomerCreatedNotificationWorkflow = createWorkflow(
     "send-customer-created-notification",
     ({ id }: WorkflowInput) => {
-        // @ts-ignore
         const { data: customers } = useQueryGraphStep({
             entity: "customer",
             fields: [
@@ -24,10 +23,9 @@ export const sendCustomerCreatedNotificationWorkflow = createWorkflow(
             filters: {
                 id,
             },
-        })        // @ts-ignore
+        })
         const notification = sendNotificationStep([{
-            // @ts-ignore
-            to: customers[0].email,
+            to: customers[0].email ?? "",
             channel: "email",
             template: "customer-created",
             data: {

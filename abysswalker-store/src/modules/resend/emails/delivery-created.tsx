@@ -130,5 +130,4 @@ const mockDelivery = {
     "delivery_address": "123 Main Street, Apt 4B, Copenhagen, DK"
 }
 
-// @ts-ignore
 export default () => <DeliveryCreatedEmailComponent {...mockDelivery} />

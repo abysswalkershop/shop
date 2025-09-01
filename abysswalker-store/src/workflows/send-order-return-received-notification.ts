@@ -13,7 +13,6 @@ type WorkflowInput = {
 export const sendOrderReturnReceivedNotificationWorkflow = createWorkflow(
     "send-order-return-received-notification",
     ({ order_id, return_id }: WorkflowInput) => {
-        // @ts-ignore
         const { data: orders } = useQueryGraphStep({
             entity: "order",
             fields: [
@@ -27,7 +26,6 @@ export const sendOrderReturnReceivedNotificationWorkflow = createWorkflow(
             },
         })
 
-        // @ts-ignore
         const { data: returns } = useQueryGraphStep({
             entity: "return",
             fields: [
@@ -41,18 +39,13 @@ export const sendOrderReturnReceivedNotificationWorkflow = createWorkflow(
             },
         }).config({ name: "query-return-for-received" })
 
-        // @ts-ignore
         const notification = sendNotificationStep([{
-            // @ts-ignore
-            to: orders[0].email,
+            to: orders[0].email ?? "",
             channel: "email",
             template: "order-return-received",
-            data: {
-                // @ts-ignore
-                order_id: orders[0].display_id,
-                // @ts-ignore
+            data: { // @ts-ignore
+                order_id: orders[0].display_id, // @ts-ignore
                 received_at: returns[0]?.received_at,
-                // @ts-ignore
                 customer_name: orders[0].customer?.first_name || "Customer",
             },
         }])
