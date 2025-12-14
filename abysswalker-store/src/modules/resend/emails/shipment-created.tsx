@@ -76,6 +76,11 @@ function ShipmentCreatedEmailComponent({
                                     <strong>Carrier:</strong> {carrier}
                                 </Text>
                             )}
+                            {tracking_url && (
+                                <Text className="text-gray-600 text-sm m-0">
+                                    <strong>Tracking URL:</strong> <Link href={tracking_url}>{tracking_url}</Link>
+                                </Text>
+                            )}
                             {estimated_delivery && (
                                 <Text className="text-gray-600 text-sm m-0">
                                     <strong>Estimated Delivery:</strong> {estimated_delivery}
