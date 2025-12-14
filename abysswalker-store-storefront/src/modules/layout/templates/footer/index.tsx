@@ -131,6 +131,15 @@ export default async function Footer() {
                 </li>
                 <li>
                   <Link
+                    href="https://map.abysswalker.org"
+                    target="_blank"
+                    className="hover:text-abyss-light-accent"
+                  >
+                    Map
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     href="https://www.instagram.com/abysswalker_shop?igsh=MTEya2tqcWc1dzJ2aQ=="
                     target="_blank"
                     className="hover:text-abyss-light-accent"
