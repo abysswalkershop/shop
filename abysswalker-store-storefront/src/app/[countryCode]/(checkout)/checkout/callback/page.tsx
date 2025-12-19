@@ -6,9 +6,9 @@ import CallbackPageClient from "./client"
 export default async function CallbackPage({
     searchParams,
 }: {
-    searchParams: { cart_id?: string }
+    searchParams: Promise<{ cart_id?: string }>
 }) {
-    const cartId = searchParams.cart_id
+    const cartId = (await searchParams).cart_id
     const cart = await retrieveCart(cartId)
 
     if (!cart) {
