@@ -10,7 +10,7 @@ type SortProductsProps = {
   "data-testid"?: string
 }
 
-const sortOptions = [
+const sortOptions: { value: SortOptions; label: string }[] = [
   {
     value: "created_at",
     label: "Latest Arrivals",
@@ -25,12 +25,20 @@ const sortOptions = [
   },
 ]
 
+const isSortOption = (value: string): value is SortOptions => {
+  return sortOptions.some((option) => option.value === value)
+}
+
 const SortProducts = ({
   "data-testid": dataTestId,
   sortBy,
   setQueryParams,
 }: SortProductsProps) => {
-  const handleChange = (value: SortOptions) => {
+  const handleChange = (value: string) => {
+    if (!isSortOption(value)) {
+      return
+    }
+
     setQueryParams("sortBy", value)
   }
 

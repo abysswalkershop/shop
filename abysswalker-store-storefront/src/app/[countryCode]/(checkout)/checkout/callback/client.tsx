@@ -3,7 +3,7 @@ import { placeOrder } from "@lib/data/cart"
 import InteractiveLink from "@modules/common/components/interactive-link"
 import Spinner from "@modules/common/icons/spinner"
 import { useStripe } from "@stripe/react-stripe-js"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export default function CallbackPageClient({ regioncode }: { regioncode: string }) {
@@ -60,7 +60,7 @@ export default function CallbackPageClient({ regioncode }: { regioncode: string 
         if (errorMessage) {
             router.push(`/${regioncode}/checkout?step=payment&error=${encodeURIComponent(errorMessage)}`)
         }
-    }, [errorMessage, router])
+    }, [errorMessage, regioncode, router])
 
     return (
         <div className="flex flex-col items-center justify-center p-8 mt-12">

@@ -7,6 +7,15 @@ import { SortOptions } from "@modules/store/components/refinement-list/sort-prod
 import { getCacheOptions } from "./cookies"
 import { getRegion, retrieveRegion } from "./regions"
 
+type ProductQueryParams = HttpTypes.FindParams &
+  HttpTypes.StoreProductParams & {
+    handle?: string | string[]
+    id?: string[]
+    collection_id?: string | string[]
+    tag_id?: string[]
+    is_giftcard?: boolean
+  }
+
 export const listProducts = async ({
   pageParam = 1,
   queryParams,
@@ -14,13 +23,13 @@ export const listProducts = async ({
   regionId,
 }: {
   pageParam?: number
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: ProductQueryParams
   countryCode?: string
   regionId?: string
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: ProductQueryParams
 }> => {
   if (!countryCode && !regionId) {
     throw new Error("Country code or region ID is required")
@@ -91,13 +100,13 @@ export const listProductsWithSort = async ({
   countryCode,
 }: {
   page?: number
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: ProductQueryParams
   sortBy?: SortOptions
   countryCode: string
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: ProductQueryParams
 }> => {
   const limit = queryParams?.limit || 12
 

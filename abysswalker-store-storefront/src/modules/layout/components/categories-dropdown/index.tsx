@@ -14,7 +14,7 @@ type Category = {
     name: string
     handle: string
     category_children?: Category[]
-    parent_category?: any
+    parent_category?: Category | null
 }
 
 const CategoryItem = ({ category }: { category: Category }) => {

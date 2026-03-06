@@ -1,9 +1,8 @@
 "use client"
 import { gsap } from "gsap";
-import { Github } from "@medusajs/icons"
-import { Button, Heading } from "@medusajs/ui"
-import InteractiveLink from "@modules/common/components/interactive-link"
+import { Heading } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Image from "next/image"
 import { useState, useEffect, useRef } from "react"
 
 const Hero = () => {
@@ -111,7 +110,6 @@ const Hero = () => {
   useEffect(() => {
     if (!heroRef.current || !particlesRef.current || !contentRef.current) return;
 
-    const container = heroRef.current;
     const nodes = nodesRef.current;
     const lines = linesRef.current;
     const content = contentRef.current;
@@ -155,7 +153,7 @@ const Hero = () => {
     let nodeAnimationComplete = 0;
 
     // Animate glow powder from left (stopping at ~1/3 of screen)
-    particles.forEach((particle, index) => {
+    particles.forEach((particle) => {
       const endX = Math.random() * (window.innerWidth * (window.innerWidth < 768 ? 0.5 : 0.33)) + 50;
       const endY = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.1;
       const duration = Math.random() * 1.5 + 1;
@@ -375,10 +373,12 @@ const Hero = () => {
                     background: "radial-gradient(circle, #005557 40%, #141b22)"
                   }}
                 >
-                  <img
+                  <Image
                     src={node.image}
-                    alt={`${node.category}`}
-                    className="w-full h-full object-cover"
+                    alt={node.category}
+                    fill
+                    sizes="64px"
+                    className="object-cover"
                   />
                 </div>
                 <div

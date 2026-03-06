@@ -1,19 +1,14 @@
-const checkEnvVariables = require("./check-env-variables")
+import checkEnvVariables from "./check-env-variables.mjs"
 
 checkEnvVariables()
 
-/**
- * @type {import('next').NextConfig}
- */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   logging: {
     fetches: {
       fullUrl: true,
     },
-  },
-  typescript: {
-    ignoreBuildErrors: true,
   },
   images: {
     remotePatterns: [
@@ -37,8 +32,12 @@ const nextConfig = {
         protocol: "https",
         hostname: "data.abysswalker.org",
       },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
     ],
   },
 }
 
-module.exports = nextConfig
+export default nextConfig

@@ -1,11 +1,9 @@
 "use client"
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Github } from "@medusajs/icons"
-import { Button, Heading } from "@medusajs/ui"
+import { Heading } from "@medusajs/ui"
 import InteractiveLink from "@modules/common/components/interactive-link"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { useState, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -61,7 +59,7 @@ const GlowHero = () => {
             }
         });
 
-        particles.forEach((particle, index) => {
+        particles.forEach((particle) => {
             // Arc trajectory from left to right across screen
             const endX = Math.random() * window.innerWidth * 0.8 + window.innerWidth * 0.1;
             const endY = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.2;

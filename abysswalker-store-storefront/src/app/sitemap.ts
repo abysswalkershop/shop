@@ -21,9 +21,6 @@ const staticRoutes = [
     '/tou'
 ]
 
-// Routes to exclude from sitemap
-const excludedPaths = ['/checkout', '/account', '/order']
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     try {
         // Get available regions/countries

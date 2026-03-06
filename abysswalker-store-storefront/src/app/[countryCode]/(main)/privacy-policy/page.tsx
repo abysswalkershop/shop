@@ -7,7 +7,7 @@ export default function PrivacyPolicyPage() {
             <p className="text-sm text-gray-500 mb-6 text-center"><strong>Last Updated:</strong> June 10, 2025</p>
 
             <p className="mb-4 text-black">
-                Welcome to EI Abyss Walker! This Privacy Policy describes how EI Abyss Walker ("we," "us," or "our") collects, uses, and discloses your information when you visit, use, or make a purchase from our online shop (the "Service").
+                Welcome to EI Abyss Walker! This Privacy Policy describes how EI Abyss Walker (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) collects, uses, and discloses your information when you visit, use, or make a purchase from our online shop (the &quot;Service&quot;).
             </p>
 
             <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">1. Information We Collect</h2>
@@ -25,7 +25,7 @@ export default function PrivacyPolicyPage() {
                             <strong>Order Information:</strong> When you make a purchase, we collect your name, billing address, shipping address, email address, and phone number.
                         </li>
                         <li className="mb-1 text-black">
-                            <strong>Payment Information:</strong> When you make a purchase, your payment details (e.g., credit card number, expiration date, CVV) are directly submitted to our third-party payment processor, Stripe. <strong className="text-red-600">We do not directly collect, store, or process your full payment card details on our servers.</strong> Stripe processes this information securely on our behalf. Please refer to Stripe's Privacy Policy for more information on how they handle your payment data.
+                            <strong>Payment Information:</strong> When you make a purchase, your payment details (e.g., credit card number, expiration date, CVV) are directly submitted to our third-party payment processor, Stripe. <strong className="text-red-600">We do not directly collect, store, or process your full payment card details on our servers.</strong> Stripe processes this information securely on our behalf. Please refer to Stripe&apos;s Privacy Policy for more information on how they handle your payment data.
                         </li>
                         <li className="mb-1 text-black">
                             <strong>Communications:</strong> If you contact us via email or other methods, we may collect the content of your communications and your contact information.
@@ -78,7 +78,7 @@ export default function PrivacyPolicyPage() {
                             <strong>Shipping Providers:</strong> To fulfill your orders and deliver products to you.
                         </li>
                         <li className="mb-1 text-black">
-                            <strong>Website Hosting:</strong> Hetzner, for hosting our shop's infrastructure. (While we do not directly share any data with Hetzner, they provide the servers and infrastructure that host our Service, so it is worth mentioning.)
+                            <strong>Website Hosting:</strong> Hetzner, for hosting our shop&apos;s infrastructure. (While we do not directly share any data with Hetzner, they provide the servers and infrastructure that host our Service, so it is worth mentioning.)
                         </li>
                     </ul>
                     These service providers are contractually obligated to protect your information and only use it for the specific purposes for which it was disclosed.
@@ -99,7 +99,7 @@ export default function PrivacyPolicyPage() {
                 Our online shop is hosted on Hetzner servers. Hetzner provides robust infrastructure and security measures to protect the data stored on their systems.
             </p>
             <p className="mb-4 text-black">
-                For payment processing, we rely on Stripe's secure infrastructure. Stripe is a PCI DSS certified payment processor, meaning they adhere to strict security standards for handling payment card information.
+                For payment processing, we rely on Stripe&apos;s secure infrastructure. Stripe is a PCI DSS certified payment processor, meaning they adhere to strict security standards for handling payment card information.
             </p>
             <p className="mb-4 text-black">
                 While we strive to use commercially acceptable means to protect your Personal Information, no method of transmission over the Internet or method of electronic storage is 100% secure. We cannot guarantee its absolute security.
@@ -122,17 +122,17 @@ export default function PrivacyPolicyPage() {
 
             <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">7. Third-Party Links</h2>
             <p className="mb-4 text-black">
-                Our Service may contain links to other websites that are not operated by us. If you click on a third-party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy of every site you visit. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.
+                Our Service may contain links to other websites that are not operated by us. If you click on a third-party link, you will be directed to that third party&apos;s site. We strongly advise you to review the Privacy Policy of every site you visit. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.
             </p>
 
-            <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">8. Children's Privacy</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">8. Children&apos;s Privacy</h2>
             <p className="mb-4 text-black">
-                Our Service is not intended for individuals under the age of 18 ("Children"). We do not knowingly collect personally identifiable information from anyone under the age of 18. If you are a parent or guardian and you are aware that your child has provided us with Personal Information, please contact us. If we become aware that we have collected Personal Information from children without verification of parental consent, we take steps to remove that information from our servers.
+                Our Service is not intended for individuals under the age of 18 (&quot;Children&quot;). We do not knowingly collect personally identifiable information from anyone under the age of 18. If you are a parent or guardian and you are aware that your child has provided us with Personal Information, please contact us. If we become aware that we have collected Personal Information from children without verification of parental consent, we take steps to remove that information from our servers.
             </p>
 
             <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">9. Changes to This Privacy Policy</h2>
             <p className="mb-4 text-black">
-                We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date at the top of this Privacy Policy. You are advised to review this Privacy Policy periodically for any changes.
+                We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the &quot;Last Updated&quot; date at the top of this Privacy Policy. You are advised to review this Privacy Policy periodically for any changes.
             </p>
 
             <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">10. Contact Us</h2>

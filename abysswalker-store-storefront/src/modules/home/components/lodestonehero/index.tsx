@@ -1,9 +1,9 @@
 "use client"
 import { gsap } from "gsap";
-import { Github } from "@medusajs/icons"
-import { Button, Heading } from "@medusajs/ui"
+import { Heading } from "@medusajs/ui"
 import InteractiveLink from "@modules/common/components/interactive-link"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Image from "next/image"
 import { useState, useEffect, useRef } from "react"
 import { ScrollTrigger } from "gsap/all";
 import Link from "next/link";
@@ -290,10 +290,12 @@ const LodeStoneHero = () => {
                                             background: "radial-gradient(circle, #005557 40%, #141b22)"
                                         }}
                                     >
-                                        <img
+                                        <Image
                                             src={node.image}
-                                            alt={`Node ${node.id}`}
-                                            className="w-full h-full object-cover"
+                                            alt={node.category}
+                                            fill
+                                            sizes="80px"
+                                            className="object-cover"
                                         />
                                     </div>
 
@@ -330,10 +332,12 @@ const LodeStoneHero = () => {
                                             background: "radial-gradient(circle, #005557 40%, #141b22)"
                                         }}
                                     >
-                                        <img
+                                        <Image
                                             src={node.image}
-                                            alt={`Node ${node.id}`}
-                                            className="w-full h-full object-cover"
+                                            alt={node.category}
+                                            fill
+                                            sizes="80px"
+                                            className="object-cover"
                                         />
                                     </div>
 

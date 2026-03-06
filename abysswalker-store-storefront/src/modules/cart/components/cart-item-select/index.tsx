@@ -4,7 +4,6 @@ import { IconBadge, clx } from "@medusajs/ui"
 import {
   SelectHTMLAttributes,
   forwardRef,
-  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -19,22 +18,24 @@ type NativeSelectProps = {
 } & Omit<SelectHTMLAttributes<HTMLSelectElement>, "size">
 
 const CartItemSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
-  ({ placeholder = "Select...", className, children, ...props }, ref) => {
+  (
+    { placeholder = "Select...", className, children, onChange, value, defaultValue, ...props },
+    ref
+  ) => {
     const innerRef = useRef<HTMLSelectElement>(null)
-    const [isPlaceholder, setIsPlaceholder] = useState(false)
+    const [uncontrolledIsPlaceholder, setUncontrolledIsPlaceholder] = useState(() => {
+      const initialValue = value ?? defaultValue
+      return initialValue === "" || initialValue == null
+    })
+    const isPlaceholder =
+      value !== undefined
+        ? value === "" || value == null
+        : uncontrolledIsPlaceholder
 
     useImperativeHandle<HTMLSelectElement | null, HTMLSelectElement | null>(
       ref,
       () => innerRef.current
     )
-
-    useEffect(() => {
-      if (innerRef.current && innerRef.current.value === "") {
-        setIsPlaceholder(true)
-      } else {
-        setIsPlaceholder(false)
-      }
-    }, [innerRef.current?.value])
 
     return (
       <div>
@@ -52,6 +53,12 @@ const CartItemSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
           <select
             ref={innerRef}
             {...props}
+            value={value}
+            defaultValue={defaultValue}
+            onChange={(event) => {
+              setUncontrolledIsPlaceholder(event.target.value === "")
+              onChange?.(event)
+            }}
             className="appearance-none bg-abyss-background border-none px-4 transition-colors duration-150 focus:border-abyss-light-accent outline-none w-16 h-16 items-center justify-center"
           >
             <option disabled value="">

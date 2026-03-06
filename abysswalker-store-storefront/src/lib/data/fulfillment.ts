@@ -4,6 +4,26 @@ import { sdk } from "@lib/config"
 import { HttpTypes } from "@medusajs/types"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 
+export type StoreCartShippingOptionWithServiceZone =
+  HttpTypes.StoreCartShippingOption & {
+    service_zone?: {
+      fulfillment_set?: {
+        type?: string | null
+        location?: {
+          address?: {
+            address_1?: string | null
+            address_2?: string | null
+            city?: string | null
+            country_code?: string | null
+            phone?: string | null
+            postal_code?: string | null
+            province?: string | null
+          } | null
+        } | null
+      } | null
+    } | null
+  }
+
 export const listCartShippingMethods = async (cartId: string) => {
   const headers = {
     ...(await getAuthHeaders()),
@@ -14,7 +34,7 @@ export const listCartShippingMethods = async (cartId: string) => {
   }
 
   return sdk.client
-    .fetch<HttpTypes.StoreShippingOptionListResponse>(
+    .fetch<{ shipping_options: StoreCartShippingOptionWithServiceZone[] }>(
       `/store/shipping-options`,
       {
         method: "GET",
@@ -54,7 +74,7 @@ export const calculatePriceForShippingOption = async (
   }
 
   return sdk.client
-    .fetch<{ shipping_option: HttpTypes.StoreCartShippingOption }>(
+    .fetch<{ shipping_option: StoreCartShippingOptionWithServiceZone }>(
       `/store/shipping-options/${optionId}/calculate`,
       {
         method: "POST",
@@ -64,7 +84,7 @@ export const calculatePriceForShippingOption = async (
       }
     )
     .then(({ shipping_option }) => shipping_option)
-    .catch((e) => {
+    .catch(() => {
       return null
     })
 }
