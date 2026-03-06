@@ -5,12 +5,13 @@ import Nav from "@modules/layout/templates/nav"
 
 const Layout: React.FC<{
   children: React.ReactNode
-}> = ({ children }) => {
+  countryCode?: string
+}> = ({ children, countryCode = "" }) => {
   return (
     <div>
-      <Nav />
+      <Nav countryCode={countryCode} />
       <main className="relative">{children}</main>
-      <Footer />
+      <Footer countryCode={countryCode} />
     </div>
   )
 }

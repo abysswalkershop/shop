@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { Suspense } from "react"
 
 import { getCategoryByHandle, listCategories } from "@lib/data/categories"
 import { listRegions } from "@lib/data/regions"
@@ -45,15 +46,15 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   try {
     const productCategory = await getCategoryByHandle(params.category)
 
-    const title = productCategory.name + " | Abyss Walker"
+    const title = `${productCategory.name} | Abyss Walker`
 
     const description = productCategory.description ?? `${title} category.`
 
     return {
-      title: `${title} | Abyss Walker`,
+      title,
       description,
       alternates: {
-        canonical: `${params.category.join("/")}`,
+        canonical: `/${params.countryCode}/categories/${params.category.join("/")}`,
       },
     }
   } catch {
@@ -62,9 +63,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 
 export default async function CategoryPage(props: Props) {
-  const searchParams = await props.searchParams
   const params = await props.params
-  const { sortBy, page } = searchParams
 
   const productCategory = await getCategoryByHandle(params.category)
 
@@ -73,11 +72,41 @@ export default async function CategoryPage(props: Props) {
   }
 
   return (
+    <Suspense
+      fallback={
+        <CategoryTemplate
+          category={productCategory}
+          countryCode={params.countryCode}
+        />
+      }
+    >
+      <CategoryPageContent
+        category={productCategory}
+        countryCode={params.countryCode}
+        searchParams={props.searchParams}
+      />
+    </Suspense>
+  )
+}
+
+async function CategoryPageContent({
+  category,
+  countryCode,
+  searchParams,
+}: {
+  category: NonNullable<Awaited<ReturnType<typeof getCategoryByHandle>>>
+  countryCode: string
+  searchParams: Props["searchParams"]
+}) {
+  const resolvedSearchParams = await searchParams
+  const { sortBy, page } = resolvedSearchParams
+
+  return (
     <CategoryTemplate
-      category={productCategory}
+      category={category}
       sortBy={sortBy}
       page={page}
-      countryCode={params.countryCode}
+      countryCode={countryCode}
     />
   )
 }

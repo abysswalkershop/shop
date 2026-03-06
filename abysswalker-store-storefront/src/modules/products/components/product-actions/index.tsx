@@ -1,18 +1,19 @@
 "use client"
 
 import { addToCart } from "@lib/data/cart"
+import { useCountryCode } from "@lib/context/country-context"
 import { useIntersection } from "@lib/hooks/use-in-view"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
 import { isEqual } from "lodash"
-import { useParams } from "next/navigation"
 import { useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
 
 type ProductActionsProps = {
+  countryCode?: string
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
   disabled?: boolean
@@ -71,14 +72,51 @@ const isVariantInStock = (variant: HttpTypes.StoreProductVariant) => {
 }
 
 export default function ProductActions({
+  countryCode: providedCountryCode,
   product,
   disabled,
 }: ProductActionsProps) {
+  if (providedCountryCode) {
+    return (
+      <ProductActionsContent
+        countryCode={providedCountryCode}
+        product={product}
+        disabled={disabled}
+      />
+    )
+  }
+
+  return <ProductActionsWithResolvedCountry product={product} disabled={disabled} />
+}
+
+function ProductActionsWithResolvedCountry({
+  product,
+  disabled,
+}: Omit<ProductActionsProps, "countryCode" | "region">) {
+  const countryCode = useCountryCode()
+
+  return (
+    <ProductActionsContent
+      countryCode={countryCode}
+      product={product}
+      disabled={disabled}
+    />
+  )
+}
+
+function ProductActionsContent({
+  countryCode,
+  product,
+  disabled,
+}: {
+  countryCode: string
+  product: HttpTypes.StoreProduct
+  disabled?: boolean
+}) {
   const [options, setOptions] = useState<Record<string, string | undefined>>(() =>
     getInitialOptions(product)
   )
   const [isAdding, setIsAdding] = useState(false)
-  const countryCode = useParams().countryCode as string
 
   const selectedVariant = useMemo(() => {
     if (!product.variants || product.variants.length === 0) {

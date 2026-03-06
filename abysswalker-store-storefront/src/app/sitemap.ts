@@ -1,8 +1,26 @@
 import { MetadataRoute } from 'next'
 import { sdk } from '@lib/config'
+import { getLocalizedUrl } from '@lib/util/env'
 import { HttpTypes } from '@medusajs/types'
 
-const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL
+const isPrerenderCancellationError = (error: unknown) => {
+    if (!(error instanceof Error)) {
+        return false
+    }
+
+    return (
+        'digest' in error &&
+        error.digest === 'HANGING_PROMISE_REJECTION'
+    ) || error.message.includes('During prerendering, fetch() rejects when the prerender is complete.')
+}
+
+const logSitemapError = (message: string, error: unknown) => {
+    if (isPrerenderCancellationError(error)) {
+        return
+    }
+
+    console.error(message, error)
+}
 
 // Static routes that are always available
 const staticRoutes = [
@@ -23,21 +41,31 @@ const staticRoutes = [
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     try {
-        // Get available regions/countries
         const regions = await getRegions()
         const countryCodes = getCountryCodesFromRegions(regions)
+        const defaultCountryCode = getDefaultCountryCode(countryCodes)
 
         if (countryCodes.length === 0) {
-            // Fallback to default country code if no regions found
-            countryCodes.push('us')
+            countryCodes.push(defaultCountryCode)
         }
 
-        return await generateSitemapWithAlternates(countryCodes)
+        return await generateSitemapWithAlternates(countryCodes, defaultCountryCode)
     } catch (error) {
-        console.error('Error generating sitemap:', error)
-        // Fallback to default sitemap with US only
-        return generateSitemapWithAlternates(['us'])
+        logSitemapError('Error generating sitemap:', error)
+
+        const defaultCountryCode = getDefaultCountryCode([])
+        return generateSitemapWithAlternates([defaultCountryCode], defaultCountryCode)
     }
+}
+
+function getDefaultCountryCode(countryCodes: string[]) {
+    const configuredCountryCode = process.env.NEXT_PUBLIC_DEFAULT_REGION?.toLowerCase()
+
+    if (configuredCountryCode && countryCodes.includes(configuredCountryCode)) {
+        return configuredCountryCode
+    }
+
+    return configuredCountryCode || countryCodes[0] || 'us'
 }
 
 async function getRegions(): Promise<HttpTypes.StoreRegion[]> {
@@ -45,46 +73,49 @@ async function getRegions(): Promise<HttpTypes.StoreRegion[]> {
         const response = await sdk.store.region.list()
         return response.regions || []
     } catch (error) {
-        console.error('Error fetching regions:', error)
+        logSitemapError('Error fetching regions:', error)
         return []
     }
 }
 
 function getCountryCodesFromRegions(regions: HttpTypes.StoreRegion[]): string[] {
-    const countryCodes: string[] = []
+    const countryCodes = new Set<string>()
 
     for (const region of regions) {
         if (region.countries && region.countries.length > 0) {
             for (const country of region.countries) {
                 const countryCode = country.iso_2?.toLowerCase()
-                if (countryCode && !countryCodes.includes(countryCode)) {
-                    countryCodes.push(countryCode)
+                if (countryCode) {
+                    countryCodes.add(countryCode)
                 }
             }
         }
     }
 
-    return countryCodes
+    return Array.from(countryCodes)
 }
 
-async function generateSitemapWithAlternates(countryCodes: string[]): Promise<MetadataRoute.Sitemap> {
+async function generateSitemapWithAlternates(
+    countryCodes: string[],
+    defaultCountryCode: string
+): Promise<MetadataRoute.Sitemap> {
     const sitemapEntries: MetadataRoute.Sitemap = []
 
-    // Generate alternates for each country
     const generateAlternates = (route: string) => {
         const alternates: Record<string, string> = {}
 
         for (const countryCode of countryCodes) {
-            alternates[countryCode] = `${SITE_URL}/${countryCode}${route}`
+            alternates[countryCode] = getLocalizedUrl(countryCode, route)
         }
+
+        alternates['x-default'] = getLocalizedUrl(defaultCountryCode, route)
 
         return { languages: alternates }
     }
 
-    // Add static routes with alternates
     for (const route of staticRoutes) {
         sitemapEntries.push({
-            url: `${SITE_URL}${route}`,
+            url: getLocalizedUrl(defaultCountryCode, route),
             lastModified: new Date(),
             changeFrequency: route === '' ? 'daily' : 'weekly',
             priority: route === '' ? 1 : 0.8,
@@ -93,13 +124,12 @@ async function generateSitemapWithAlternates(countryCodes: string[]): Promise<Me
     }
 
     try {
-        // Get all products (using first country code for region lookup)
-        const products = await getProducts(countryCodes[0])
+        const products = await getProducts(defaultCountryCode)
         for (const product of products) {
             if (product.handle) {
                 const route = `/products/${product.handle}`
                 sitemapEntries.push({
-                    url: `${SITE_URL}${route}`,
+                    url: getLocalizedUrl(defaultCountryCode, route),
                     lastModified: new Date(product.updated_at || new Date()),
                     changeFrequency: 'weekly',
                     priority: 0.6,
@@ -114,7 +144,7 @@ async function generateSitemapWithAlternates(countryCodes: string[]): Promise<Me
             if (category.handle) {
                 const route = `/categories/${category.handle}`
                 sitemapEntries.push({
-                    url: `${SITE_URL}${route}`,
+                    url: getLocalizedUrl(defaultCountryCode, route),
                     lastModified: new Date(category.updated_at || new Date()),
                     changeFrequency: 'weekly',
                     priority: 0.7,
@@ -129,7 +159,7 @@ async function generateSitemapWithAlternates(countryCodes: string[]): Promise<Me
             if (collection.handle) {
                 const route = `/collections/${collection.handle}`
                 sitemapEntries.push({
-                    url: `${SITE_URL}${route}`,
+                    url: getLocalizedUrl(defaultCountryCode, route),
                     lastModified: new Date(collection.updated_at || new Date()),
                     changeFrequency: 'weekly',
                     priority: 0.7,
@@ -138,7 +168,7 @@ async function generateSitemapWithAlternates(countryCodes: string[]): Promise<Me
             }
         }
     } catch (error) {
-        console.error('Error generating dynamic routes:', error)
+        logSitemapError('Error generating dynamic routes:', error)
     }
 
     return sitemapEntries
@@ -149,12 +179,13 @@ async function getProducts(countryCode: string): Promise<HttpTypes.StoreProduct[
         let allProducts: HttpTypes.StoreProduct[] = []
         let offset = 0
         const limit = 100
+        const regionId = await getRegionIdByCountryCode(countryCode)
 
         while (true) {
             const response = await sdk.store.product.list({
                 limit,
                 offset,
-                region_id: await getRegionIdByCountryCode(countryCode),
+                ...(regionId ? { region_id: regionId } : {}),
             })
 
             if (!response.products || response.products.length === 0) {
@@ -172,7 +203,7 @@ async function getProducts(countryCode: string): Promise<HttpTypes.StoreProduct[
 
         return allProducts
     } catch (error) {
-        console.error('Error fetching products:', error)
+        logSitemapError('Error fetching products:', error)
         return []
     }
 }
@@ -184,7 +215,7 @@ async function getCategories(): Promise<HttpTypes.StoreProductCategory[]> {
         })
         return response.product_categories || []
     } catch (error) {
-        console.error('Error fetching categories:', error)
+        logSitemapError('Error fetching categories:', error)
         return []
     }
 }
@@ -196,7 +227,7 @@ async function getCollections(): Promise<HttpTypes.StoreCollection[]> {
         })
         return response.collections || []
     } catch (error) {
-        console.error('Error fetching collections:', error)
+        logSitemapError('Error fetching collections:', error)
         return []
     }
 }
@@ -218,7 +249,7 @@ async function getRegionIdByCountryCode(countryCode: string): Promise<string | u
 
         return undefined
     } catch (error) {
-        console.error('Error getting region ID:', error)
+        logSitemapError('Error getting region ID:', error)
         return undefined
     }
 }

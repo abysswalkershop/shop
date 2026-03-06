@@ -1,5 +1,7 @@
 "use server"
 
+import { cache } from "react"
+
 import { sdk } from "@lib/config"
 import medusaError from "@lib/util/medusa-error"
 import { HttpTypes } from "@medusajs/types"
@@ -35,32 +37,43 @@ export const retrieveRegion = async (id: string) => {
     .catch(medusaError)
 }
 
-const regionMap = new Map<string, HttpTypes.StoreRegion>()
+const getRegionMap = cache(async () => {
+  const regions = await listRegions()
+  const regionMap = new Map<string, HttpTypes.StoreRegion>()
+
+  regions.forEach((region) => {
+    region.countries?.forEach((country) => {
+      const countryCode = country.iso_2?.toLowerCase()
+
+      if (countryCode) {
+        regionMap.set(countryCode, region)
+      }
+    })
+  })
+
+  return regionMap
+})
 
 export const getRegion = async (countryCode: string) => {
   try {
-    if (regionMap.has(countryCode)) {
-      return regionMap.get(countryCode)
-    }
-
-    const regions = await listRegions()
-
-    if (!regions) {
-      return null
-    }
-
-    regions.forEach((region) => {
-      region.countries?.forEach((c) => {
-        regionMap.set(c?.iso_2 ?? "", region)
-      })
-    })
-
-    const region = countryCode
-      ? regionMap.get(countryCode)
-      : regionMap.get("us")
+    const regionMap = await getRegionMap()
+    const normalizedCountryCode = countryCode?.toLowerCase() || "us"
+    const region = regionMap.get(normalizedCountryCode) ?? regionMap.get("us")
 
     return region
   } catch {
     return null
   }
 }
+
+export const listRegionCountryCodes = cache(async () => {
+  const regions = await listRegions()
+
+  return Array.from(
+    new Set(
+      regions.flatMap((region) =>
+        region.countries?.map((country) => country.iso_2?.toLowerCase() ?? "") ?? []
+      )
+    )
+  ).filter(Boolean)
+})

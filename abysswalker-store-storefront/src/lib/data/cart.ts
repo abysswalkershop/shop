@@ -290,27 +290,14 @@ export async function applyPromotions(codes: string[]) {
 
 export async function applyGiftCard(_code: string) {
   void _code
-  //   const cartId = getCartId()
-  //   if (!cartId) return "No cartId cookie found"
-  //   try {
-  //     await updateCart(cartId, { gift_cards: [{ code }] }).then(() => {
-  //       revalidateTag("cart")
-  //     })
-  //   } catch (error: any) {
-  //     throw error
-  //   }
+
+  throw new Error("Gift card application is not implemented for this storefront.")
 }
 
 export async function removeDiscount(_code: string) {
   void _code
-  // const cartId = getCartId()
-  // if (!cartId) return "No cartId cookie found"
-  // try {
-  //   await deleteDiscount(cartId, code)
-  //   revalidateTag("cart")
-  // } catch (error: any) {
-  //   throw error
-  // }
+
+  throw new Error("Discount removal is not implemented for this storefront.")
 }
 
 export async function removeGiftCard(
@@ -320,19 +307,8 @@ export async function removeGiftCard(
 ) {
   void _codeToRemove
   void _giftCards
-  //   const cartId = getCartId()
-  //   if (!cartId) return "No cartId cookie found"
-  //   try {
-  //     await updateCart(cartId, {
-  //       gift_cards: [...giftCards]
-  //         .filter((gc) => gc.code !== codeToRemove)
-  //         .map((gc) => ({ code: gc.code })),
-  //     }).then(() => {
-  //       revalidateTag("cart")
-  //     })
-  //   } catch (error: any) {
-  //     throw error
-  //   }
+
+  throw new Error("Gift card removal is not implemented for this storefront.")
 }
 
 export async function submitPromotionForm(

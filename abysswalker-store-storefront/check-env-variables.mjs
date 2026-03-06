@@ -6,6 +6,21 @@ const requiredEnvs = [
     description:
       "Learn how to create a publishable key: https://docs.medusajs.com/v2/resources/storefront-development/publishable-api-keys",
   },
+  {
+    key: "MEDUSA_BACKEND_URL",
+    description:
+      "Set this to the Medusa backend origin used by the storefront server.",
+  },
+  {
+    key: "NEXT_PUBLIC_BASE_URL",
+    description:
+      "Set this to the public storefront origin, for example https://store.example.com.",
+  },
+  {
+    key: "NEXT_PUBLIC_STRIPE_KEY",
+    description:
+      "Set this to your Stripe publishable key so checkout can initialize payment elements.",
+  },
 ]
 
 export default function checkEnvVariables() {

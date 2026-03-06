@@ -3,11 +3,13 @@
 import { Popover, PopoverPanel, Transition } from "@headlessui/react"
 import { ArrowRightMini, XMark } from "@medusajs/icons"
 import { Text, clx, useToggleState } from "@medusajs/ui"
-import { Fragment } from "react"
+import { Fragment, Suspense } from "react"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CountrySelect from "../country-select"
 import { HttpTypes } from "@medusajs/types"
+
+const CURRENT_YEAR = new Date().getFullYear()
 
 const SideMenuItems = {
   Home: "/",
@@ -16,7 +18,13 @@ const SideMenuItems = {
   Cart: "/cart",
 }
 
-const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
+const SideMenu = ({
+  countryCode,
+  regions,
+}: {
+  countryCode: string
+  regions: HttpTypes.StoreRegion[] | null
+}) => {
   const toggleState = useToggleState()
 
   return (
@@ -59,6 +67,7 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                         return (
                           <li key={name}>
                             <LocalizedClientLink
+                              countryCode={countryCode}
                               href={href}
                               className="text-3xl leading-10 hover:text-abyss-light-accent"
                               onClick={close}
@@ -77,10 +86,13 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                         onMouseLeave={toggleState.close}
                       >
                         {regions && (
-                          <CountrySelect
-                            toggleState={toggleState}
-                            regions={regions}
-                          />
+                          <Suspense fallback={null}>
+                            <CountrySelect
+                              countryCode={countryCode}
+                              toggleState={toggleState}
+                              regions={regions}
+                            />
+                          </Suspense>
                         )}
                         <ArrowRightMini
                           className={clx(
@@ -90,7 +102,7 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                         />
                       </div>
                       <Text className="flex justify-between txt-compact-small">
-                        © {new Date().getFullYear()} EI Abyss Walker. AGPL V3 licensed.
+                        © {CURRENT_YEAR} EI Abyss Walker. AGPL V3 licensed.
                       </Text>
                     </div>
                   </div>

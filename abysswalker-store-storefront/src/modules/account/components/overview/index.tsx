@@ -6,11 +6,12 @@ import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 
 type OverviewProps = {
+  countryCode: string
   customer: HttpTypes.StoreCustomer | null
   orders: HttpTypes.StoreOrder[] | null
 }
 
-const Overview = ({ customer, orders }: OverviewProps) => {
+const Overview = ({ countryCode, customer, orders }: OverviewProps) => {
   return (
     <div data-testid="overview-page-wrapper">
       <div className="hidden small:block">
@@ -82,6 +83,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
                         data-value={order.id}
                       >
                         <LocalizedClientLink
+                          countryCode={countryCode}
                           href={`/account/orders/details/${order.id}`}
                         >
                           <Container className="bg-abyss-dark-accent flex justify-between items-center p-4">

@@ -40,17 +40,20 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           <ImageGallery images={product?.images || []} product={product} />
         </div>
         <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
-          <ProductOnboardingCta />
+          <Suspense fallback={null}>
+            <ProductOnboardingCta />
+          </Suspense>
           <Suspense
             fallback={
               <ProductActions
+                countryCode={countryCode}
                 disabled={true}
                 product={product}
                 region={region}
               />
             }
           >
-            <ProductActionsWrapper id={product.id} region={region} />
+            <ProductActionsWrapper countryCode={countryCode} id={product.id} region={region} />
           </Suspense>
         </div>
       </div>

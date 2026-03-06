@@ -6,15 +6,27 @@ import ProfileEmail from "@modules/account/components/profile-email"
 import ProfileName from "@modules/account/components/profile-name"
 
 import { notFound } from "next/navigation"
+import { connection } from "next/server"
 import { listRegions } from "@lib/data/regions"
 import { retrieveCustomer } from "@lib/data/customer"
+import { Suspense } from "react"
 
 export const metadata: Metadata = {
   title: "Profile",
   description: "View and edit your Abyss Walker profile.",
 }
 
-export default async function Profile() {
+export default function Profile() {
+  return (
+    <Suspense fallback={<div className="w-full" data-testid="profile-page-loading" />}>
+      <ProfileContent />
+    </Suspense>
+  )
+}
+
+async function ProfileContent() {
+  await connection()
+
   const customer = await retrieveCustomer()
   const regions = await listRegions()
 

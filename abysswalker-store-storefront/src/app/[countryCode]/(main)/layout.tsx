@@ -10,17 +10,20 @@ export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
 }
 
-export const dynamic = "force-dynamic"
+export default async function PageLayout(props: {
+  children: React.ReactNode
+  params: Promise<{ countryCode: string }>
+}) {
+  const { countryCode } = await props.params
 
-export default async function PageLayout(props: { children: React.ReactNode }) {
   return (
     <>
-      <Nav />
+      <Nav countryCode={countryCode} />
       <Suspense fallback={null}>
         <PersonalizedLayoutContent />
       </Suspense>
       {props.children}
-      <Footer />
+      <Footer countryCode={countryCode} />
     </>
   )
 }

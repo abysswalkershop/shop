@@ -15,6 +15,7 @@ type CategoryTreeNode = {
 }
 
 type CategoryTreeProps = {
+    countryCode?: string
     categories: CategoryTreeNode[]
     className?: string
     nestedClassName?: string
@@ -26,6 +27,7 @@ type CategoryTreeProps = {
 }
 
 const CategoryTree = ({
+    countryCode,
     categories,
     className,
     nestedClassName,
@@ -63,6 +65,7 @@ const CategoryTree = ({
                             key={category.id}
                         >
                             <LocalizedClientLink
+                                countryCode={countryCode}
                                 className={clx(
                                     linkClassName,
                                     depth === 0 && hasChildren && parentLinkClassName

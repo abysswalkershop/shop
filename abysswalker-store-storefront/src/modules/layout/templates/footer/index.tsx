@@ -6,7 +6,9 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import CategoryTree from "@modules/layout/components/category-tree"
 import Link from "next/link"
 
-export default async function Footer() {
+const CURRENT_YEAR = new Date().getFullYear()
+
+export default async function Footer({ countryCode }: { countryCode: string }) {
   const { collections } = await listCollections({
     fields: "*products",
   })
@@ -18,6 +20,7 @@ export default async function Footer() {
         <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
           <div>
             <LocalizedClientLink
+              countryCode={countryCode}
               href="/"
               className="txt-compact-xlarge-plus text-abyss-text-light hover:text-abyss-light-accent uppercase"
             >
@@ -31,6 +34,7 @@ export default async function Footer() {
                   Categories
                 </span>
                 <CategoryTree
+                  countryCode={countryCode}
                   categories={productCategories}
                   className="grid grid-cols-1 gap-2"
                   nestedClassName="grid grid-cols-1 gap-2 ml-3"
@@ -57,6 +61,7 @@ export default async function Footer() {
                   {collections?.slice(0, 6).map((c) => (
                     <li key={c.id}>
                       <LocalizedClientLink
+                        countryCode={countryCode}
                         className="hover:text-abyss-light-accent"
                         href={`/collections/${c.handle}`}
                       >
@@ -122,6 +127,7 @@ export default async function Footer() {
               <ul className="grid grid-cols-1 gap-y-2 text-abyss-text-light txt-small">
                 <li>
                   <LocalizedClientLink
+                    countryCode={countryCode}
                     href="/about"
                     target="_blank"
                     className="hover:text-abyss-light-accent"
@@ -141,6 +147,7 @@ export default async function Footer() {
                 </li>
                 <li>
                   <LocalizedClientLink
+                    countryCode={countryCode}
                     href="/imprint"
                     target="_blank"
                     className="hover:text-abyss-light-accent"
@@ -150,6 +157,7 @@ export default async function Footer() {
                 </li>
                 <li>
                   <LocalizedClientLink
+                    countryCode={countryCode}
                     href="/privacy-policy"
                     target="_blank"
                     className="hover:text-abyss-light-accent"
@@ -159,6 +167,7 @@ export default async function Footer() {
                 </li>
                 <li>
                   <LocalizedClientLink
+                    countryCode={countryCode}
                     href="/returns"
                     target="_blank"
                     className="hover:text-abyss-light-accent"
@@ -168,6 +177,7 @@ export default async function Footer() {
                 </li>
                 <li>
                   <LocalizedClientLink
+                    countryCode={countryCode}
                     href="/tos"
                     target="_blank"
                     className="hover:text-abyss-light-accent"
@@ -177,6 +187,7 @@ export default async function Footer() {
                 </li>
                 <li>
                   <LocalizedClientLink
+                    countryCode={countryCode}
                     href="/tou"
                     target="_blank"
                     className="hover:text-abyss-light-accent"
@@ -186,6 +197,7 @@ export default async function Footer() {
                 </li>
                 <li>
                   <LocalizedClientLink
+                    countryCode={countryCode}
                     href="/termsofsale"
                     target="_blank"
                     className="hover:text-abyss-light-accent"
@@ -195,6 +207,7 @@ export default async function Footer() {
                 </li>
                 <li>
                   <LocalizedClientLink
+                    countryCode={countryCode}
                     href="/contact"
                     target="_blank"
                     className="hover:text-abyss-light-accent"
@@ -208,7 +221,7 @@ export default async function Footer() {
         </div>
         <div className="flex w-full mb-16 justify-between text-abyss-text-light">
           <Text className="txt-compact-small">
-            © {new Date().getFullYear()} EI Abyss Walker. AGPL V3 licensed.
+            © {CURRENT_YEAR} EI Abyss Walker. AGPL V3 licensed.
           </Text>
         </div>
       </div>

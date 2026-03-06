@@ -5,11 +5,16 @@ checkEnvVariables()
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-  },
+  cacheComponents: true,
+  ...(process.env.NODE_ENV === "development"
+    ? {
+      logging: {
+        fetches: {
+          fullUrl: true,
+        },
+      },
+    }
+    : {}),
   images: {
     remotePatterns: [
       {

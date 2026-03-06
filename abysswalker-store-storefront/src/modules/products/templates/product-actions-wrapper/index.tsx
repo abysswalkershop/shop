@@ -6,9 +6,11 @@ import ProductActions from "@modules/products/components/product-actions"
  * Fetches real time pricing for a product and renders the product actions component.
  */
 export default async function ProductActionsWrapper({
+  countryCode,
   id,
   region,
 }: {
+  countryCode: string
   id: string
   region: HttpTypes.StoreRegion
 }) {
@@ -21,5 +23,5 @@ export default async function ProductActionsWrapper({
     return null
   }
 
-  return <ProductActions product={product} region={region} />
+  return <ProductActions countryCode={countryCode} product={product} region={region} />
 }

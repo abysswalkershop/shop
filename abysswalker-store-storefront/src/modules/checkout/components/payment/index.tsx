@@ -11,7 +11,7 @@ import Divider from "@modules/common/components/divider"
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import { StripePaymentElementChangeEvent } from "@stripe/stripe-js"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useRef, useState } from "react"
 
 type PaymentProps = {
   cart: HttpTypes.StoreCart & { gift_cards?: Array<unknown> | null }
@@ -41,6 +41,7 @@ const Payment = ({
   const stripeReady = useContext(StripeContext)
   const stripe = useStripe()
   const elements = useElements()
+  const isInitializingSessionRef = useRef(false)
 
   const activeSession = cart.payment_collection?.payment_sessions?.find(
     (paymentSession: HttpTypes.StorePaymentSession) =>
@@ -116,17 +117,31 @@ const Payment = ({
   }
 
   useEffect(() => {
-    if (!activeSession && isOpen) {
-      void (async () => {
-        try {
-          await initiatePaymentSession(cart, {
-            provider_id: "pp_stripe_stripe",
-          })
-        } catch (err) {
-          console.error("Failed to initialize Stripe session:", err)
+    if (!isOpen || activeSession || isInitializingSessionRef.current) {
+      return
+    }
+
+    let isCurrent = true
+    isInitializingSessionRef.current = true
+
+    void (async () => {
+      try {
+        await initiatePaymentSession(cart, {
+          provider_id: "pp_stripe_stripe",
+        })
+      } catch (err) {
+        console.error("Failed to initialize Stripe session:", err)
+
+        if (isCurrent) {
           setError("Failed to initialize payment. Please try again.")
         }
-      })()
+      } finally {
+        isInitializingSessionRef.current = false
+      }
+    })()
+
+    return () => {
+      isCurrent = false
     }
   }, [cart, isOpen, activeSession])
 

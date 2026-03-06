@@ -17,7 +17,13 @@ type Category = {
     parent_category?: Category | null
 }
 
-const CategoryItem = ({ category }: { category: Category }) => {
+const CategoryItem = ({
+    category,
+    countryCode,
+}: {
+    category: Category
+    countryCode: string
+}) => {
     const [dropdownOpen, setDropdownOpen] = useState(false)
 
     const open = () => setDropdownOpen(true)
@@ -29,6 +35,7 @@ const CategoryItem = ({ category }: { category: Category }) => {
         // Simple link for categories without children
         return (
             <LocalizedClientLink
+                countryCode={countryCode}
                 className="hover:text-ui-fg-base h-full flex items-center txt-small-plus"
                 href={`/categories/${category.handle}`}
                 data-testid="category-link"
@@ -48,6 +55,7 @@ const CategoryItem = ({ category }: { category: Category }) => {
             <Popover className="relative h-full">
                 <PopoverButton className="h-full">
                     <LocalizedClientLink
+                        countryCode={countryCode}
                         className="hover:text-ui-fg-base h-full flex items-center txt-small-plus"
                         href={`/categories/${category.handle}`}
                         data-testid="category-link"
@@ -74,6 +82,7 @@ const CategoryItem = ({ category }: { category: Category }) => {
                             {category.category_children?.map((child) => (
                                 <LocalizedClientLink
                                     key={child.id}
+                                    countryCode={countryCode}
                                     href={`/categories/${child.handle}`}
                                     className="block py-2 px-3 text-small-regular text-ui-fg-subtle hover:text-ui-fg-base hover:bg-abyss-dark-accent rounded-md transition-colors text-abyss-text-light"
                                     data-testid="category-child-link"
@@ -90,8 +99,10 @@ const CategoryItem = ({ category }: { category: Category }) => {
 }
 
 const CategoriesNavigation = ({
+    countryCode,
     categories,
 }: {
+    countryCode: string
     categories: Category[]
 }) => {
     // Filter to only show parent categories (categories without parent_category)
@@ -103,7 +114,7 @@ const CategoriesNavigation = ({
     return (
         <>
             {parentCategories.map((category) => (
-                <CategoryItem key={category.id} category={category} />
+                <CategoryItem key={category.id} category={category} countryCode={countryCode} />
             ))}
         </>
     )
