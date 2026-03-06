@@ -40,9 +40,16 @@ const Item: React.FC<AccordionItemProps> = ({
   headingSize = "large",
   customTrigger = undefined,
   forceMountContent = undefined,
-  triggerable,
+  triggerable = true,
   ...props
 }) => {
+  const headingSizeClass =
+    headingSize === "small"
+      ? "text-xs"
+      : headingSize === "medium"
+        ? "text-base"
+        : "text-lg"
+
   return (
     <AccordionPrimitive.Item
       {...props}
@@ -56,9 +63,9 @@ const Item: React.FC<AccordionItemProps> = ({
         <div className="flex flex-col">
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-4">
-              <Text className="text-ui-fg-subtle text-sm">{title}</Text>
+              <Text className={clx("text-ui-fg-subtle", headingSizeClass)}>{title}</Text>
             </div>
-            <AccordionPrimitive.Trigger>
+            <AccordionPrimitive.Trigger disabled={!triggerable}>
               {customTrigger || <MorphingTrigger />}
             </AccordionPrimitive.Trigger>
           </div>

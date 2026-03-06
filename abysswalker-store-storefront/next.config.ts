@@ -32,6 +32,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "data.abysswalker.org",
       },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
     ],
   },
 }

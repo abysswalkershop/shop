@@ -35,7 +35,13 @@ export default function AboutPage() {
                 </div>
             </div>
             <a className="bg-abyss-dark-accent py-2 m-5 rounded-lg shadow-xl flex flex-row items-center justify-center md:w-1/4" href="https://gametec-live.com" target="_blank" rel="noopener noreferrer">
-                <img src="https://avatars.githubusercontent.com/u/66077766" alt="GameTec_live" className="rounded-full w-1/12 mr-5" />
+                <Image
+                    width={64}
+                    height={64}
+                    src="https://avatars.githubusercontent.com/u/66077766"
+                    alt="GameTec_live"
+                    className="rounded-full w-1/12 mr-5 h-auto"
+                />
                 <div>
                     <h3 className="text-lg">GameTec_live</h3>
                     <p className="text-sm">I&apos;m just the dev and IT guy, don&apos;t look at me?</p>

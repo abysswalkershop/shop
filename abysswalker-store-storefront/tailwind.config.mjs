@@ -1,7 +1,7 @@
 import medusaUiPreset from "@medusajs/ui-preset"
 import tailwindcssRadix from "tailwindcss-radix"
 
-export default {
+const config = {
   darkMode: "class",
   presets: [medusaUiPreset],
   content: [
@@ -174,3 +174,5 @@ export default {
   },
   plugins: [tailwindcssRadix()],
 }
+
+export default config
