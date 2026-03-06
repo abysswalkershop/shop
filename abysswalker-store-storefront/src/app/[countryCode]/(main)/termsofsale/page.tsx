@@ -13,8 +13,8 @@ export default function TermsOfSalePage() {
             </p>
 
             <p className="mb-4 text-black">
-                These Terms of Sale ("Terms of Sale") govern the purchase of products
-                and services ("Products") from Abyss Walker ("us", "we", or "our")
+                These Terms of Sale (&quot;Terms of Sale&quot;) govern the purchase of products
+                and services (&quot;Products&quot;) from Abyss Walker (&quot;us&quot;, &quot;we&quot;, or &quot;our&quot;)
                 through our website at <a href="https://abysswalker.org" className="text-blue-600 hover:underline"
                 >https://abysswalker.org</a>. By placing an order with us, you agree to be bound by these Terms of
                 Sale. These Terms of Sale are in addition to our <Link href="/tos" className="text-blue-600 hover:underline">Terms of Service</Link> and <Link href="/privacy-policy" className="text-blue-600 hover:underline">Privacy Policy</Link>.
@@ -140,7 +140,7 @@ export default function TermsOfSalePage() {
             </h3>
             <p className="mb-6 text-black">
                 For international orders, you are responsible for any applicable customs
-                duties, import taxes, fees, or other charges imposed by your country's
+                duties, import taxes, fees, or other charges imposed by your country&apos;s
                 customs office. These charges are not included in the Product price or
                 shipping cost and are the sole responsibility of the buyer. Delays due
                 to customs processing are beyond our control.

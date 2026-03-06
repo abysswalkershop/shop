@@ -1,8 +1,9 @@
-const path = require("path")
+import medusaUiPreset from "@medusajs/ui-preset"
+import tailwindcssRadix from "tailwindcss-radix"
 
-module.exports = {
+export default {
   darkMode: "class",
-  presets: [require("@medusajs/ui-preset")],
+  presets: [medusaUiPreset],
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx}",
     "./src/pages/**/*.{js,ts,jsx,tsx}",
@@ -21,12 +22,11 @@ module.exports = {
         padding: "padding-top padding-right padding-bottom padding-left",
       },
       colors: {
-        // Custom dark theme colors
         abyss: {
           "light-accent": "#00cbd0",
           "medium-accent": "#0ed5a7",
           "dark-accent": "#005557",
-          "background": "#141b22",
+          background: "#141b22",
           "text-light": "#e4f2ff",
           "text-dark": "#000000",
         },
@@ -149,10 +149,10 @@ module.exports = {
           "0%": { transform: "translateY(-100%)" },
           "100%": { transform: "translateY(0)" },
         },
-        'scroll-infinite': {
-          '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(-50%)' },
-        }
+        "scroll-infinite": {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         ring: "ring 2.2s cubic-bezier(0.5, 0, 0.5, 1) infinite",
@@ -168,9 +168,9 @@ module.exports = {
         enter: "enter 200ms ease-out",
         "slide-in": "slide-in 1.2s cubic-bezier(.41,.73,.51,1.02)",
         leave: "leave 150ms ease-in forwards",
-        'scroll-infinite': 'scroll-infinite 60s linear infinite',
+        "scroll-infinite": "scroll-infinite 60s linear infinite",
       },
     },
   },
-  plugins: [require("tailwindcss-radix")()],
+  plugins: [tailwindcssRadix()],
 }

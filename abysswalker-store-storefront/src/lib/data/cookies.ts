@@ -5,9 +5,7 @@ type CacheConfig = {
   personalized?: boolean
 }
 
-export const getAuthHeaders = async (): Promise<
-  { authorization: string } | {}
-> => {
+export const getAuthHeaders = async (): Promise<{ authorization?: string }> => {
   try {
     const cookies = await nextCookies()
     const token = cookies.get("_medusa_jwt")?.value
@@ -39,7 +37,7 @@ export const getCacheTag = async (
     }
 
     return `${tag}-${cacheId}`
-  } catch (error) {
+  } catch {
     return ""
   }
 }
@@ -47,7 +45,7 @@ export const getCacheTag = async (
 export const getCacheOptions = async (
   tag: string,
   config: CacheConfig = {}
-): Promise<{ tags: string[] } | {}> => {
+): Promise<{ tags?: string[] }> => {
   if (typeof window !== "undefined") {
     return {}
   }

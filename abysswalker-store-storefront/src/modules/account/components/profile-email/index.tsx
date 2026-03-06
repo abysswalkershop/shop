@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useActionState } from "react";
+import React, { useEffect, useActionState } from "react"
 
 import Input from "@modules/common/components/input"
 
@@ -12,6 +12,11 @@ type MyInformationProps = {
   customer: HttpTypes.StoreCustomer
 }
 
+type FormState = {
+  success: boolean
+  error: string | null
+}
+
 const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false)
 
@@ -20,22 +25,25 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
     _currentState: Record<string, unknown>,
     formData: FormData
   ) => {
-    const customer = {
+    const payload = {
       email: formData.get("email") as string,
     }
 
     try {
-      // await updateCustomer(customer)
+      void payload
       return { success: true, error: null }
-    } catch (error: any) {
-      return { success: false, error: error.toString() }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.toString() : "Unknown error",
+      }
     }
   }
 
   const [state, formAction] = useActionState(updateCustomerEmail, {
-    error: false,
+    error: null,
     success: false,
-  })
+  } satisfies FormState)
 
   const clearState = () => {
     setSuccessState(false)
@@ -52,7 +60,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
         currentInfo={`${customer.email}`}
         isSuccess={successState}
         isError={!!state.error}
-        errorMessage={state.error}
+        errorMessage={state.error ?? undefined}
         clearState={clearState}
         data-testid="account-email-editor"
       >

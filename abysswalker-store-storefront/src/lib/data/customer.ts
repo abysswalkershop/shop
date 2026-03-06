@@ -14,6 +14,27 @@ import {
   setAuthToken,
 } from "./cookies"
 
+export type CustomerActionResult = {
+  success: boolean
+  error: string | null
+}
+
+export type CustomerAddressFormState = CustomerActionResult & {
+  addressId?: string
+  isDefaultBilling?: boolean
+  isDefaultShipping?: boolean
+}
+
+const revalidateCachedTag = (tag: string) => revalidateTag(tag, "max")
+
+const getErrorMessage = (error: unknown) => {
+  if (error instanceof Error) {
+    return error.toString()
+  }
+
+  return "Unknown error"
+}
+
 export const retrieveCustomer =
   async (): Promise<HttpTypes.StoreCustomer | null> => {
     const authHeaders = await getAuthHeaders()
@@ -48,12 +69,15 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
     .catch(medusaError)
 
   const cacheTag = await getCacheTag("customers")
-  revalidateTag(cacheTag)
+  revalidateCachedTag(cacheTag)
 
   return updateRes
 }
 
-export async function signup(_currentState: unknown, formData: FormData) {
+export async function signup(
+  _currentState: string | null,
+  formData: FormData
+): Promise<string | null> {
   const password = formData.get("password") as string
   const customerForm = {
     email: formData.get("email") as string,
@@ -74,7 +98,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
       ...(await getAuthHeaders()),
     }
 
-    const { customer: createdCustomer } = await sdk.store.customer.create(
+    await sdk.store.customer.create(
       customerForm,
       {},
       headers
@@ -88,13 +112,13 @@ export async function signup(_currentState: unknown, formData: FormData) {
     await setAuthToken(loginToken as string)
 
     const customerCacheTag = await getCacheTag("customers")
-    revalidateTag(customerCacheTag)
+    revalidateCachedTag(customerCacheTag)
 
     await transferCart()
 
-    return createdCustomer
-  } catch (error: any) {
-    return error.toString()
+    return null
+  } catch (error) {
+    return getErrorMessage(error)
   }
 }
 
@@ -108,16 +132,16 @@ export async function login(_currentState: unknown, formData: FormData) {
       .then(async (token) => {
         await setAuthToken(token as string)
         const customerCacheTag = await getCacheTag("customers")
-        revalidateTag(customerCacheTag)
+        revalidateCachedTag(customerCacheTag)
       })
-  } catch (error: any) {
-    return error.toString()
+  } catch (error) {
+    return getErrorMessage(error)
   }
 
   try {
     await transferCart()
-  } catch (error: any) {
-    return error.toString()
+  } catch (error) {
+    return getErrorMessage(error)
   }
 }
 
@@ -127,12 +151,12 @@ export async function signout(countryCode: string) {
   await removeAuthToken()
 
   const customerCacheTag = await getCacheTag("customers")
-  revalidateTag(customerCacheTag)
+  revalidateCachedTag(customerCacheTag)
 
   await removeCartId()
 
   const cartCacheTag = await getCacheTag("carts")
-  revalidateTag(cartCacheTag)
+  revalidateCachedTag(cartCacheTag)
 
   redirect(`/${countryCode}/account`)
 }
@@ -149,15 +173,15 @@ export async function transferCart() {
   await sdk.store.cart.transferCart(cartId, {}, headers)
 
   const cartCacheTag = await getCacheTag("carts")
-  revalidateTag(cartCacheTag)
+  revalidateCachedTag(cartCacheTag)
 }
 
 export const addCustomerAddress = async (
-  currentState: Record<string, unknown>,
+  currentState: CustomerAddressFormState,
   formData: FormData
-): Promise<any> => {
-  const isDefaultBilling = (currentState.isDefaultBilling as boolean) || false
-  const isDefaultShipping = (currentState.isDefaultShipping as boolean) || false
+): Promise<CustomerAddressFormState> => {
+  const isDefaultBilling = currentState.isDefaultBilling ?? false
+  const isDefaultShipping = currentState.isDefaultShipping ?? false
 
   const address = {
     first_name: formData.get("first_name") as string,
@@ -180,28 +204,28 @@ export const addCustomerAddress = async (
 
   return sdk.store.customer
     .createAddress(address, {}, headers)
-    .then(async ({ customer }) => {
+    .then(async () => {
       const customerCacheTag = await getCacheTag("customers")
-      revalidateTag(customerCacheTag)
-      return { success: true, error: null }
+      revalidateCachedTag(customerCacheTag)
+      return { ...currentState, success: true, error: null }
     })
     .catch((err) => {
-      return { success: false, error: err.toString() }
+      return { ...currentState, success: false, error: err.toString() }
     })
 }
 
 export const deleteCustomerAddress = async (
   addressId: string
-): Promise<void> => {
+): Promise<CustomerActionResult> => {
   const headers = {
     ...(await getAuthHeaders()),
   }
 
-  await sdk.store.customer
+  return sdk.store.customer
     .deleteAddress(addressId, headers)
     .then(async () => {
       const customerCacheTag = await getCacheTag("customers")
-      revalidateTag(customerCacheTag)
+      revalidateCachedTag(customerCacheTag)
       return { success: true, error: null }
     })
     .catch((err) => {
@@ -210,11 +234,12 @@ export const deleteCustomerAddress = async (
 }
 
 export const updateCustomerAddress = async (
-  currentState: Record<string, unknown>,
+  currentState: CustomerAddressFormState,
   formData: FormData
-): Promise<any> => {
+): Promise<CustomerAddressFormState> => {
+  const formAddressId = formData.get("addressId")
   const addressId =
-    (currentState.addressId as string) || (formData.get("addressId") as string)
+    currentState.addressId || (typeof formAddressId === "string" ? formAddressId : "")
 
   if (!addressId) {
     return { success: false, error: "Address ID is required" }
@@ -246,10 +271,10 @@ export const updateCustomerAddress = async (
     .updateAddress(addressId, address, {}, headers)
     .then(async () => {
       const customerCacheTag = await getCacheTag("customers")
-      revalidateTag(customerCacheTag)
-      return { success: true, error: null }
+      revalidateCachedTag(customerCacheTag)
+      return { ...currentState, success: true, error: null }
     })
     .catch((err) => {
-      return { success: false, error: err.toString() }
+      return { ...currentState, success: false, error: err.toString() }
     })
 }

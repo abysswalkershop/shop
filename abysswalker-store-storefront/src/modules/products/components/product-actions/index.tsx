@@ -21,10 +21,33 @@ type ProductActionsProps = {
 const optionsAsKeymap = (
   variantOptions: HttpTypes.StoreProductVariant["options"]
 ) => {
-  return variantOptions?.reduce((acc: Record<string, string>, varopt: any) => {
-    acc[varopt.option_id] = varopt.value
+  return variantOptions?.reduce<Record<string, string>>((acc, variantOption) => {
+    if (variantOption.option_id && variantOption.value) {
+      acc[variantOption.option_id] = variantOption.value
+    }
+
     return acc
   }, {})
+}
+
+const getInitialOptions = (product: HttpTypes.StoreProduct) => {
+  if (!product.variants?.length) {
+    return {}
+  }
+
+  const firstInStockVariant = product.variants.find((variant) =>
+    isVariantInStock(variant)
+  )
+
+  if (firstInStockVariant) {
+    return optionsAsKeymap(firstInStockVariant.options) ?? {}
+  }
+
+  if (product.variants.length === 1) {
+    return optionsAsKeymap(product.variants[0].options) ?? {}
+  }
+
+  return {}
 }
 
 // Helper function to check if a variant is in stock
@@ -51,28 +74,11 @@ export default function ProductActions({
   product,
   disabled,
 }: ProductActionsProps) {
-  const [options, setOptions] = useState<Record<string, string | undefined>>({})
+  const [options, setOptions] = useState<Record<string, string | undefined>>(() =>
+    getInitialOptions(product)
+  )
   const [isAdding, setIsAdding] = useState(false)
   const countryCode = useParams().countryCode as string
-
-  // Automatically select the first in-stock variant
-  useEffect(() => {
-    if (product.variants && product.variants.length > 0) {
-      // Find the first in-stock variant
-      const firstInStockVariant = product.variants.find(variant =>
-        isVariantInStock(variant)
-      )
-
-      if (firstInStockVariant) {
-        const variantOptions = optionsAsKeymap(firstInStockVariant.options)
-        setOptions(variantOptions ?? {})
-      } else if (product.variants.length === 1) {
-        // Fallback: if only one variant and it's out of stock, still select it
-        const variantOptions = optionsAsKeymap(product.variants[0].options)
-        setOptions(variantOptions ?? {})
-      }
-    }
-  }, [product.variants])
 
   const selectedVariant = useMemo(() => {
     if (!product.variants || product.variants.length === 0) {

@@ -26,13 +26,11 @@ export async function generateStaticParams() {
     regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
   )
 
-  const categoryHandles = product_categories.map(
-    (category: any) => category.handle
-  )
+  const categoryHandles = product_categories.map((category) => category.handle)
 
   const staticParams = countryCodes
-    ?.map((countryCode: string | undefined) =>
-      categoryHandles.map((handle: any) => ({
+    ?.map((countryCode) =>
+      categoryHandles.map((handle) => ({
         countryCode,
         category: [handle],
       }))
@@ -58,7 +56,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         canonical: `${params.category.join("/")}`,
       },
     }
-  } catch (error) {
+  } catch {
     notFound()
   }
 }

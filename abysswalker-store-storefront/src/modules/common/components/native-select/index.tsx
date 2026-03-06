@@ -3,7 +3,6 @@ import { clx } from "@medusajs/ui"
 import {
   SelectHTMLAttributes,
   forwardRef,
-  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -17,24 +16,33 @@ export type NativeSelectProps = {
 
 const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
   (
-    { placeholder = "Select...", defaultValue, className, children, ...props },
+    {
+      placeholder = "Select...",
+      defaultValue,
+      className,
+      children,
+      onChange,
+      value,
+      ...props
+    },
     ref
   ) => {
     const innerRef = useRef<HTMLSelectElement>(null)
-    const [isPlaceholder, setIsPlaceholder] = useState(false)
+    const [uncontrolledIsPlaceholder, setUncontrolledIsPlaceholder] = useState(
+      () => {
+        const initialValue = value ?? defaultValue
+        return initialValue === "" || initialValue == null
+      }
+    )
+    const isPlaceholder =
+      value !== undefined
+        ? value === "" || value == null
+        : uncontrolledIsPlaceholder
 
     useImperativeHandle<HTMLSelectElement | null, HTMLSelectElement | null>(
       ref,
       () => innerRef.current
     )
-
-    useEffect(() => {
-      if (innerRef.current && innerRef.current.value === "") {
-        setIsPlaceholder(true)
-      } else {
-        setIsPlaceholder(false)
-      }
-    }, [innerRef.current?.value])
 
     return (
       <div>
@@ -52,7 +60,12 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
           <select
             ref={innerRef}
             defaultValue={defaultValue}
+            value={value}
             {...props}
+            onChange={(event) => {
+              setUncontrolledIsPlaceholder(event.target.value === "")
+              onChange?.(event)
+            }}
             className="appearance-none flex-1 bg-abyss-background border-none px-4 py-2.5 transition-colors duration-150 outline-none "
           >
             <option disabled value="">

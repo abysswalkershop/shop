@@ -12,6 +12,7 @@ import Spinner from "@modules/common/icons/spinner"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import { HttpTypes } from "@medusajs/types"
 import {
+  CustomerAddressFormState,
   deleteCustomerAddress,
   updateCustomerAddress,
 } from "@lib/data/customer"
@@ -35,7 +36,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
     success: false,
     error: null,
     addressId: address.id,
-  })
+  } satisfies CustomerAddressFormState)
 
   const close = () => {
     setSuccessState(false)

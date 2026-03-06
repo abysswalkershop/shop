@@ -12,10 +12,10 @@ export default function TOSPage() {
             </p>
 
             <p className="mb-4 text-black">
-                Please read these Terms of Service ("Terms", "Terms of Service")
-                carefully before using the Abyss Walker website (the "Service")
-                operated by EI Abyss Walker ("us",
-                "we", or "our").
+                Please read these Terms of Service (&quot;Terms&quot;, &quot;Terms of Service&quot;)
+                carefully before using the Abyss Walker website (the &quot;Service&quot;)
+                operated by EI Abyss Walker (&quot;us&quot;,
+                &quot;we&quot;, or &quot;our&quot;).
             </p>
             <p className="mb-4 text-black">
                 Your access to and use of the Service is conditioned on your acceptance
@@ -31,7 +31,7 @@ export default function TOSPage() {
             <h2 className="text-2xl font-semibold mb-4 text-gray-800">1. Purchases</h2>
             <p className="mb-4 text-black">
                 If you wish to purchase any product or service made available through
-                the Service ("Purchase"), you may be asked to supply certain
+                the Service (&quot;Purchase&quot;), you may be asked to supply certain
                 information relevant to your Purchase including, without limitation,
                 your credit card number, the expiration date of your credit card, your
                 billing address, and your shipping information.
@@ -81,7 +81,7 @@ export default function TOSPage() {
             </h2>
             <p className="mb-6 text-black">
                 Any contests, sweepstakes, or other promotions (collectively,
-                "Promotions") made available through the Service may be governed by
+                &quot;Promotions&quot;) made available through the Service may be governed by
                 rules that are separate from these Terms. If you participate in any
                 Promotions, please review the applicable rules as well as our Privacy
                 Policy. If the rules for a Promotion conflict with these Terms, the
@@ -170,7 +170,7 @@ export default function TOSPage() {
                 and its licensee and licensors, and their employees, contractors,
                 agents, officers and directors, from and against any and all claims,
                 damages, obligations, losses, liabilities, costs or debt, and expenses
-                (including but not limited to attorney's fees), resulting from or
+                (including but not limited to attorney&apos;s fees), resulting from or
                 arising out of a) your use and access of the Service, by you or any
                 person using your account and password; b) a breach of these Terms, or
                 c) Content posted on the Service.
@@ -197,7 +197,7 @@ export default function TOSPage() {
             <h2 className="text-2xl font-semibold mb-4 text-gray-800">10. Disclaimer</h2>
             <p className="mb-4 text-black">
                 Your use of the Service is at your sole risk. The Service is provided on
-                an "AS IS" and "AS AVAILABLE" basis. The Service is provided without
+                an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis. The Service is provided without
                 warranties of any kind, whether express or implied, including, but not
                 limited to, implied warranties of merchantability, fitness for a
                 particular purpose, non-infringement or course of performance.
@@ -232,7 +232,7 @@ export default function TOSPage() {
             <p className="mb-4 text-black">
                 We reserve the right, at our sole discretion, to modify or replace these
                 Terms at any time. If a revision is material, we will try to provide at
-                least 30 days' notice prior to any new terms taking effect. What
+                least 30 days&apos; notice prior to any new terms taking effect. What
                 constitutes a material change will be determined at our sole discretion.
             </p>
             <p className="mb-6 text-black">

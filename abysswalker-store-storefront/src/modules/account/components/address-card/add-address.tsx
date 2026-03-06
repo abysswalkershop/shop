@@ -10,7 +10,7 @@ import Input from "@modules/common/components/input"
 import Modal from "@modules/common/components/modal"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import { HttpTypes } from "@medusajs/types"
-import { addCustomerAddress } from "@lib/data/customer"
+import { addCustomerAddress, CustomerAddressFormState } from "@lib/data/customer"
 
 const AddAddress = ({
   region,
@@ -26,7 +26,7 @@ const AddAddress = ({
     isDefaultShipping: addresses.length === 0,
     success: false,
     error: null,
-  })
+  } satisfies CustomerAddressFormState)
 
   const close = () => {
     setSuccessState(false)
