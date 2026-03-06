@@ -4,16 +4,22 @@ import InteractiveLink from "@modules/common/components/interactive-link"
 import Spinner from "@modules/common/icons/spinner"
 import { useStripe } from "@stripe/react-stripe-js"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useEffectEvent, useState } from "react"
 
-export default function CallbackPageClient({ regioncode }: { regioncode: string }) {
+export default function CallbackPageClient({
+    cartId,
+    regioncode,
+}: {
+    cartId: string
+    regioncode: string
+}) {
     const searchParams = useSearchParams()
     const stripe = useStripe()
     const router = useRouter()
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-    const onPaymentCompleted = async () => {
-        await placeOrder()
+    const onPaymentCompleted = useEffectEvent(async () => {
+        await placeOrder(cartId)
             .catch((err) => {
                 if (err?.message === 'NEXT_REDIRECT' || err?.digest?.startsWith?.('NEXT_REDIRECT')) {
                     // This is a redirect, not an actual error - let it proceed
@@ -21,7 +27,7 @@ export default function CallbackPageClient({ regioncode }: { regioncode: string 
                 }
                 setErrorMessage(err.message)
             })
-    }
+    })
 
     useEffect(() => {
         const paymentIntent = searchParams.get("payment_intent")
@@ -53,7 +59,7 @@ export default function CallbackPageClient({ regioncode }: { regioncode: string 
                     setErrorMessage(err.message || "An error occurred while retrieving the payment intent.")
                 })
         }
-    }, [searchParams, stripe])
+    }, [cartId, searchParams, stripe])
 
     // Auto-redirect
     useEffect(() => {

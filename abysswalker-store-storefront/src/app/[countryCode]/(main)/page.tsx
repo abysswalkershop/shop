@@ -9,6 +9,7 @@ import LodeStoneHero from "@modules/home/components/lodestonehero"
 import GlowHero from "@modules/home/components/glowhero"
 import ShowCaseBarGlow from "@modules/home/components/showcase-bar-glow/page"
 import ShowCaseBarMagnet from "@modules/home/components/showcase-bar-magnet/page"
+import { notFound } from "next/navigation"
 
 export const metadata: Metadata = {
   title: "Abyss Walker",
@@ -30,7 +31,7 @@ export default async function Home(props: {
   })
 
   if (!collections || !region) {
-    return null
+    notFound()
   }
 
   return (

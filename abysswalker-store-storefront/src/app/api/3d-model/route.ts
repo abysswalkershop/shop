@@ -2,14 +2,28 @@ import { getAllowed3DModelHosts } from '@lib/util/env'
 import { NextRequest, NextResponse } from 'next/server'
 
 const ALLOWED_MODEL_EXTENSIONS = new Set(['.glb', '.gltf'])
+const LOOPBACK_HOSTNAMES = new Set(['localhost', '127.0.0.1', '[::1]', '::1'])
 
 const isAllowedProtocol = (url: URL) => {
-    return url.protocol === 'https:' || url.hostname === 'localhost' || url.hostname === '127.0.0.1'
+    if (url.protocol === 'https:') {
+        return true
+    }
+
+    return (
+        process.env.NODE_ENV === 'development' &&
+        url.protocol === 'http:' &&
+        LOOPBACK_HOSTNAMES.has(url.hostname.toLowerCase())
+    )
 }
 
 const isAllowedModelUrl = (url: URL) => {
     const hostname = url.hostname.toLowerCase()
     const pathname = url.pathname.toLowerCase()
+    const isLoopbackHost = LOOPBACK_HOSTNAMES.has(hostname)
+
+    if (isLoopbackHost && process.env.NODE_ENV !== 'development') {
+        return false
+    }
 
     return (
         getAllowed3DModelHosts().has(hostname) &&

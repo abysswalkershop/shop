@@ -25,6 +25,11 @@ async function CallbackPageContent({
     await connection()
 
     const cartId = (await searchParams).cart_id
+
+    if (!cartId) {
+        return notFound()
+    }
+
     const cart = await retrieveCart(cartId)
 
     if (!cart) {
@@ -33,7 +38,10 @@ async function CallbackPageContent({
 
     return (
         <PaymentWrapper cart={cart}>
-            <CallbackPageClient regioncode={cart.shipping_address?.country_code?.toLowerCase() || "de"} />
+            <CallbackPageClient
+                cartId={cart.id}
+                regioncode={cart.shipping_address?.country_code?.toLowerCase() || "de"}
+            />
         </PaymentWrapper>
     )
 }

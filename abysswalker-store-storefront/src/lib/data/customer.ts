@@ -27,6 +27,53 @@ export type CustomerAddressFormState = CustomerActionResult & {
 
 const revalidateCachedTag = (tag: string) => revalidateTag(tag, "max")
 
+const getStringField = (formData: FormData, key: string) => {
+  const value = formData.get(key)
+  return typeof value === "string" ? value.trim() : ""
+}
+
+const requireStringField = (formData: FormData, key: string, label: string) => {
+  const value = getStringField(formData, key)
+
+  if (!value) {
+    throw new Error(`${label} is required`)
+  }
+
+  return value
+}
+
+const getOptionalStringField = (formData: FormData, key: string) => {
+  const value = getStringField(formData, key)
+  return value || undefined
+}
+
+const getCustomerAuthInput = (formData: FormData) => {
+  const email = requireStringField(formData, "email", "Email")
+  const password = requireStringField(formData, "password", "Password")
+
+  return { email, password }
+}
+
+const getCustomerProfileInput = (formData: FormData) => ({
+  email: requireStringField(formData, "email", "Email"),
+  first_name: requireStringField(formData, "first_name", "First name"),
+  last_name: requireStringField(formData, "last_name", "Last name"),
+  phone: getOptionalStringField(formData, "phone"),
+})
+
+const getCustomerAddressInput = (formData: FormData) => ({
+  first_name: requireStringField(formData, "first_name", "First name"),
+  last_name: requireStringField(formData, "last_name", "Last name"),
+  company: getOptionalStringField(formData, "company"),
+  address_1: requireStringField(formData, "address_1", "Address"),
+  address_2: getOptionalStringField(formData, "address_2"),
+  city: requireStringField(formData, "city", "City"),
+  postal_code: requireStringField(formData, "postal_code", "Postal code"),
+  province: getOptionalStringField(formData, "province"),
+  country_code: requireStringField(formData, "country_code", "Country"),
+  phone: getOptionalStringField(formData, "phone"),
+})
+
 const getErrorMessage = (error: unknown) => {
   if (error instanceof Error) {
     return error.toString()
@@ -78,13 +125,8 @@ export async function signup(
   _currentState: string | null,
   formData: FormData
 ): Promise<string | null> {
-  const password = formData.get("password") as string
-  const customerForm = {
-    email: formData.get("email") as string,
-    first_name: formData.get("first_name") as string,
-    last_name: formData.get("last_name") as string,
-    phone: formData.get("phone") as string,
-  }
+  const { password } = getCustomerAuthInput(formData)
+  const customerForm = getCustomerProfileInput(formData)
 
   try {
     const token = await sdk.auth.register("customer", "emailpass", {
@@ -123,8 +165,7 @@ export async function signup(
 }
 
 export async function login(_currentState: unknown, formData: FormData) {
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
+  const { email, password } = getCustomerAuthInput(formData)
 
   try {
     await sdk.auth
@@ -143,6 +184,8 @@ export async function login(_currentState: unknown, formData: FormData) {
   } catch (error) {
     return getErrorMessage(error)
   }
+
+  return null
 }
 
 export async function signout(countryCode: string) {
@@ -184,16 +227,7 @@ export const addCustomerAddress = async (
   const isDefaultShipping = currentState.isDefaultShipping ?? false
 
   const address = {
-    first_name: formData.get("first_name") as string,
-    last_name: formData.get("last_name") as string,
-    company: formData.get("company") as string,
-    address_1: formData.get("address_1") as string,
-    address_2: formData.get("address_2") as string,
-    city: formData.get("city") as string,
-    postal_code: formData.get("postal_code") as string,
-    province: formData.get("province") as string,
-    country_code: formData.get("country_code") as string,
-    phone: formData.get("phone") as string,
+    ...getCustomerAddressInput(formData),
     is_default_billing: isDefaultBilling,
     is_default_shipping: isDefaultShipping,
   }
@@ -245,23 +279,9 @@ export const updateCustomerAddress = async (
     return { success: false, error: "Address ID is required" }
   }
 
-  const address = {
-    first_name: formData.get("first_name") as string,
-    last_name: formData.get("last_name") as string,
-    company: formData.get("company") as string,
-    address_1: formData.get("address_1") as string,
-    address_2: formData.get("address_2") as string,
-    city: formData.get("city") as string,
-    postal_code: formData.get("postal_code") as string,
-    province: formData.get("province") as string,
-    country_code: formData.get("country_code") as string,
-  } as HttpTypes.StoreUpdateCustomerAddress
-
-  const phone = formData.get("phone") as string
-
-  if (phone) {
-    address.phone = phone
-  }
+  const address = getCustomerAddressInput(
+    formData
+  ) as HttpTypes.StoreUpdateCustomerAddress
 
   const headers = {
     ...(await getAuthHeaders()),

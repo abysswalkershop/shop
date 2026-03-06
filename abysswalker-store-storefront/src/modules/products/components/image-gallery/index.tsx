@@ -1,10 +1,8 @@
 import { HttpTypes } from "@medusajs/types"
 import { Container } from "@medusajs/ui"
 import Image from "next/image"
-import { Suspense } from "react"
-import ModelViewer from "@modules/products/components/model-viewer"
 import { isValid3DModelUrl } from "@lib/util/3d-models"
-import ModelViewerSkeleton from "@modules/skeletons/components/skeleton-model-viewer"
+import LazyModelViewer from "@modules/products/components/model-viewer/lazy"
 
 type ImageGalleryProps = {
   images: HttpTypes.StoreProductImage[]
@@ -22,9 +20,7 @@ const ImageGallery = ({ images, product }: ImageGalleryProps) => {
       <div className="flex flex-col flex-1 small:mx-16 gap-y-4">
         {/* Render 3D model viewer first if available and valid */}
         {hasValid3DModel && (
-          <Suspense fallback={<ModelViewerSkeleton />}>
-            <ModelViewer modelUrl={modelUrl} />
-          </Suspense>
+          <LazyModelViewer modelUrl={modelUrl} />
         )}
 
         {/* Render regular images */}

@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import { sdk } from '@lib/config'
 import { getLocalizedUrl } from '@lib/util/env'
 import { HttpTypes } from '@medusajs/types'
+import { cache } from 'react'
 
 const isPrerenderCancellationError = (error: unknown) => {
     if (!(error instanceof Error)) {
@@ -68,7 +69,7 @@ function getDefaultCountryCode(countryCodes: string[]) {
     return configuredCountryCode || countryCodes[0] || 'us'
 }
 
-async function getRegions(): Promise<HttpTypes.StoreRegion[]> {
+const getRegions = cache(async (): Promise<HttpTypes.StoreRegion[]> => {
     try {
         const response = await sdk.store.region.list()
         return response.regions || []
@@ -76,7 +77,7 @@ async function getRegions(): Promise<HttpTypes.StoreRegion[]> {
         logSitemapError('Error fetching regions:', error)
         return []
     }
-}
+})
 
 function getCountryCodesFromRegions(regions: HttpTypes.StoreRegion[]): string[] {
     const countryCodes = new Set<string>()
