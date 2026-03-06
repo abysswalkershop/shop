@@ -1,3 +1,4 @@
+import { HttpTypes } from "@medusajs/types"
 import { Container, clx } from "@medusajs/ui"
 import Image from "next/image"
 import React from "react"
@@ -6,10 +7,10 @@ import PlaceholderImage from "@modules/common/icons/placeholder-image"
 
 type ThumbnailProps = {
   thumbnail?: string | null
-  // TODO: Fix image typings
-  images?: any[] | null
+  images?: HttpTypes.StoreProductImage[] | null
   size?: "small" | "medium" | "large" | "full" | "square"
   isFeatured?: boolean
+  compact?: boolean
   className?: string
   "data-testid"?: string
 }
@@ -19,6 +20,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   images,
   size = "small",
   isFeatured,
+  compact,
   className,
   "data-testid": dataTestid,
 }) => {
@@ -30,7 +32,8 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
         "relative w-full overflow-hidden p-4 bg-ui-bg-subtle shadow-elevation-card-rest rounded-large group-hover:shadow-elevation-card-hover transition-shadow ease-in-out duration-150",
         className,
         {
-          "aspect-[11/11]": isFeatured,
+          "aspect-[11/11]": isFeatured && !compact,
+          "aspect-[4/3] p-2": isFeatured && compact,
           "aspect-square": !isFeatured && size !== "square",
           "aspect-[1/1]": size === "square",
           "w-[180px]": size === "small",

@@ -8,9 +8,26 @@ export default async function FeaturedProducts({
   collections: HttpTypes.StoreCollection[]
   region: HttpTypes.StoreRegion
 }) {
-  return collections.map((collection) => (
-    <li key={collection.id}>
-      <ProductRail collection={collection} region={region} />
-    </li>
-  ))
+  const nonFeaturedCollections = collections.filter((collection) => {
+    const handle = collection.handle?.toLowerCase()
+    const title = collection.title?.toLowerCase()
+
+    return handle !== "featured" && title !== "featured"
+  })
+
+  if (nonFeaturedCollections.length === 0) {
+    return null
+  }
+
+  return (
+    <div className="py-12 bg-abyss-background">
+      <ul className="flex flex-col gap-x-6">
+        {nonFeaturedCollections.map((collection) => (
+          <li key={collection.id}>
+            <ProductRail collection={collection} region={region} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
 }

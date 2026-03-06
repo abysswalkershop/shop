@@ -2,6 +2,7 @@ import { Metadata } from "next"
 
 import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
+import SpecialFeaturedProducts from "@modules/home/components/special-featured-products"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 import LodeStoneHero from "@modules/home/components/lodestonehero"
@@ -35,15 +36,14 @@ export default async function Home(props: {
   return (
     <>
       <Hero />
-      <ShowCaseBarMagnet />
-      <LodeStoneHero />
+      <div className="pt-2 w-full border-b border-abyss-dark-accent">
+        <SpecialFeaturedProducts collections={collections} region={region} />
+      </div>
       <ShowCaseBarGlow />
       <GlowHero />
-      <div className="py-12 bg-abyss-background">
-        <ul className="flex flex-col gap-x-6">
-          <FeaturedProducts collections={collections} region={region} />
-        </ul>
-      </div>
+      <ShowCaseBarMagnet />
+      <LodeStoneHero />
+      <FeaturedProducts collections={collections} region={region} />
     </>
   )
 }

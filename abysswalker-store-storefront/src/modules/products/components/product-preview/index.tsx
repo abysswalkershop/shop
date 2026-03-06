@@ -1,5 +1,4 @@
 import { Text } from "@medusajs/ui"
-import { listProducts } from "@lib/data/products"
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -9,10 +8,11 @@ import PreviewPrice from "./price"
 export default async function ProductPreview({
   product,
   isFeatured,
-  region,
+  compact,
 }: {
   product: HttpTypes.StoreProduct
   isFeatured?: boolean
+  compact?: boolean
   region: HttpTypes.StoreRegion
 }) {
   // const pricedProduct = await listProducts({
@@ -36,8 +36,9 @@ export default async function ProductPreview({
           images={product.images}
           size="full"
           isFeatured={isFeatured}
+          compact={compact}
         />
-        <div className="flex txt-compact-medium mt-4 justify-between">
+        <div className={compact ? "mt-2 flex items-start justify-between gap-x-3 txt-small" : "flex txt-compact-medium mt-4 justify-between"}>
           <Text className="text-ui-fg-subtle" data-testid="product-title">
             {product.title}
           </Text>

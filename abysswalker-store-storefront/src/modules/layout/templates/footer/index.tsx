@@ -3,6 +3,7 @@ import { listCollections } from "@lib/data/collections"
 import { Text, clx } from "@medusajs/ui"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import CategoryTree from "@modules/layout/components/category-tree"
 import Link from "next/link"
 
 export default async function Footer() {
@@ -29,57 +30,15 @@ export default async function Footer() {
                 <span className="txt-small-plus text-abyss-medium-accent">
                   Categories
                 </span>
-                <ul
+                <CategoryTree
+                  categories={productCategories}
                   className="grid grid-cols-1 gap-2"
-                  data-testid="footer-categories"
-                >
-                  {productCategories?.slice(0, 6).map((c) => {
-                    if (c.parent_category) {
-                      return
-                    }
-
-                    const children =
-                      c.category_children?.map((child) => ({
-                        name: child.name,
-                        handle: child.handle,
-                        id: child.id,
-                      })) || null
-
-                    return (
-                      <li
-                        className="flex flex-col gap-2 text-abyss-text-light txt-small"
-                        key={c.id}
-                      >
-                        <LocalizedClientLink
-                          className={clx(
-                            "hover:text-abyss-light-accent",
-                            children && "txt-small-plus"
-                          )}
-                          href={`/categories/${c.handle}`}
-                          data-testid="category-link"
-                        >
-                          {c.name}
-                        </LocalizedClientLink>
-                        {children && (
-                          <ul className="grid grid-cols-1 ml-3 gap-2">
-                            {children &&
-                              children.map((child) => (
-                                <li key={child.id}>
-                                  <LocalizedClientLink
-                                    className="hover:text-abyss-light-accent"
-                                    href={`/categories/${child.handle}`}
-                                    data-testid="category-link"
-                                  >
-                                    {child.name}
-                                  </LocalizedClientLink>
-                                </li>
-                              ))}
-                          </ul>
-                        )}
-                      </li>
-                    )
-                  })}
-                </ul>
+                  nestedClassName="grid grid-cols-1 gap-2 ml-3"
+                  itemClassName="flex flex-col gap-2 text-abyss-text-light txt-small"
+                  linkClassName="hover:text-abyss-light-accent"
+                  parentLinkClassName="txt-small-plus"
+                  dataTestId="footer-categories"
+                />
               </div>
             )}
             {collections && collections.length > 0 && (

@@ -1,6 +1,10 @@
 import "server-only"
 import { cookies as nextCookies } from "next/headers"
 
+type CacheConfig = {
+  personalized?: boolean
+}
+
 export const getAuthHeaders = async (): Promise<
   { authorization: string } | {}
 > => {
@@ -18,7 +22,14 @@ export const getAuthHeaders = async (): Promise<
   }
 }
 
-export const getCacheTag = async (tag: string): Promise<string> => {
+export const getCacheTag = async (
+  tag: string,
+  config: CacheConfig = {}
+): Promise<string> => {
+  if (config.personalized === false) {
+    return tag
+  }
+
   try {
     const cookies = await nextCookies()
     const cacheId = cookies.get("_medusa_cache_id")?.value
@@ -34,13 +45,14 @@ export const getCacheTag = async (tag: string): Promise<string> => {
 }
 
 export const getCacheOptions = async (
-  tag: string
+  tag: string,
+  config: CacheConfig = {}
 ): Promise<{ tags: string[] } | {}> => {
   if (typeof window !== "undefined") {
     return {}
   }
 
-  const cacheTag = await getCacheTag(tag)
+  const cacheTag = await getCacheTag(tag, config)
 
   if (!cacheTag) {
     return {}

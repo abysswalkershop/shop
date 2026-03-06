@@ -162,6 +162,11 @@ const Payment = ({
             availablePaymentMethods?.length &&
             stripeReady && (
               <div className="mt-5 transition-all duration-150 ease-in-out">
+                <div className="mb-4 rounded-md border border-amber-600/50 bg-amber-950/20 p-4 text-amber-100">
+                  <Text className="txt-small">
+                    PayPal carries higher processing fees, so choosing card or another payment method is strongly encouraged when possible.
+                  </Text>
+                </div>
                 <PaymentElement
                   onChange={handlePaymentElementChange}
                   options={{

@@ -7,7 +7,7 @@ import { getCacheOptions } from "./cookies"
 
 export const listRegions = async () => {
   const next = {
-    ...(await getCacheOptions("regions")),
+    ...(await getCacheOptions("regions", { personalized: false })),
   }
 
   return sdk.client
@@ -22,7 +22,7 @@ export const listRegions = async () => {
 
 export const retrieveRegion = async (id: string) => {
   const next = {
-    ...(await getCacheOptions(["regions", id].join("-"))),
+    ...(await getCacheOptions(["regions", id].join("-"), { personalized: false })),
   }
 
   return sdk.client

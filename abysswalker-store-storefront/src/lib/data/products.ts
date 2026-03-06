@@ -4,7 +4,7 @@ import { sdk } from "@lib/config"
 import { sortProducts } from "@lib/util/sort-products"
 import { HttpTypes } from "@medusajs/types"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
-import { getAuthHeaders, getCacheOptions } from "./cookies"
+import { getCacheOptions } from "./cookies"
 import { getRegion, retrieveRegion } from "./regions"
 
 export const listProducts = async ({
@@ -45,12 +45,8 @@ export const listProducts = async ({
     }
   }
 
-  const headers = {
-    ...(await getAuthHeaders()),
-  }
-
   const next = {
-    ...(await getCacheOptions("products")),
+    ...(await getCacheOptions("products", { personalized: false })),
   }
 
   return sdk.client
@@ -66,7 +62,6 @@ export const listProducts = async ({
             "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags",
           ...queryParams,
         },
-        headers,
         next,
         cache: "force-cache",
       }
