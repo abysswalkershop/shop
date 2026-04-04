@@ -3,7 +3,6 @@
 import { paymentInfoMap } from "@lib/constants"
 import { initiatePaymentSession } from "@lib/data/cart"
 import { CheckCircleSolid, CreditCard } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
 import { Button, Container, Heading, Text, clx } from "@medusajs/ui"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import { StripeContext } from "@modules/checkout/components/payment-wrapper/stripe-wrapper"
@@ -11,26 +10,19 @@ import Divider from "@modules/common/components/divider"
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import { StripePaymentElementChangeEvent } from "@stripe/stripe-js"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useContext, useEffect, useRef, useState } from "react"
-
-type PaymentProps = {
-  cart: HttpTypes.StoreCart & { gift_cards?: Array<unknown> | null }
-  availablePaymentMethods: HttpTypes.StorePaymentProvider[]
-}
+import { useCallback, useContext, useEffect, useState } from "react"
 
 const Payment = ({
   cart,
   availablePaymentMethods,
-}: PaymentProps) => {
+}: {
+  cart: any
+  availablePaymentMethods: any[]
+}) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [stripeComplete, setStripeComplete] = useState(false)
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
-    cart.payment_collection?.payment_sessions?.find(
-      (paymentSession: HttpTypes.StorePaymentSession) =>
-        paymentSession.status === "pending"
-    )?.provider_id
-  )
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>()
 
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -39,20 +31,16 @@ const Payment = ({
   const isOpen = searchParams.get("step") === "payment"
 
   const stripeReady = useContext(StripeContext)
-  const stripe = useStripe()
-  const elements = useElements()
-  const isInitializingSessionRef = useRef(false)
 
   const activeSession = cart.payment_collection?.payment_sessions?.find(
-    (paymentSession: HttpTypes.StorePaymentSession) =>
-      paymentSession.status === "pending"
+    (paymentSession: any) => paymentSession.status === "pending"
   )
 
-  const paidByGiftcard = (cart.gift_cards?.length ?? 0) > 0 && cart.total === 0
+  const paidByGiftcard =
+    cart?.gift_cards && cart?.gift_cards?.length > 0 && cart?.total === 0
 
   const paymentReady =
-    (activeSession && (cart.shipping_methods?.length ?? 0) !== 0) ||
-    paidByGiftcard
+    (activeSession && cart?.shipping_methods.length !== 0) || paidByGiftcard
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -69,6 +57,9 @@ const Payment = ({
       scroll: false,
     })
   }
+
+  const stripe = stripeReady ? useStripe() : null
+  const elements = stripeReady ? useElements() : null
 
   const handlePaymentElementChange = async (
     event: StripePaymentElementChangeEvent
@@ -109,39 +100,27 @@ const Payment = ({
       router.push(pathname + "?" + createQueryString("step", "review"), {
         scroll: false,
       })
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Payment failed")
+    } catch (err: any) {
+      setError(err.message)
     } finally {
       setIsLoading(false)
     }
   }
 
-  useEffect(() => {
-    if (!isOpen || activeSession || isInitializingSessionRef.current) {
-      return
+  const initStripe = async () => {
+    try {
+      await initiatePaymentSession(cart, {
+        provider_id: "pp_stripe_stripe",
+      })
+    } catch (err) {
+      console.error("Failed to initialize Stripe session:", err)
+      setError("Failed to initialize payment. Please try again.")
     }
+  }
 
-    let isCurrent = true
-    isInitializingSessionRef.current = true
-
-    void (async () => {
-      try {
-        await initiatePaymentSession(cart, {
-          provider_id: "pp_stripe_stripe",
-        })
-      } catch (err) {
-        console.error("Failed to initialize Stripe session:", err)
-
-        if (isCurrent) {
-          setError("Failed to initialize payment. Please try again.")
-        }
-      } finally {
-        isInitializingSessionRef.current = false
-      }
-    })()
-
-    return () => {
-      isCurrent = false
+  useEffect(() => {
+    if (!activeSession && isOpen) {
+      initStripe()
     }
   }, [cart, isOpen, activeSession])
 
@@ -222,7 +201,9 @@ const Payment = ({
             onClick={handleSubmit}
             isLoading={isLoading}
             disabled={
-              (!paidByGiftcard && (!stripeComplete || !stripe || !elements)) ||
+              !stripeComplete ||
+              !stripe ||
+              !elements ||
               (!selectedPaymentMethod && !paidByGiftcard)
             }
             data-testid="submit-payment-button"

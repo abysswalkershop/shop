@@ -5,23 +5,18 @@ import { Heading, Text, clx } from "@medusajs/ui"
 import PaymentButton from "../payment-button"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { HttpTypes } from "@medusajs/types"
 
-const Review = ({
-  cart,
-}: {
-  cart: HttpTypes.StoreCart & { gift_cards?: Array<unknown> | null }
-}) => {
+const Review = ({ cart }: { cart: any }) => {
   const searchParams = useSearchParams()
 
   const isOpen = searchParams.get("step") === "review"
 
   const paidByGiftcard =
-    (cart.gift_cards?.length ?? 0) > 0 && cart.total === 0
+    cart?.gift_cards && cart?.gift_cards?.length > 0 && cart?.total === 0
 
   const previousStepsCompleted =
     cart.shipping_address &&
-    (cart.shipping_methods?.length ?? 0) > 0 &&
+    cart.shipping_methods.length > 0 &&
     (cart.payment_collection || paidByGiftcard)
 
   return (

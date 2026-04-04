@@ -2,10 +2,7 @@
 
 import { RadioGroup, Radio } from "@headlessui/react"
 import { setShippingMethod } from "@lib/data/cart"
-import {
-  calculatePriceForShippingOption,
-  StoreCartShippingOptionWithServiceZone,
-} from "@lib/data/fulfillment"
+import { calculatePriceForShippingOption } from "@lib/data/fulfillment"
 import { convertToLocale } from "@lib/util/money"
 import { CheckCircleSolid, Loader } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
@@ -21,18 +18,10 @@ const PICKUP_OPTION_OFF = "__PICKUP_OFF"
 
 type ShippingProps = {
   cart: HttpTypes.StoreCart
-  availableShippingMethods: StoreCartShippingOptionWithServiceZone[] | null
+  availableShippingMethods: HttpTypes.StoreCartShippingOption[] | null
 }
 
-type PickupAddress = {
-  address_1?: string | null
-  address_2?: string | null
-  city?: string | null
-  country_code?: string | null
-  postal_code?: string | null
-}
-
-function formatAddress(address?: PickupAddress | null) {
+function formatAddress(address) {
   if (!address) {
     return ""
   }
@@ -71,9 +60,8 @@ const Shipping: React.FC<ShippingProps> = ({
     Record<string, number>
   >({})
   const [error, setError] = useState<string | null>(null)
-  const cartShippingMethods = cart.shipping_methods ?? []
   const [shippingMethodId, setShippingMethodId] = useState<string | null>(
-    cartShippingMethods.at(-1)?.shipping_option_id || null
+    cart.shipping_methods?.at(-1)?.shipping_option_id || null
   )
 
   const searchParams = useSearchParams()
@@ -93,44 +81,30 @@ const Shipping: React.FC<ShippingProps> = ({
   const hasPickupOptions = !!_pickupMethods?.length
 
   useEffect(() => {
-    const loadPrices = async () => {
-      if (_shippingMethods?.length) {
-        queueMicrotask(() => setIsLoadingPrices(true))
+    setIsLoadingPrices(true)
 
-        const promises = _shippingMethods
-          .filter((sm) => sm.price_type === "calculated")
-          .map((sm) => calculatePriceForShippingOption(sm.id, cart.id))
+    if (_shippingMethods?.length) {
+      const promises = _shippingMethods
+        .filter((sm) => sm.price_type === "calculated")
+        .map((sm) => calculatePriceForShippingOption(sm.id, cart.id))
 
-        if (promises.length) {
-          const results = await Promise.allSettled(promises)
+      if (promises.length) {
+        Promise.allSettled(promises).then((res) => {
           const pricesMap: Record<string, number> = {}
-
-          results
-            .filter((result) => result.status === "fulfilled")
-            .forEach((result) => {
-              if (result.value?.id && typeof result.value.amount === "number") {
-                pricesMap[result.value.id] = result.value.amount
-              }
-            })
+          res
+            .filter((r) => r.status === "fulfilled")
+            .forEach((p) => (pricesMap[p.value?.id || ""] = p.value?.amount!))
 
           setCalculatedPricesMap(pricesMap)
           setIsLoadingPrices(false)
-          return
-        }
+        })
       }
-
-      setCalculatedPricesMap({})
-      setIsLoadingPrices(false)
     }
 
-    void loadPrices()
-  }, [_shippingMethods, cart.id])
-
-  useEffect(() => {
-    if (_pickupMethods?.find((method) => method.id === shippingMethodId)) {
-      queueMicrotask(() => setShowPickupOptions(PICKUP_OPTION_ON))
+    if (_pickupMethods?.find((m) => m.id === shippingMethodId)) {
+      setShowPickupOptions(PICKUP_OPTION_ON)
     }
-  }, [_pickupMethods, shippingMethodId])
+  }, [availableShippingMethods])
 
   const handleEdit = () => {
     router.push(pathname + "?step=delivery", { scroll: false })
@@ -141,13 +115,9 @@ const Shipping: React.FC<ShippingProps> = ({
   }
 
   const handleSetShippingMethod = async (
-    id: string | null,
+    id: string,
     variant: "shipping" | "pickup"
   ) => {
-    if (!id) {
-      return
-    }
-
     setError(null)
 
     if (variant === "pickup") {
@@ -174,7 +144,9 @@ const Shipping: React.FC<ShippingProps> = ({
       })
   }
 
-  const visibleError = isOpen ? error : null
+  useEffect(() => {
+    setError(null)
+  }, [isOpen])
 
   return (
     <div className="bg-abyss-background">
@@ -225,7 +197,7 @@ const Shipping: React.FC<ShippingProps> = ({
                 {hasPickupOptions && (
                   <RadioGroup
                     value={showPickupOptions}
-                    onChange={() => {
+                    onChange={(value) => {
                       const id = _pickupMethods.find(
                         (option) => !option.insufficient_inventory
                       )?.id
@@ -262,7 +234,7 @@ const Shipping: React.FC<ShippingProps> = ({
                 )}
                 <RadioGroup
                   value={shippingMethodId}
-                  onChange={(value) => handleSetShippingMethod(value, "shipping")}
+                  onChange={(v) => handleSetShippingMethod(v, "shipping")}
                 >
                   {_shippingMethods?.map((option) => {
                     const isDisabled =
@@ -333,7 +305,7 @@ const Shipping: React.FC<ShippingProps> = ({
                 <div className="pb-8 md:pt-0 pt-2">
                   <RadioGroup
                     value={shippingMethodId}
-                    onChange={(value) => handleSetShippingMethod(value, "pickup")}
+                    onChange={(v) => handleSetShippingMethod(v, "pickup")}
                   >
                     {_pickupMethods?.map((option) => {
                       return (
@@ -385,7 +357,7 @@ const Shipping: React.FC<ShippingProps> = ({
 
           <div>
             <ErrorMessage
-              error={visibleError}
+              error={error}
               data-testid="delivery-option-error-message"
             />
             <Button
@@ -409,9 +381,9 @@ const Shipping: React.FC<ShippingProps> = ({
                   Method
                 </Text>
                 <Text className="txt-medium text-ui-fg-subtle">
-                  {cartShippingMethods.at(-1)?.name}{" "}
+                  {cart.shipping_methods?.at(-1)?.name}{" "}
                   {convertToLocale({
-                    amount: cartShippingMethods.at(-1)?.amount ?? 0,
+                    amount: cart.shipping_methods.at(-1)?.amount!,
                     currency_code: cart?.currency_code,
                   })}
                 </Text>

@@ -2,30 +2,10 @@ import { HttpTypes } from "@medusajs/types"
 import { Container } from "@medusajs/ui"
 import Checkbox from "@modules/common/components/checkbox"
 import Input from "@modules/common/components/input"
-import mapKeys from "lodash/mapKeys"
-import React, { useMemo, useState } from "react"
+import { mapKeys } from "lodash"
+import React, { useEffect, useMemo, useState } from "react"
 import AddressSelect from "../address-select"
 import CountrySelect from "../country-select"
-
-type ShippingFormData = Record<string, string> & {
-  email: string
-}
-
-const getInitialFormData = (
-  cart: HttpTypes.StoreCart | null,
-  customer: HttpTypes.StoreCustomer | null
-): ShippingFormData => ({
-  "shipping_address.first_name": cart?.shipping_address?.first_name || "",
-  "shipping_address.last_name": cart?.shipping_address?.last_name || "",
-  "shipping_address.address_1": cart?.shipping_address?.address_1 || "",
-  "shipping_address.company": cart?.shipping_address?.company || "",
-  "shipping_address.postal_code": cart?.shipping_address?.postal_code || "",
-  "shipping_address.city": cart?.shipping_address?.city || "",
-  "shipping_address.country_code": cart?.shipping_address?.country_code || "",
-  "shipping_address.province": cart?.shipping_address?.province || "",
-  "shipping_address.phone": cart?.shipping_address?.phone || "",
-  email: cart?.email || customer?.email || "",
-})
 
 const ShippingAddress = ({
   customer,
@@ -38,9 +18,18 @@ const ShippingAddress = ({
   checked: boolean
   onChange: () => void
 }) => {
-  const [formData, setFormData] = useState<ShippingFormData>(() =>
-    getInitialFormData(cart, customer)
-  )
+  const [formData, setFormData] = useState<Record<string, any>>({
+    "shipping_address.first_name": cart?.shipping_address?.first_name || "",
+    "shipping_address.last_name": cart?.shipping_address?.last_name || "",
+    "shipping_address.address_1": cart?.shipping_address?.address_1 || "",
+    "shipping_address.company": cart?.shipping_address?.company || "",
+    "shipping_address.postal_code": cart?.shipping_address?.postal_code || "",
+    "shipping_address.city": cart?.shipping_address?.city || "",
+    "shipping_address.country_code": cart?.shipping_address?.country_code || "",
+    "shipping_address.province": cart?.shipping_address?.province || "",
+    "shipping_address.phone": cart?.shipping_address?.phone || "",
+    email: cart?.email || "",
+  })
 
   const countriesInRegion = useMemo(
     () => cart?.region?.countries?.map((c) => c.iso_2),
@@ -60,8 +49,8 @@ const ShippingAddress = ({
     address?: HttpTypes.StoreCartAddress,
     email?: string
   ) => {
-    if (address) {
-      setFormData((prevState) => ({
+    address &&
+      setFormData((prevState: Record<string, any>) => ({
         ...prevState,
         "shipping_address.first_name": address?.first_name || "",
         "shipping_address.last_name": address?.last_name || "",
@@ -73,15 +62,24 @@ const ShippingAddress = ({
         "shipping_address.province": address?.province || "",
         "shipping_address.phone": address?.phone || "",
       }))
+
+    email &&
+      setFormData((prevState: Record<string, any>) => ({
+        ...prevState,
+        email: email,
+      }))
+  }
+
+  useEffect(() => {
+    // Ensure cart is not null and has a shipping_address before setting form data
+    if (cart && cart.shipping_address) {
+      setFormAddress(cart?.shipping_address, cart?.email)
     }
 
-    if (email) {
-      setFormData((prevState) => ({
-        ...prevState,
-        email,
-      }))
+    if (cart && !cart.email && customer?.email) {
+      setFormAddress(undefined, customer.email)
     }
-  }
+  }, [cart]) // Add cart as a dependency
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -103,9 +101,11 @@ const ShippingAddress = ({
           </p>
           <AddressSelect
             addresses={customer.addresses}
-            addressInput={mapKeys(formData, (_, key) =>
-              key.replace("shipping_address.", "")
-            )}
+            addressInput={
+              mapKeys(formData, (_, key) =>
+                key.replace("shipping_address.", "")
+              ) as HttpTypes.StoreCartAddress
+            }
             onSelect={setFormAddress}
           />
         </Container>
