@@ -40,7 +40,7 @@ const LocalizedClientLink = ({
 }: LocalizedClientLinkProps) => {
   if (countryCode) {
     return (
-      <Link href={buildLocalizedHref(countryCode, href)} {...props}>
+      <Link href={buildLocalizedHref(countryCode, href)} {...props} prefetch>
         {children}
       </Link>
     )
