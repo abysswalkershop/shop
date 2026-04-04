@@ -1,22 +1,60 @@
+import { getAllowed3DModelHosts } from '@lib/util/env'
 import { NextRequest, NextResponse } from 'next/server'
+
+const ALLOWED_MODEL_EXTENSIONS = new Set(['.glb', '.gltf'])
+const LOOPBACK_HOSTNAMES = new Set(['localhost', '127.0.0.1', '[::1]', '::1'])
+
+const isAllowedProtocol = (url: URL) => {
+    if (url.protocol === 'https:') {
+        return true
+    }
+
+    return (
+        process.env.NODE_ENV === 'development' &&
+        url.protocol === 'http:' &&
+        LOOPBACK_HOSTNAMES.has(url.hostname.toLowerCase())
+    )
+}
+
+const isAllowedModelUrl = (url: URL) => {
+    const hostname = url.hostname.toLowerCase()
+    const pathname = url.pathname.toLowerCase()
+    const isLoopbackHost = LOOPBACK_HOSTNAMES.has(hostname)
+
+    if (isLoopbackHost && process.env.NODE_ENV !== 'development') {
+        return false
+    }
+
+    return (
+        getAllowed3DModelHosts().has(hostname) &&
+        isAllowedProtocol(url) &&
+        Array.from(ALLOWED_MODEL_EXTENSIONS).some((extension) => pathname.endsWith(extension))
+    )
+}
 
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
-    const url = searchParams.get('url')
+    const urlParam = searchParams.get('url')
 
-    if (!url) {
+    if (!urlParam) {
         return new NextResponse('Missing url parameter', { status: 400 })
     }
 
     try {
-        // Validate that it's a valid URL
-        new URL(url)
+        const modelUrl = new URL(urlParam)
 
-        // Fetch the 3D model from the external URL
-        const response = await fetch(url, {
+        if (!isAllowedModelUrl(modelUrl)) {
+            return new NextResponse('3D model host is not allowed', { status: 403 })
+        }
+
+        const response = await fetch(modelUrl, {
             headers: {
                 'User-Agent': 'Medusa-Storefront/1.0',
             },
+            next: {
+                revalidate: 3600,
+            },
+            cache: 'force-cache',
         })
 
         if (!response.ok) {
@@ -29,14 +67,14 @@ export async function GET(request: NextRequest) {
         return new NextResponse(arrayBuffer, {
             headers: {
                 'Content-Type': contentType,
-                'Cache-Control': 'public, max-age=31536000, immutable',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET',
-                'Access-Control-Allow-Headers': 'Content-Type',
+                'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
             },
         })
     } catch (error) {
-        console.error('Error proxying 3D model:', error)
+        if (process.env.NODE_ENV === 'development') {
+            console.error('Error proxying 3D model:', error)
+        }
+
         return new NextResponse('Failed to load 3D model', { status: 500 })
     }
 }

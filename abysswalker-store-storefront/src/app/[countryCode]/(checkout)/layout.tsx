@@ -1,16 +1,21 @@
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import ChevronDown from "@modules/common/icons/chevron-down"
 
-export default function CheckoutLayout({
+export default async function CheckoutLayout({
   children,
+  params,
 }: {
   children: React.ReactNode
+  params: Promise<{ countryCode: string }>
 }) {
+  const { countryCode } = await params
+
   return (
     <div className="w-full bg-abyss-background relative small:min-h-screen">
       <div className="h-16 bg-abyss-background border-b border-abyss-dark-accent">
         <nav className="flex h-full items-center content-container justify-between">
           <LocalizedClientLink
+            countryCode={countryCode}
             href="/cart"
             className="text-small-semi text-abyss-text-light flex items-center gap-x-2 uppercase flex-1 basis-0"
             data-testid="back-to-cart-link"
@@ -24,6 +29,7 @@ export default function CheckoutLayout({
             </span>
           </LocalizedClientLink>
           <LocalizedClientLink
+            countryCode={countryCode}
             href="/"
             className="txt-compact-xlarge-plus text-abyss-text-light hover:text-abyss-light-accent uppercase"
             data-testid="store-link"

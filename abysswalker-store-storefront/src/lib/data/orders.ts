@@ -49,7 +49,7 @@ export const retrieveTrackingNumberByOrder = async (id: string) => {
 export const listOrders = async (
   limit: number = 10,
   offset: number = 0,
-  filters?: Record<string, any>
+  filters?: Record<string, unknown>
 ) => {
   const headers = {
     ...(await getAuthHeaders()),
@@ -78,7 +78,7 @@ export const listOrders = async (
 }
 
 export const createTransferRequest = async (
-  state: {
+  _state: {
     success: boolean
     error: string | null
     order: HttpTypes.StoreOrder | null
@@ -89,7 +89,8 @@ export const createTransferRequest = async (
   error: string | null
   order: HttpTypes.StoreOrder | null
 }> => {
-  const id = formData.get("order_id") as string
+  const orderId = formData.get("order_id")
+  const id = typeof orderId === "string" ? orderId.trim() : ""
 
   if (!id) {
     return { success: false, error: "Order ID is required", order: null }

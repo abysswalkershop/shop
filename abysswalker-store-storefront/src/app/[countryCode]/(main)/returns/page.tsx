@@ -118,8 +118,8 @@ export default function ReturnsPage() {
             </h2>
 
             <p className="text-gray-700 mb-4">
-                We want you to be completely satisfied with your purchase. If you're not,
-                here's how we can help:
+                We want you to be completely satisfied with your purchase. If you&apos;re not,
+                here&apos;s how we can help:
             </p>
 
             <h3 className="text-xl font-medium text-gray-700 mb-3">
@@ -217,7 +217,7 @@ export default function ReturnsPage() {
                     <strong className="font-semibold">Late or Missing Refunds:</strong>
                     <ul className="list-circle list-inside ml-5 mt-1">
                         <li className="mb-1">
-                            If you haven't received a refund yet, first check your bank account
+                            If you haven&apos;t received a refund yet, first check your bank account
                             again.
                         </li>
                         <li className="mb-1">
@@ -229,7 +229,7 @@ export default function ReturnsPage() {
                             refund is posted.
                         </li>
                         <li>
-                            If you've done all of this and you still have not received your
+                            If you&apos;ve done all of this and you still have not received your
                             refund, please contact us <InteractiveLink href="/contact" className="inline-flex">here</InteractiveLink>.
                         </li>
                     </ul>

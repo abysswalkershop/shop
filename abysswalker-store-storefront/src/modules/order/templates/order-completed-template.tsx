@@ -11,10 +11,12 @@ import PaymentDetails from "@modules/order/components/payment-details"
 import { HttpTypes } from "@medusajs/types"
 
 type OrderCompletedTemplateProps = {
+  countryCode: string
   order: HttpTypes.StoreOrder
 }
 
 export default async function OrderCompletedTemplate({
+  countryCode,
   order,
 }: OrderCompletedTemplateProps) {
   const cookies = await nextCookies()
@@ -44,7 +46,7 @@ export default async function OrderCompletedTemplate({
           <CartTotals totals={order} />
           <ShippingDetails order={order} />
           <PaymentDetails order={order} />
-          <Help />
+          <Help countryCode={countryCode} />
         </div>
       </div>
     </div>

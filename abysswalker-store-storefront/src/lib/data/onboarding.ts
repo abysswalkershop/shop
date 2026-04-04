@@ -2,8 +2,11 @@
 import { cookies as nextCookies } from "next/headers"
 import { redirect } from "next/navigation"
 
+import { getAdminURL } from "@lib/util/env"
+
 export async function resetOnboardingState(orderId: string) {
   const cookies = await nextCookies()
   cookies.set("_medusa_onboarding", "false", { maxAge: -1 })
-  redirect(`http://localhost:7001/a/orders/${orderId}`)
+
+  redirect(`${getAdminURL()}/a/orders/${orderId}`)
 }

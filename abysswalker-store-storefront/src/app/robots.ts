@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 
-const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL
+import { getSiteUrl } from '@lib/util/env'
 
 export default function robots(): MetadataRoute.Robots {
     return {
@@ -10,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
                 disallow: ['/checkout', '/account/*'],
             },
         ],
-        sitemap: `${SITE_URL}/sitemap.xml`,
+        sitemap: getSiteUrl('/sitemap.xml'),
     }
 }

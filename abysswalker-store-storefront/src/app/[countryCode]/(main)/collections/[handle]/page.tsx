@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { Suspense } from "react"
 
 import { getCollectionByHandle, listCollections } from "@lib/data/collections"
 import { listRegions } from "@lib/data/regions"
@@ -67,9 +68,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 
 export default async function CollectionPage(props: Props) {
-  const searchParams = await props.searchParams
   const params = await props.params
-  const { sortBy, page } = searchParams
 
   const collection = await getCollectionByHandle(params.handle).then(
     (collection: StoreCollection) => collection
@@ -80,11 +79,41 @@ export default async function CollectionPage(props: Props) {
   }
 
   return (
+    <Suspense
+      fallback={
+        <CollectionTemplate
+          collection={collection}
+          countryCode={params.countryCode}
+        />
+      }
+    >
+      <CollectionPageContent
+        collection={collection}
+        countryCode={params.countryCode}
+        searchParams={props.searchParams}
+      />
+    </Suspense>
+  )
+}
+
+async function CollectionPageContent({
+  collection,
+  countryCode,
+  searchParams,
+}: {
+  collection: StoreCollection
+  countryCode: string
+  searchParams: Props["searchParams"]
+}) {
+  const resolvedSearchParams = await searchParams
+  const { sortBy, page } = resolvedSearchParams
+
+  return (
     <CollectionTemplate
       collection={collection}
       page={page}
       sortBy={sortBy}
-      countryCode={params.countryCode}
+      countryCode={countryCode}
     />
   )
 }

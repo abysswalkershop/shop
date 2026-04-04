@@ -2,7 +2,7 @@
 
 import { clx } from "@medusajs/ui"
 import { ArrowRightOnRectangle } from "@medusajs/icons"
-import { useParams, usePathname } from "next/navigation"
+import { usePathname } from "next/navigation"
 
 import ChevronDown from "@modules/common/icons/chevron-down"
 import User from "@modules/common/icons/user"
@@ -14,11 +14,12 @@ import { signout } from "@lib/data/customer"
 
 const AccountNav = ({
   customer,
+  countryCode,
 }: {
   customer: HttpTypes.StoreCustomer | null
+  countryCode: string
 }) => {
   const route = usePathname()
-  const { countryCode } = useParams() as { countryCode: string }
 
   const handleLogout = async () => {
     await signout(countryCode)
@@ -29,6 +30,7 @@ const AccountNav = ({
       <div className="small:hidden" data-testid="mobile-account-nav">
         {route !== `/${countryCode}/account` ? (
           <LocalizedClientLink
+            countryCode={countryCode}
             href="/account"
             className="flex items-center gap-x-2 text-small-regular py-2"
             data-testid="account-main-link"
@@ -47,6 +49,7 @@ const AccountNav = ({
               <ul>
                 <li>
                   <LocalizedClientLink
+                    countryCode={countryCode}
                     href="/account/profile"
                     className="flex items-center justify-between py-4 border-b border-abyss-dark-accent px-8 text-abyss-text-light hover:text-abyss-light-accent"
                     data-testid="profile-link"
@@ -62,6 +65,7 @@ const AccountNav = ({
                 </li>
                 <li>
                   <LocalizedClientLink
+                    countryCode={countryCode}
                     href="/account/addresses"
                     className="flex items-center justify-between py-4 border-b border-abyss-dark-accent px-8 text-abyss-text-light hover:text-abyss-light-accent"
                     data-testid="addresses-link"
@@ -77,6 +81,7 @@ const AccountNav = ({
                 </li>
                 <li>
                   <LocalizedClientLink
+                    countryCode={countryCode}
                     href="/account/orders"
                     className="flex items-center justify-between py-4 border-b border-abyss-dark-accent px-8 text-abyss-text-light hover:text-abyss-light-accent"
                     data-testid="orders-link"
@@ -117,6 +122,7 @@ const AccountNav = ({
               <li>
                 <AccountNavLink
                   href="/account"
+                  countryCode={countryCode}
                   route={route!}
                   data-testid="overview-link"
                 >
@@ -126,6 +132,7 @@ const AccountNav = ({
               <li>
                 <AccountNavLink
                   href="/account/profile"
+                  countryCode={countryCode}
                   route={route!}
                   data-testid="profile-link"
                 >
@@ -135,6 +142,7 @@ const AccountNav = ({
               <li>
                 <AccountNavLink
                   href="/account/addresses"
+                  countryCode={countryCode}
                   route={route!}
                   data-testid="addresses-link"
                 >
@@ -144,6 +152,7 @@ const AccountNav = ({
               <li>
                 <AccountNavLink
                   href="/account/orders"
+                  countryCode={countryCode}
                   route={route!}
                   data-testid="orders-link"
                 >
@@ -169,6 +178,7 @@ const AccountNav = ({
 
 type AccountNavLinkProps = {
   href: string
+  countryCode: string
   route: string
   children: React.ReactNode
   "data-testid"?: string
@@ -176,15 +186,15 @@ type AccountNavLinkProps = {
 
 const AccountNavLink = ({
   href,
+  countryCode,
   route,
   children,
   "data-testid": dataTestId,
 }: AccountNavLinkProps) => {
-  const { countryCode }: { countryCode: string } = useParams()
-
   const active = route.split(countryCode)[1] === href
   return (
     <LocalizedClientLink
+      countryCode={countryCode}
       href={href}
       className={clx("text-abyss-text-light hover:text-abyss-light-accent", {
         "text-abyss-medium-accent font-semibold": active,

@@ -1,16 +1,11 @@
 "use client"
 
-import React, { useEffect, useActionState } from "react"
+import React from "react"
 import Input from "@modules/common/components/input"
 import AccountInfo from "../account-info"
-import { HttpTypes } from "@medusajs/types"
 import { toast } from "@medusajs/ui"
 
-type MyInformationProps = {
-  customer: HttpTypes.StoreCustomer
-}
-
-const ProfilePassword: React.FC<MyInformationProps> = ({ customer }) => {
+const ProfilePassword: React.FC = () => {
   const [successState, setSuccessState] = React.useState(false)
 
   // TODO: Add support for password updates

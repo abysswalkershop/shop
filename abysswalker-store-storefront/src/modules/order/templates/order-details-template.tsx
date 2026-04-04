@@ -12,11 +12,13 @@ import React from "react"
 
 type OrderDetailsTemplateProps = {
   order: HttpTypes.StoreOrder
+  countryCode: string
   trackingNumber?: string | null
 }
 
 const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
   order,
+  countryCode,
   trackingNumber,
 }) => {
   return (
@@ -24,6 +26,7 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
       <div className="flex gap-2 justify-between items-center">
         <h1 className="text-2xl-semi text-abyss-text-light">Order details</h1>
         <LocalizedClientLink
+          countryCode={countryCode}
           href="/account/orders"
           className="flex gap-2 items-center text-abyss-text-light hover:text-abyss-light-accent"
           data-testid="back-to-overview-button"
@@ -39,7 +42,7 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
         <Items order={order} />
         <ShippingDetails order={order} />
         <OrderSummary order={order} />
-        <Help />
+        <Help countryCode={countryCode} />
       </div>
     </div>
   )

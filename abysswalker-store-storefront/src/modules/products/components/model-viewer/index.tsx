@@ -5,7 +5,6 @@ import { Canvas } from '@react-three/fiber'
 import { OrbitControls, useGLTF, Environment, ContactShadows, Center } from '@react-three/drei'
 import { Suspense, useState, useEffect, Component, ErrorInfo, ReactNode } from 'react'
 import { Container } from '@medusajs/ui'
-import { HttpTypes } from '@medusajs/types'
 import * as THREE from 'three'
 import { get3DModelUrl, isValid3DModelUrl } from '@lib/util/3d-models'
 
@@ -18,16 +17,18 @@ interface ErrorBoundaryState {
     hasError: boolean
 }
 
+type ModelViewerError = Error | string
+
 class ModelErrorBoundary extends Component<
-    { children: ReactNode; onError: (error: any) => void },
+    { children: ReactNode; onError: (error: ModelViewerError) => void },
     ErrorBoundaryState
 > {
-    constructor(props: { children: ReactNode; onError: (error: any) => void }) {
+    constructor(props: { children: ReactNode; onError: (error: ModelViewerError) => void }) {
         super(props)
         this.state = { hasError: false }
     }
 
-    static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    static getDerivedStateFromError(): ErrorBoundaryState {
         return { hasError: true }
     }
 
@@ -83,13 +84,7 @@ function Model({ url }: { url: string }) {
     )
 }
 
-function ModelWithErrorHandling({ url, onError }: { url: string; onError: (error: any) => void }) {
-    const [hasError, setHasError] = useState(false)
-
-    if (hasError) {
-        return null
-    }
-
+function ModelWithErrorHandling({ url }: { url: string }) {
     return <Model url={url} />
 }
 
@@ -120,29 +115,23 @@ function ErrorFallback() {
 }
 
 function ModelViewer({ modelUrl, className }: ModelViewerProps) {
-    const [error, setError] = useState(false)
-    const [isLoading, setIsLoading] = useState(true)
-
-    // Validate the model URL
     const isValidUrl = isValid3DModelUrl(modelUrl)
+    const [error, setError] = useState(!isValidUrl)
+    const [isLoading, setIsLoading] = useState(isValidUrl)
 
     useEffect(() => {
-        if (!isValidUrl) {
-            setError(true)
-            setIsLoading(false)
-            return
-        }
-
-        setError(false)
-        setIsLoading(true)
+        queueMicrotask(() => {
+            setError(!isValidUrl)
+            setIsLoading(isValidUrl)
+        })
     }, [modelUrl, isValidUrl])
 
     const handleLoad = () => {
         setIsLoading(false)
     }
 
-    const handleError = (error: any) => {
-        console.error('3D Model loading error:', error)
+    const handleError = (modelError: ModelViewerError) => {
+        console.error('3D Model loading error:', modelError)
         setError(true)
         setIsLoading(false)
     }
@@ -170,7 +159,6 @@ function ModelViewer({ modelUrl, className }: ModelViewerProps) {
                         camera={{ position: [0, 0, 5], fov: 50 }}
                         style={{ width: '100%', height: '100%' }}
                         onCreated={handleLoad}
-                        onError={handleError}
                         shadows
                         onPointerMissed={() => { }}
                         gl={{ preserveDrawingBuffer: true }}
@@ -186,7 +174,7 @@ function ModelViewer({ modelUrl, className }: ModelViewerProps) {
                             />
                             <pointLight position={[-10, -10, -10]} intensity={0.5} />
 
-                            <ModelWithErrorHandling url={modelUrl} onError={handleError} />
+                            <ModelWithErrorHandling url={modelUrl} />
 
                             <ContactShadows
                                 position={[0, -1.5, 0]}
@@ -224,11 +212,6 @@ function ModelViewer({ modelUrl, className }: ModelViewerProps) {
             </div>
         </Container>
     )
-}
-
-// Preload the GLTF loader
-useGLTF.preload = (url: string) => {
-    useGLTF(url)
 }
 
 export default ModelViewer

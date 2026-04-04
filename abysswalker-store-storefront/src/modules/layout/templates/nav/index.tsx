@@ -9,7 +9,7 @@ import CategoriesBar from "@modules/layout/components/categories-bar"
 import SkeletonCategory from "@modules/skeletons/components/skeleton-category"
 import Image from "next/image"
 
-export default async function Nav() {
+export default async function Nav({ countryCode }: { countryCode: string }) {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
 
   return (
@@ -18,10 +18,12 @@ export default async function Nav() {
         <nav className="content-container txt-xsmall-plus text-abyss-text-light flex items-center justify-between w-full h-full text-small-regular">
           <div className="flex-1 basis-0 h-full flex items-center">
             <div className="h-full">
-              <SideMenu regions={regions} />
+              <SideMenu countryCode={countryCode} regions={regions} />
             </div>
-          </div>          <div className="flex items-center h-full">
+          </div>
+          <div className="flex items-center h-full">
             <LocalizedClientLink
+              countryCode={countryCode}
               href="/"
               className="txt-compact-xlarge-plus hover:text-abyss-light-accent uppercase"
               data-testid="nav-store-link"
@@ -38,15 +40,13 @@ export default async function Nav() {
 
           <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
             <div className="hidden small:flex items-center gap-x-6 h-full mr-10">
-              <Suspense
-                fallback={
-                  <SkeletonCategory />
-                }>
-                <CategoriesBar />
+              <Suspense fallback={<SkeletonCategory />}>
+                <CategoriesBar countryCode={countryCode} />
               </Suspense>
             </div>
             <div className="hidden small:flex items-center gap-x-6 h-full">
               <LocalizedClientLink
+                countryCode={countryCode}
                 className="hover:text-abyss-light-accent"
                 href="/account"
                 data-testid="nav-account-link"
@@ -57,6 +57,7 @@ export default async function Nav() {
             <Suspense
               fallback={
                 <LocalizedClientLink
+                  countryCode={countryCode}
                   className="hover:text-abyss-light-accent flex gap-2"
                   href="/cart"
                   data-testid="nav-cart-link"
@@ -65,7 +66,7 @@ export default async function Nav() {
                 </LocalizedClientLink>
               }
             >
-              <CartButton />
+              <CartButton countryCode={countryCode} />
             </Suspense>
           </div>
         </nav>

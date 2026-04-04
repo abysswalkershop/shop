@@ -19,13 +19,13 @@ import { Fragment, useEffect, useRef, useState } from "react"
 
 const CartDropdown = ({
   cart: cartState,
+  countryCode,
 }: {
   cart?: HttpTypes.StoreCart | null
+  countryCode: string
 }) => {
-  const [activeTimer, setActiveTimer] = useState<NodeJS.Timer | undefined>(
-    undefined
-  )
   const [cartDropdownOpen, setCartDropdownOpen] = useState(false)
+  const activeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const open = () => setCartDropdownOpen(true)
   const close = () => setCartDropdownOpen(false)
@@ -41,14 +41,13 @@ const CartDropdown = ({
   const timedOpen = () => {
     open()
 
-    const timer = setTimeout(close, 5000)
-
-    setActiveTimer(timer)
+    activeTimerRef.current = setTimeout(close, 5000)
   }
 
   const openAndCancel = () => {
-    if (activeTimer) {
-      clearTimeout(activeTimer)
+    if (activeTimerRef.current) {
+      clearTimeout(activeTimerRef.current)
+      activeTimerRef.current = null
     }
 
     open()
@@ -57,11 +56,11 @@ const CartDropdown = ({
   // Clean up the timer when the component unmounts
   useEffect(() => {
     return () => {
-      if (activeTimer) {
-        clearTimeout(activeTimer)
+      if (activeTimerRef.current) {
+        clearTimeout(activeTimerRef.current)
       }
     }
-  }, [activeTimer])
+  }, [])
 
   const pathname = usePathname()
 
@@ -82,6 +81,7 @@ const CartDropdown = ({
       <Popover className="relative h-full">
         <PopoverButton className="h-full">
           <LocalizedClientLink
+            countryCode={countryCode}
             className="hover:text-ui-fg-base"
             href="/cart"
             data-testid="nav-cart-link"
@@ -121,6 +121,7 @@ const CartDropdown = ({
                         data-testid="cart-item"
                       >
                         <LocalizedClientLink
+                          countryCode={countryCode}
                           href={`/products/${item.product_handle}`}
                           className="w-24"
                         >
@@ -136,6 +137,7 @@ const CartDropdown = ({
                               <div className="flex flex-col overflow-ellipsis whitespace-nowrap mr-4 w-[180px]">
                                 <h3 className="text-base-regular overflow-hidden text-ellipsis">
                                   <LocalizedClientLink
+                                    countryCode={countryCode}
                                     href={`/products/${item.product_handle}`}
                                     data-testid="product-link"
                                   >
@@ -190,7 +192,7 @@ const CartDropdown = ({
                       })}
                     </span>
                   </div>
-                  <LocalizedClientLink href="/cart" passHref>
+                  <LocalizedClientLink countryCode={countryCode} href="/cart" passHref>
                     <Button
                       className="w-full"
                       size="large"
@@ -209,7 +211,7 @@ const CartDropdown = ({
                   </div>
                   <span>Your shopping bag is empty.</span>
                   <div>
-                    <LocalizedClientLink href="/store">
+                    <LocalizedClientLink countryCode={countryCode} href="/store">
                       <>
                         <span className="sr-only">Go to all products page</span>
                         <Button onClick={close}>Explore products</Button>

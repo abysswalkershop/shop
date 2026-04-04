@@ -45,7 +45,7 @@ const StoreTemplate = ({
       data-testid="category-container"
     >
       <Suspense fallback={refinementListFallback}>
-        <ServerRefinementList sortBy={sort} />
+        <ServerRefinementList sortBy={sort} countryCode={countryCode} />
       </Suspense>
       <div className="w-full">
         <div className="mb-8 text-2xl-semi">

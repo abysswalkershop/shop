@@ -12,8 +12,8 @@ export default function TOUPage() {
             </p>
 
             <p className="mb-4">
-                These Terms of Use ("TOU") govern your access to and use of the website
-                and services provided by Abyss Walker ("we", "us", or "our"). By
+                These Terms of Use (&quot;TOU&quot;) govern your access to and use of the website
+                and services provided by Abyss Walker (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;). By
                 accessing or using our website, you agree to comply with and be bound by
                 these TOU.
             </p>

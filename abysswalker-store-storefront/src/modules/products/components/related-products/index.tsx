@@ -8,6 +8,13 @@ type RelatedProductsProps = {
   countryCode: string
 }
 
+type RelatedProductsQuery = {
+  region_id?: string
+  collection_id?: string[]
+  tag_id?: string[]
+  is_giftcard?: boolean
+}
+
 export default async function RelatedProducts({
   product,
   countryCode,
@@ -19,7 +26,7 @@ export default async function RelatedProducts({
   }
 
   // edit this function to define your related products logic
-  const queryParams: HttpTypes.StoreProductParams = {}
+  const queryParams: RelatedProductsQuery = {}
   if (region?.id) {
     queryParams.region_id = region.id
   }

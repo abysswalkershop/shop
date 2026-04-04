@@ -7,6 +7,15 @@ import { SortOptions } from "@modules/store/components/refinement-list/sort-prod
 import { getCacheOptions } from "./cookies"
 import { getRegion, retrieveRegion } from "./regions"
 
+type ProductQueryParams = HttpTypes.FindParams &
+  HttpTypes.StoreProductParams & {
+    handle?: string | string[]
+    id?: string[]
+    collection_id?: string | string[]
+    tag_id?: string[]
+    is_giftcard?: boolean
+  }
+
 export const listProducts = async ({
   pageParam = 1,
   queryParams,
@@ -14,28 +23,28 @@ export const listProducts = async ({
   regionId,
 }: {
   pageParam?: number
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: ProductQueryParams
   countryCode?: string
   regionId?: string
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: ProductQueryParams
 }> => {
   if (!countryCode && !regionId) {
     throw new Error("Country code or region ID is required")
   }
 
   const limit = queryParams?.limit || 12
-  const _pageParam = Math.max(pageParam, 1)
-  const offset = (_pageParam === 1) ? 0 : (_pageParam - 1) * limit;
+  const currentPage = Math.max(pageParam, 1)
+  const offset = currentPage === 1 ? 0 : (currentPage - 1) * limit
 
   let region: HttpTypes.StoreRegion | undefined | null
 
   if (countryCode) {
     region = await getRegion(countryCode)
-  } else {
-    region = await retrieveRegion(regionId!)
+  } else if (regionId) {
+    region = await retrieveRegion(regionId)
   }
 
   if (!region) {
@@ -67,7 +76,7 @@ export const listProducts = async ({
       }
     )
     .then(({ products, count }) => {
-      const nextPage = count > offset + limit ? pageParam + 1 : null
+      const nextPage = count > offset + limit ? currentPage + 1 : null
 
       return {
         response: {
@@ -85,40 +94,63 @@ export const listProducts = async ({
  * It will then return the paginated products based on the page and limit parameters.
  */
 export const listProductsWithSort = async ({
-  page = 0,
+  page = 1,
   queryParams,
   sortBy = "created_at",
   countryCode,
 }: {
   page?: number
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: ProductQueryParams
   sortBy?: SortOptions
   countryCode: string
 }): Promise<{
   response: { products: HttpTypes.StoreProduct[]; count: number }
   nextPage: number | null
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: ProductQueryParams
 }> => {
   const limit = queryParams?.limit || 12
+  const currentPage = Math.max(page, 1)
 
-  const {
-    response: { products, count },
-  } = await listProducts({
-    pageParam: 0,
-    queryParams: {
-      ...queryParams,
-      limit: 100,
-    },
-    countryCode,
-  })
+  if (sortBy === "created_at") {
+    return listProducts({
+      pageParam: currentPage,
+      queryParams,
+      countryCode,
+    })
+  }
+
+  const pageSize = 100
+  const products: HttpTypes.StoreProduct[] = []
+  let count = 0
+  let nextPageToFetch = 1
+
+  while (true) {
+    const {
+      response: { products: pageProducts, count: pageCount },
+    } = await listProducts({
+      pageParam: nextPageToFetch,
+      queryParams: {
+        ...queryParams,
+        limit: pageSize,
+      },
+      countryCode,
+    })
+
+    products.push(...pageProducts)
+    count = pageCount
+
+    if (products.length >= count || pageProducts.length < pageSize) {
+      break
+    }
+
+    nextPageToFetch += 1
+  }
 
   const sortedProducts = sortProducts(products, sortBy)
 
-  const pageParam = (page - 1) * limit
-
-  const nextPage = count > pageParam + limit ? pageParam + limit : null
-
-  const paginatedProducts = sortedProducts.slice(pageParam, pageParam + limit)
+  const pageOffset = (currentPage - 1) * limit
+  const nextPage = count > pageOffset + limit ? currentPage + 1 : null
+  const paginatedProducts = sortedProducts.slice(pageOffset, pageOffset + limit)
 
   return {
     response: {

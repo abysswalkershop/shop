@@ -1,7 +1,6 @@
 "use client"
 import { gsap } from "gsap";
-import { Github } from "@medusajs/icons"
-import { Button, Heading } from "@medusajs/ui"
+import { Heading } from "@medusajs/ui"
 import InteractiveLink from "@modules/common/components/interactive-link"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { useState, useEffect, useRef } from "react"

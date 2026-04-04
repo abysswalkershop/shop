@@ -4,11 +4,20 @@ import { Heading, Text } from "@medusajs/ui"
 
 import Divider from "@modules/common/components/divider"
 
+type OrderWithShippingMethods = HttpTypes.StoreOrder & {
+  shipping_methods?: Array<{
+    name?: string | null
+    total?: number | null
+  }>
+}
+
 type ShippingDetailsProps = {
   order: HttpTypes.StoreOrder
 }
 
 const ShippingDetails = ({ order }: ShippingDetailsProps) => {
+  const typedOrder = order as OrderWithShippingMethods
+
   return (
     <div>
       <Heading level="h2" className="flex flex-row text-3xl-regular my-6">
@@ -56,9 +65,9 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
         >
           <Text className="txt-medium-plus text-ui-fg-base mb-1">Method</Text>
           <Text className="txt-medium text-ui-fg-subtle">
-            {(order as any).shipping_methods[0]?.name} (
+            {typedOrder.shipping_methods?.[0]?.name} (
             {convertToLocale({
-              amount: order.shipping_methods?.[0].total ?? 0,
+              amount: typedOrder.shipping_methods?.[0]?.total ?? 0,
               currency_code: order.currency_code,
             })
               .replace(/,/g, "")

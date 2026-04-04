@@ -1,13 +1,26 @@
 import { Heading, Text } from "@medusajs/ui"
 import TransferActions from "@modules/order/components/transfer-actions"
 import TransferImage from "@modules/order/components/transfer-image"
+import { Suspense } from "react"
 
-export default async function TransferPage({
+export default function TransferPage({
   params,
 }: {
-  params: { id: string; token: string }
+  params: Promise<{ id: string; token: string }>
 }) {
-  const { id, token } = params
+  return (
+    <Suspense fallback={<TransferPageSkeleton />}>
+      <TransferPageContent params={params} />
+    </Suspense>
+  )
+}
+
+async function TransferPageContent({
+  params,
+}: {
+  params: Promise<{ id: string; token: string }>
+}) {
+  const { id, token } = await params
 
   return (
     <div className="flex flex-col gap-y-4 items-start w-2/5 mx-auto mt-10 mb-20">
@@ -32,6 +45,19 @@ export default async function TransferPage({
         </Text>
         <div className="w-full h-px bg-abyss-dark-accent" />
         <TransferActions id={id} token={token} />
+      </div>
+    </div>
+  )
+}
+
+function TransferPageSkeleton() {
+  return (
+    <div className="flex flex-col gap-y-4 items-start w-2/5 mx-auto mt-10 mb-20">
+      <TransferImage />
+      <div className="flex flex-col gap-y-6">
+        <Heading level="h1" className="text-xl text-abyss-text-light">
+          Transfer request
+        </Heading>
       </div>
     </div>
   )

@@ -1,18 +1,19 @@
 "use client"
 
 import { addToCart } from "@lib/data/cart"
+import { useCountryCode } from "@lib/context/country-context"
 import { useIntersection } from "@lib/hooks/use-in-view"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
-import { isEqual } from "lodash"
-import { useParams } from "next/navigation"
-import { useEffect, useMemo, useRef, useState } from "react"
+import isEqual from "lodash/isEqual"
+import { useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
 
 type ProductActionsProps = {
+  countryCode?: string
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
   disabled?: boolean
@@ -21,10 +22,33 @@ type ProductActionsProps = {
 const optionsAsKeymap = (
   variantOptions: HttpTypes.StoreProductVariant["options"]
 ) => {
-  return variantOptions?.reduce((acc: Record<string, string>, varopt: any) => {
-    acc[varopt.option_id] = varopt.value
+  return variantOptions?.reduce<Record<string, string>>((acc, variantOption) => {
+    if (variantOption.option_id && variantOption.value) {
+      acc[variantOption.option_id] = variantOption.value
+    }
+
     return acc
   }, {})
+}
+
+const getInitialOptions = (product: HttpTypes.StoreProduct) => {
+  if (!product.variants?.length) {
+    return {}
+  }
+
+  const firstInStockVariant = product.variants.find((variant) =>
+    isVariantInStock(variant)
+  )
+
+  if (firstInStockVariant) {
+    return optionsAsKeymap(firstInStockVariant.options) ?? {}
+  }
+
+  if (product.variants.length === 1) {
+    return optionsAsKeymap(product.variants[0].options) ?? {}
+  }
+
+  return {}
 }
 
 // Helper function to check if a variant is in stock
@@ -48,31 +72,51 @@ const isVariantInStock = (variant: HttpTypes.StoreProductVariant) => {
 }
 
 export default function ProductActions({
+  countryCode: providedCountryCode,
   product,
   disabled,
 }: ProductActionsProps) {
-  const [options, setOptions] = useState<Record<string, string | undefined>>({})
+  if (providedCountryCode) {
+    return (
+      <ProductActionsContent
+        countryCode={providedCountryCode}
+        product={product}
+        disabled={disabled}
+      />
+    )
+  }
+
+  return <ProductActionsWithResolvedCountry product={product} disabled={disabled} />
+}
+
+function ProductActionsWithResolvedCountry({
+  product,
+  disabled,
+}: Omit<ProductActionsProps, "countryCode" | "region">) {
+  const countryCode = useCountryCode()
+
+  return (
+    <ProductActionsContent
+      countryCode={countryCode}
+      product={product}
+      disabled={disabled}
+    />
+  )
+}
+
+function ProductActionsContent({
+  countryCode,
+  product,
+  disabled,
+}: {
+  countryCode: string
+  product: HttpTypes.StoreProduct
+  disabled?: boolean
+}) {
+  const [options, setOptions] = useState<Record<string, string | undefined>>(() =>
+    getInitialOptions(product)
+  )
   const [isAdding, setIsAdding] = useState(false)
-  const countryCode = useParams().countryCode as string
-
-  // Automatically select the first in-stock variant
-  useEffect(() => {
-    if (product.variants && product.variants.length > 0) {
-      // Find the first in-stock variant
-      const firstInStockVariant = product.variants.find(variant =>
-        isVariantInStock(variant)
-      )
-
-      if (firstInStockVariant) {
-        const variantOptions = optionsAsKeymap(firstInStockVariant.options)
-        setOptions(variantOptions ?? {})
-      } else if (product.variants.length === 1) {
-        // Fallback: if only one variant and it's out of stock, still select it
-        const variantOptions = optionsAsKeymap(product.variants[0].options)
-        setOptions(variantOptions ?? {})
-      }
-    }
-  }, [product.variants])
 
   const selectedVariant = useMemo(() => {
     if (!product.variants || product.variants.length === 0) {

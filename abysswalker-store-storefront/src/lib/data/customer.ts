@@ -14,6 +14,74 @@ import {
   setAuthToken,
 } from "./cookies"
 
+export type CustomerActionResult = {
+  success: boolean
+  error: string | null
+}
+
+export type CustomerAddressFormState = CustomerActionResult & {
+  addressId?: string
+  isDefaultBilling?: boolean
+  isDefaultShipping?: boolean
+}
+
+const revalidateCachedTag = (tag: string) => revalidateTag(tag, "max")
+
+const getStringField = (formData: FormData, key: string) => {
+  const value = formData.get(key)
+  return typeof value === "string" ? value.trim() : ""
+}
+
+const requireStringField = (formData: FormData, key: string, label: string) => {
+  const value = getStringField(formData, key)
+
+  if (!value) {
+    throw new Error(`${label} is required`)
+  }
+
+  return value
+}
+
+const getOptionalStringField = (formData: FormData, key: string) => {
+  const value = getStringField(formData, key)
+  return value || undefined
+}
+
+const getCustomerAuthInput = (formData: FormData) => {
+  const email = requireStringField(formData, "email", "Email")
+  const password = requireStringField(formData, "password", "Password")
+
+  return { email, password }
+}
+
+const getCustomerProfileInput = (formData: FormData) => ({
+  email: requireStringField(formData, "email", "Email"),
+  first_name: requireStringField(formData, "first_name", "First name"),
+  last_name: requireStringField(formData, "last_name", "Last name"),
+  phone: getOptionalStringField(formData, "phone"),
+})
+
+const getCustomerAddressInput = (formData: FormData) => ({
+  first_name: requireStringField(formData, "first_name", "First name"),
+  last_name: requireStringField(formData, "last_name", "Last name"),
+  company: getOptionalStringField(formData, "company"),
+  address_1: requireStringField(formData, "address_1", "Address"),
+  address_2: getOptionalStringField(formData, "address_2"),
+  city: requireStringField(formData, "city", "City"),
+  postal_code: requireStringField(formData, "postal_code", "Postal code"),
+  province: getOptionalStringField(formData, "province"),
+  country_code: requireStringField(formData, "country_code", "Country"),
+  phone: getOptionalStringField(formData, "phone"),
+})
+
+const getErrorMessage = (error: unknown) => {
+  if (error instanceof Error) {
+    return error.toString()
+  }
+
+  return "Unknown error"
+}
+
 export const retrieveCustomer =
   async (): Promise<HttpTypes.StoreCustomer | null> => {
     const authHeaders = await getAuthHeaders()
@@ -48,19 +116,17 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
     .catch(medusaError)
 
   const cacheTag = await getCacheTag("customers")
-  revalidateTag(cacheTag)
+  revalidateCachedTag(cacheTag)
 
   return updateRes
 }
 
-export async function signup(_currentState: unknown, formData: FormData) {
-  const password = formData.get("password") as string
-  const customerForm = {
-    email: formData.get("email") as string,
-    first_name: formData.get("first_name") as string,
-    last_name: formData.get("last_name") as string,
-    phone: formData.get("phone") as string,
-  }
+export async function signup(
+  _currentState: string | null,
+  formData: FormData
+): Promise<string | null> {
+  const { password } = getCustomerAuthInput(formData)
+  const customerForm = getCustomerProfileInput(formData)
 
   try {
     const token = await sdk.auth.register("customer", "emailpass", {
@@ -74,7 +140,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
       ...(await getAuthHeaders()),
     }
 
-    const { customer: createdCustomer } = await sdk.store.customer.create(
+    await sdk.store.customer.create(
       customerForm,
       {},
       headers
@@ -88,19 +154,18 @@ export async function signup(_currentState: unknown, formData: FormData) {
     await setAuthToken(loginToken as string)
 
     const customerCacheTag = await getCacheTag("customers")
-    revalidateTag(customerCacheTag)
+    revalidateCachedTag(customerCacheTag)
 
     await transferCart()
 
-    return createdCustomer
-  } catch (error: any) {
-    return error.toString()
+    return null
+  } catch (error) {
+    return getErrorMessage(error)
   }
 }
 
 export async function login(_currentState: unknown, formData: FormData) {
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
+  const { email, password } = getCustomerAuthInput(formData)
 
   try {
     await sdk.auth
@@ -108,17 +173,19 @@ export async function login(_currentState: unknown, formData: FormData) {
       .then(async (token) => {
         await setAuthToken(token as string)
         const customerCacheTag = await getCacheTag("customers")
-        revalidateTag(customerCacheTag)
+        revalidateCachedTag(customerCacheTag)
       })
-  } catch (error: any) {
-    return error.toString()
+  } catch (error) {
+    return getErrorMessage(error)
   }
 
   try {
     await transferCart()
-  } catch (error: any) {
-    return error.toString()
+  } catch (error) {
+    return getErrorMessage(error)
   }
+
+  return null
 }
 
 export async function signout(countryCode: string) {
@@ -127,12 +194,12 @@ export async function signout(countryCode: string) {
   await removeAuthToken()
 
   const customerCacheTag = await getCacheTag("customers")
-  revalidateTag(customerCacheTag)
+  revalidateCachedTag(customerCacheTag)
 
   await removeCartId()
 
   const cartCacheTag = await getCacheTag("carts")
-  revalidateTag(cartCacheTag)
+  revalidateCachedTag(cartCacheTag)
 
   redirect(`/${countryCode}/account`)
 }
@@ -149,27 +216,18 @@ export async function transferCart() {
   await sdk.store.cart.transferCart(cartId, {}, headers)
 
   const cartCacheTag = await getCacheTag("carts")
-  revalidateTag(cartCacheTag)
+  revalidateCachedTag(cartCacheTag)
 }
 
 export const addCustomerAddress = async (
-  currentState: Record<string, unknown>,
+  currentState: CustomerAddressFormState,
   formData: FormData
-): Promise<any> => {
-  const isDefaultBilling = (currentState.isDefaultBilling as boolean) || false
-  const isDefaultShipping = (currentState.isDefaultShipping as boolean) || false
+): Promise<CustomerAddressFormState> => {
+  const isDefaultBilling = currentState.isDefaultBilling ?? false
+  const isDefaultShipping = currentState.isDefaultShipping ?? false
 
   const address = {
-    first_name: formData.get("first_name") as string,
-    last_name: formData.get("last_name") as string,
-    company: formData.get("company") as string,
-    address_1: formData.get("address_1") as string,
-    address_2: formData.get("address_2") as string,
-    city: formData.get("city") as string,
-    postal_code: formData.get("postal_code") as string,
-    province: formData.get("province") as string,
-    country_code: formData.get("country_code") as string,
-    phone: formData.get("phone") as string,
+    ...getCustomerAddressInput(formData),
     is_default_billing: isDefaultBilling,
     is_default_shipping: isDefaultShipping,
   }
@@ -180,28 +238,28 @@ export const addCustomerAddress = async (
 
   return sdk.store.customer
     .createAddress(address, {}, headers)
-    .then(async ({ customer }) => {
+    .then(async () => {
       const customerCacheTag = await getCacheTag("customers")
-      revalidateTag(customerCacheTag)
-      return { success: true, error: null }
+      revalidateCachedTag(customerCacheTag)
+      return { ...currentState, success: true, error: null }
     })
     .catch((err) => {
-      return { success: false, error: err.toString() }
+      return { ...currentState, success: false, error: err.toString() }
     })
 }
 
 export const deleteCustomerAddress = async (
   addressId: string
-): Promise<void> => {
+): Promise<CustomerActionResult> => {
   const headers = {
     ...(await getAuthHeaders()),
   }
 
-  await sdk.store.customer
+  return sdk.store.customer
     .deleteAddress(addressId, headers)
     .then(async () => {
       const customerCacheTag = await getCacheTag("customers")
-      revalidateTag(customerCacheTag)
+      revalidateCachedTag(customerCacheTag)
       return { success: true, error: null }
     })
     .catch((err) => {
@@ -210,33 +268,20 @@ export const deleteCustomerAddress = async (
 }
 
 export const updateCustomerAddress = async (
-  currentState: Record<string, unknown>,
+  currentState: CustomerAddressFormState,
   formData: FormData
-): Promise<any> => {
+): Promise<CustomerAddressFormState> => {
+  const formAddressId = formData.get("addressId")
   const addressId =
-    (currentState.addressId as string) || (formData.get("addressId") as string)
+    currentState.addressId || (typeof formAddressId === "string" ? formAddressId : "")
 
   if (!addressId) {
     return { success: false, error: "Address ID is required" }
   }
 
-  const address = {
-    first_name: formData.get("first_name") as string,
-    last_name: formData.get("last_name") as string,
-    company: formData.get("company") as string,
-    address_1: formData.get("address_1") as string,
-    address_2: formData.get("address_2") as string,
-    city: formData.get("city") as string,
-    postal_code: formData.get("postal_code") as string,
-    province: formData.get("province") as string,
-    country_code: formData.get("country_code") as string,
-  } as HttpTypes.StoreUpdateCustomerAddress
-
-  const phone = formData.get("phone") as string
-
-  if (phone) {
-    address.phone = phone
-  }
+  const address = getCustomerAddressInput(
+    formData
+  ) as HttpTypes.StoreUpdateCustomerAddress
 
   const headers = {
     ...(await getAuthHeaders()),
@@ -246,10 +291,10 @@ export const updateCustomerAddress = async (
     .updateAddress(addressId, address, {}, headers)
     .then(async () => {
       const customerCacheTag = await getCacheTag("customers")
-      revalidateTag(customerCacheTag)
-      return { success: true, error: null }
+      revalidateCachedTag(customerCacheTag)
+      return { ...currentState, success: true, error: null }
     })
     .catch((err) => {
-      return { success: false, error: err.toString() }
+      return { ...currentState, success: false, error: err.toString() }
     })
 }

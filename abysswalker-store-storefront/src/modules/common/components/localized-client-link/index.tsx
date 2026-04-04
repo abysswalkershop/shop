@@ -1,8 +1,32 @@
 "use client"
 
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import React from "react"
+
+import { useCountryCode } from "@lib/context/country-context"
+
+type LocalizedClientLinkProps = Omit<React.ComponentProps<typeof Link>, "href"> & {
+  countryCode?: string
+  href: string
+}
+
+const buildLocalizedHref = (countryCode: string, href: string) => {
+  return href === "/" ? `/${countryCode}` : `/${countryCode}${href}`
+}
+
+const LocalizedClientLinkWithResolvedCountry = ({
+  children,
+  href,
+  ...props
+}: Omit<LocalizedClientLinkProps, "countryCode">) => {
+  const countryCode = useCountryCode()
+
+  return (
+    <Link href={buildLocalizedHref(countryCode, href)} {...props}>
+      {children}
+    </Link>
+  )
+}
 
 /**
  * Use this component to create a Next.js `<Link />` that persists the current country code in the url,
@@ -10,22 +34,22 @@ import React from "react"
  */
 const LocalizedClientLink = ({
   children,
+  countryCode,
   href,
   ...props
-}: {
-  children?: React.ReactNode
-  href: string
-  className?: string
-  onClick?: () => void
-  passHref?: true
-  [x: string]: any
-}) => {
-  const { countryCode } = useParams()
+}: LocalizedClientLinkProps) => {
+  if (countryCode) {
+    return (
+      <Link href={buildLocalizedHref(countryCode, href)} {...props} prefetch>
+        {children}
+      </Link>
+    )
+  }
 
   return (
-    <Link href={`/${countryCode}${href}`} {...props}>
+    <LocalizedClientLinkWithResolvedCountry href={href} {...props}>
       {children}
-    </Link>
+    </LocalizedClientLinkWithResolvedCountry>
   )
 }
 

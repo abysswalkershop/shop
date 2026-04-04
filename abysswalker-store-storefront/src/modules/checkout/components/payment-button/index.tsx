@@ -5,9 +5,8 @@ import { placeOrder } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import ErrorMessage from "../error-message"
-import { useSearchParams } from "next/navigation"
 
 type PaymentButtonProps = {
   cart: HttpTypes.StoreCart

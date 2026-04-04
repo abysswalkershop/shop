@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useActionState } from "react";
+import React, { useEffect, useActionState } from "react"
 
 import Input from "@modules/common/components/input"
 
@@ -10,6 +10,11 @@ import { updateCustomer } from "@lib/data/customer"
 
 type MyInformationProps = {
   customer: HttpTypes.StoreCustomer
+}
+
+type FormState = {
+  success: boolean
+  error: string | null
 }
 
 const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
@@ -27,15 +32,18 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
     try {
       await updateCustomer(customer)
       return { success: true, error: null }
-    } catch (error: any) {
-      return { success: false, error: error.toString() }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.toString() : "Unknown error",
+      }
     }
   }
 
   const [state, formAction] = useActionState(updateCustomerName, {
-    error: false,
+    error: null,
     success: false,
-  })
+  } satisfies FormState)
 
   const clearState = () => {
     setSuccessState(false)

@@ -10,6 +10,7 @@ import SortProducts, { SortOptions } from "./sort-products"
 type RefinementListProps = {
   sortBy: SortOptions
   categories?: HttpTypes.StoreProductCategory[]
+  countryCode?: string
   search?: boolean
   'data-testid'?: string
 }
@@ -17,6 +18,7 @@ type RefinementListProps = {
 const RefinementList = ({
   sortBy,
   categories,
+  countryCode,
   'data-testid': dataTestId,
 }: RefinementListProps) => {
   const router = useRouter()
@@ -45,6 +47,7 @@ const RefinementList = ({
         <div className="flex flex-col gap-y-4">
           <p className="txt-small-plus text-abyss-medium-accent">Categories</p>
           <CategoryTree
+            countryCode={countryCode}
             categories={categories}
             className="grid grid-cols-1 gap-2 text-abyss-text-light txt-small"
             nestedClassName="grid grid-cols-1 gap-2 pl-4"

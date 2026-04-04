@@ -1,5 +1,7 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { connection } from "next/server"
+import { Suspense } from "react"
 
 import AddressBook from "@modules/account/components/address-book"
 
@@ -15,7 +17,17 @@ export default async function Addresses(props: {
   params: Promise<{ countryCode: string }>
 }) {
   const params = await props.params
-  const { countryCode } = params
+
+  return (
+    <Suspense fallback={<div className="w-full" data-testid="addresses-page-loading" />}>
+      <AddressesContent countryCode={params.countryCode} />
+    </Suspense>
+  )
+}
+
+async function AddressesContent({ countryCode }: { countryCode: string }) {
+  await connection()
+
   const customer = await retrieveCustomer()
   const region = await getRegion(countryCode)
 
