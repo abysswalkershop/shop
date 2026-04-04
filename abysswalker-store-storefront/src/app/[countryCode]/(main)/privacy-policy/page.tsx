@@ -78,7 +78,7 @@ export default function PrivacyPolicyPage() {
                             <strong>Shipping Providers:</strong> To fulfill your orders and deliver products to you.
                         </li>
                         <li className="mb-1 text-black">
-                            <strong>Website Hosting:</strong> Hetzner, for hosting our shop&apos;s infrastructure. (While we do not directly share any data with Hetzner, they provide the servers and infrastructure that host our Service, so it is worth mentioning.)
+                            <strong>Website Hosting:</strong> OVH, for hosting our shop&apos;s infrastructure. (While we do not directly share any data with OVH, they provide the servers and infrastructure that host our Service, so it is worth mentioning.)
                         </li>
                     </ul>
                     These service providers are contractually obligated to protect your information and only use it for the specific purposes for which it was disclosed.
@@ -94,9 +94,9 @@ export default function PrivacyPolicyPage() {
                 </li>
             </ul>
 
-            <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">5. Data Storage and Security (Hetzner & Stripe)</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">5. Data Storage and Security (OVH & Stripe)</h2>
             <p className="mb-4 text-black">
-                Our online shop is hosted on Hetzner servers. Hetzner provides robust infrastructure and security measures to protect the data stored on their systems.
+                Our online shop is hosted on OVH servers. OVH provides robust infrastructure and security measures to protect the data stored on their systems.
             </p>
             <p className="mb-4 text-black">
                 For payment processing, we rely on Stripe&apos;s secure infrastructure. Stripe is a PCI DSS certified payment processor, meaning they adhere to strict security standards for handling payment card information.
