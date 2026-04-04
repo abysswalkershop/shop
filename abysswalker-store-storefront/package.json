@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
-    "@medusajs/js-sdk": "2.13.2",
+    "@medusajs/js-sdk": "2.13.5",
     "@medusajs/ui": "latest",
     "@radix-ui/react-accordion": "^1.2.12",
     "@react-three/drei": "^10.7.7",
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
-    "@medusajs/types": "2.13.2",
+    "@medusajs/types": "2.13.5",
     "@medusajs/ui-preset": "latest",
     "@types/lodash": "^4.17.24",
     "@types/node": "25.3.5",
