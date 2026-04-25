@@ -4,6 +4,7 @@ checkEnvVariables()
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "standalone",
   reactStrictMode: true,
   cacheComponents: true,
   ...(process.env.NODE_ENV === "development"
