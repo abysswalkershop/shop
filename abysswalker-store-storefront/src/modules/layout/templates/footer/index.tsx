@@ -113,11 +113,20 @@ export default async function Footer({ countryCode }: { countryCode: string }) {
                 </li>
                 <li>
                   <Link
-                    href="https://www.tiktok.com/@abysswalkerorg"
+                    href="https://www.tiktok.com/@abyss.walker.shop"
                     target="_blank"
                     className="hover:text-abyss-light-accent"
                   >
                     Tiktok
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="https://www.patreon.com/abysswalkershop"
+                    target="_blank"
+                    className="hover:text-abyss-light-accent"
+                  >
+                    Patreon
                   </Link>
                 </li>
               </ul>
