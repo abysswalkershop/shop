@@ -10,17 +10,19 @@ WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
-# Public keys are embedded by Next.js. The backend must be reachable at build time.
+# Optional overrides; Next.js also loads the storefront's production .env files.
+# The backend must be reachable at build time.
 ARG MEDUSA_BACKEND_URL
 ARG NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
 ARG NEXT_PUBLIC_BASE_URL
 ARG NEXT_PUBLIC_STRIPE_KEY
-ARG NEXT_PUBLIC_DEFAULT_REGION=us
+ARG NEXT_PUBLIC_DEFAULT_REGION
 ARG STOREFRONT_STATIC_COUNTRIES
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN node node_modules/next/dist/bin/next build
+RUN node node_modules/next/dist/bin/next build \
+    && rm -f .next/standalone/.env .next/standalone/.env.*
 
 FROM node:24-alpine AS runner
 WORKDIR /app

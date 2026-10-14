@@ -3,6 +3,11 @@ node_modules
 .git
 .github
 .env*
+# Next.js loads production build settings from these files.
+!.env
+!.env.local
+!.env.production
+!.env.production.local
 out
 coverage
 *.tsbuildinfo
