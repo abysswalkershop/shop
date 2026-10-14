@@ -49,7 +49,6 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
                 countryCode={countryCode}
                 disabled={true}
                 product={product}
-                region={region}
               />
             }
           >

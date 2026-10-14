@@ -1,2 +1,11 @@
 node_modules
 .next
+.git
+.github
+.env*
+out
+coverage
+*.tsbuildinfo
+test-results
+playwright-report
+blob-report

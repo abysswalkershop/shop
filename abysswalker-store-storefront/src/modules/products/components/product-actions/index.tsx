@@ -15,7 +15,6 @@ import MobileActions from "./mobile-actions"
 type ProductActionsProps = {
   countryCode?: string
   product: HttpTypes.StoreProduct
-  region: HttpTypes.StoreRegion
   disabled?: boolean
 }
 
@@ -92,7 +91,7 @@ export default function ProductActions({
 function ProductActionsWithResolvedCountry({
   product,
   disabled,
-}: Omit<ProductActionsProps, "countryCode" | "region">) {
+}: Omit<ProductActionsProps, "countryCode">) {
   const countryCode = useCountryCode()
 
   return (

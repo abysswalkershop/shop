@@ -1,6 +1,6 @@
 "use client"
 
-import { HttpTypes } from "@medusajs/types"
+import { CategoryNavigation } from "@lib/util/category-navigation"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback } from "react"
 
@@ -9,7 +9,7 @@ import SortProducts, { SortOptions } from "./sort-products"
 
 type RefinementListProps = {
   sortBy: SortOptions
-  categories?: HttpTypes.StoreProductCategory[]
+  categories?: CategoryNavigation[]
   countryCode?: string
   search?: boolean
   'data-testid'?: string

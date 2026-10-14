@@ -24,7 +24,11 @@ type CountryOption = {
 type CountrySelectProps = {
   countryCode: string
   toggleState: StateType
-  regions: HttpTypes.StoreRegion[]
+  regions: CountrySelectRegion[]
+}
+
+export type CountrySelectRegion = Pick<HttpTypes.StoreRegion, "id"> & {
+  countries: Pick<NonNullable<HttpTypes.StoreRegion["countries"]>[number], "iso_2" | "display_name">[]
 }
 
 const CountrySelect = ({

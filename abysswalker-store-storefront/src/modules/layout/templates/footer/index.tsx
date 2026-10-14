@@ -1,5 +1,6 @@
 import { listCategories } from "@lib/data/categories"
 import { listCollections } from "@lib/data/collections"
+import { toCategoryNavigation } from "@lib/util/category-navigation"
 import { Text, clx } from "@medusajs/ui"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -10,7 +11,7 @@ const CURRENT_YEAR = new Date().getFullYear()
 
 export default async function Footer({ countryCode }: { countryCode: string }) {
   const { collections } = await listCollections({
-    fields: "*products",
+    fields: "id,handle,title",
   })
   const productCategories = await listCategories()
 
@@ -35,7 +36,7 @@ export default async function Footer({ countryCode }: { countryCode: string }) {
                 </span>
                 <CategoryTree
                   countryCode={countryCode}
-                  categories={productCategories}
+                  categories={productCategories.map(toCategoryNavigation)}
                   className="grid grid-cols-1 gap-2"
                   nestedClassName="grid grid-cols-1 gap-2 ml-3"
                   itemClassName="flex flex-col gap-2 text-abyss-text-light txt-small"

@@ -2,9 +2,8 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 
-import { getCategoryByHandle, listCategories } from "@lib/data/categories"
-import { listRegions } from "@lib/data/regions"
-import { StoreRegion } from "@medusajs/types"
+import { getCategoryByHandle } from "@lib/data/categories"
+import { listStaticHandles } from "@lib/data/static-handles"
 import CategoryTemplate from "@modules/categories/templates"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 
@@ -17,28 +16,8 @@ type Props = {
 }
 
 export async function generateStaticParams() {
-  const product_categories = await listCategories()
-
-  if (!product_categories) {
-    return []
-  }
-
-  const countryCodes = await listRegions().then((regions: StoreRegion[]) =>
-    regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
-  )
-
-  const categoryHandles = product_categories.map((category) => category.handle)
-
-  const staticParams = countryCodes
-    ?.map((countryCode) =>
-      categoryHandles.map((handle) => ({
-        countryCode,
-        category: [handle],
-      }))
-    )
-    .flat()
-
-  return staticParams
+  const handles = await listStaticHandles("/store/product-categories")
+  return handles.map((handle) => ({ category: handle.split("/") }))
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {

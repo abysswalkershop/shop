@@ -6,8 +6,7 @@ import { Text, clx, useToggleState } from "@medusajs/ui"
 import { Fragment, Suspense } from "react"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import CountrySelect from "../country-select"
-import { HttpTypes } from "@medusajs/types"
+import CountrySelect, { CountrySelectRegion } from "../country-select"
 
 const CURRENT_YEAR = new Date().getFullYear()
 
@@ -23,7 +22,7 @@ const SideMenu = ({
   regions,
 }: {
   countryCode: string
-  regions: HttpTypes.StoreRegion[] | null
+  regions: CountrySelectRegion[] | null
 }) => {
   const toggleState = useToggleState()
 

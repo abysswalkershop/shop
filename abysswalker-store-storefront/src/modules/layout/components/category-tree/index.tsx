@@ -3,20 +3,11 @@
 import { clx } from "@medusajs/ui"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-
-type CategoryTreeNode = {
-    id: string
-    name: string
-    handle: string
-    parent_category?: {
-        id?: string
-    } | null
-    category_children?: CategoryTreeNode[] | null
-}
+import { CategoryNavigation } from "@lib/util/category-navigation"
 
 type CategoryTreeProps = {
     countryCode?: string
-    categories: CategoryTreeNode[]
+    categories: CategoryNavigation[]
     className?: string
     nestedClassName?: string
     itemClassName?: string
@@ -44,7 +35,7 @@ const CategoryTree = ({
     }
 
     const renderCategoryNodes = (
-        nodes: CategoryTreeNode[],
+        nodes: CategoryNavigation[],
         depth = 0
     ): React.ReactNode => {
         return (

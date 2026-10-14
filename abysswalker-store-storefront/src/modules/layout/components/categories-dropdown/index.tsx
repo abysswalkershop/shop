@@ -8,20 +8,13 @@ import {
 } from "@headlessui/react"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { Fragment, useState } from "react"
-
-type Category = {
-    id: string
-    name: string
-    handle: string
-    category_children?: Category[]
-    parent_category?: Category | null
-}
+import { CategoryNavigation } from "@lib/util/category-navigation"
 
 const CategoryItem = ({
     category,
     countryCode,
 }: {
-    category: Category
+    category: CategoryNavigation
     countryCode: string
 }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -103,7 +96,7 @@ const CategoriesNavigation = ({
     categories,
 }: {
     countryCode: string
-    categories: Category[]
+    categories: CategoryNavigation[]
 }) => {
     // Filter to only show parent categories (categories without parent_category)
     const parentCategories = categories.filter(category => !category.parent_category)

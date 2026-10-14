@@ -1,7 +1,8 @@
-import { listRegionCountryCodes } from "@lib/data/regions"
+import { listRegions } from "@lib/data/regions"
+import { getStaticCountryCodes } from "@lib/util/static-countries"
 
 export async function generateStaticParams() {
-    const countryCodes = await listRegionCountryCodes()
+    const countryCodes = getStaticCountryCodes(await listRegions())
 
     return countryCodes.map((countryCode) => ({
         countryCode,
